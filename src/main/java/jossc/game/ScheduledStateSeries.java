@@ -15,7 +15,7 @@ public class ScheduledStateSeries extends StateSeries {
   protected List<Runnable> onUpdate = new LinkedList<>();
 
   public ScheduledStateSeries(PluginBase plugin) {
-    this(plugin, 1);
+    this(plugin, 20);
   }
 
   public ScheduledStateSeries(PluginBase plugin, int interval) {
@@ -44,6 +44,7 @@ public class ScheduledStateSeries extends StateSeries {
   @Override
   public final void onEnd() {
     super.onEnd();
+
     scheduledTask.cancel();
   }
 
