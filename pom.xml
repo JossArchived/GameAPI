@@ -25,7 +25,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                jossc.game.GameState
+                                jossc.game.Game
                             </mainClass>
                         </manifest>
                     </archive>
@@ -88,7 +88,7 @@
 
     <dependencies>
 
-        <!-- Annotations -->
+        <!-- Lombok Annotation -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -96,7 +96,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Base software -->
+        <!-- NukkitX 1.0.0 Software -->
         <dependency>
             <groupId>cn.nukkit</groupId>
             <artifactId>nukkit</artifactId>
@@ -104,6 +104,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- FSMgasm Library -->
         <dependency>
             <groupId>com.github.Minikloon</groupId>
             <artifactId>FSMgasm</artifactId>

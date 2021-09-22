@@ -1,4 +1,4 @@
-package jossc.game;
+package jossc.game.state;
 
 import java.time.Duration;
 import net.minikloon.fsmgasm.State;

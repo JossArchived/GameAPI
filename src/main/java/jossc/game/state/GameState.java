@@ -1,4 +1,4 @@
-package jossc.game;
+package jossc.game.state;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -48,7 +48,7 @@ public abstract class GameState extends State implements Listener {
   protected final Collection<? extends Player> getPlayers() {
     return Server.getInstance().getOnlinePlayers().values();
   }
-  
+
   protected final void playSound(Player player, String soundName) {
     PlaySoundPacket pk = new PlaySoundPacket();
     pk.name = soundName;
@@ -62,8 +62,7 @@ public abstract class GameState extends State implements Listener {
   }
 
   protected final void broadcastSound(String soundName) {
-    getPlayers()
-        .forEach(player -> playSound(player, soundName));
+    getPlayers().forEach(player -> playSound(player, soundName));
   }
 
   protected final void broadcastMessage(String message) {
@@ -78,27 +77,48 @@ public abstract class GameState extends State implements Listener {
 
   protected final void broadcastTitle(String title) {
     getPlayers()
-        .forEach(player -> player.sendTitle(TextFormat.colorize(title)));
+      .forEach(player -> player.sendTitle(TextFormat.colorize(title)));
   }
 
   protected final void broadcastTitle(String title, String subTitle) {
     getPlayers()
-        .forEach(player -> player.sendTitle(TextFormat.colorize(title), TextFormat.colorize(subTitle)));
+      .forEach(
+        player ->
+          player.sendTitle(
+            TextFormat.colorize(title),
+            TextFormat.colorize(subTitle)
+          )
+      );
   }
 
-  protected final void broadcastTitle(String title, String subTitle, int fadeIn, int stay, int fadeOut) {
+  protected final void broadcastTitle(
+    String title,
+    String subTitle,
+    int fadeIn,
+    int stay,
+    int fadeOut
+  ) {
     getPlayers()
-        .forEach(player -> player.sendTitle(TextFormat.colorize(title), TextFormat.colorize(subTitle), fadeIn, stay, fadeOut));
+      .forEach(
+        player ->
+          player.sendTitle(
+            TextFormat.colorize(title),
+            TextFormat.colorize(subTitle),
+            fadeIn,
+            stay,
+            fadeOut
+          )
+      );
   }
 
   protected final void broadcastPopup(String message) {
     getPlayers()
-        .forEach(player -> player.sendPopup(TextFormat.colorize(message)));
+      .forEach(player -> player.sendPopup(TextFormat.colorize(message)));
   }
 
   protected final void broadcastTip(String message) {
     getPlayers()
-        .forEach(player -> player.sendTip(TextFormat.colorize(message)));
+      .forEach(player -> player.sendTip(TextFormat.colorize(message)));
   }
 
   protected final void broadcastActionBar(

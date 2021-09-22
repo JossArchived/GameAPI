@@ -1,4 +1,4 @@
-package jossc.game;
+package jossc.game.state;
 
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.TaskHandler;
