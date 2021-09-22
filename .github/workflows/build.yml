@@ -45,9 +45,9 @@ jobs:
       - name: Create and Publish Release
         uses: marvinpinto/action-automatic-releases@v1.1.1
         with:
-          automatic_release_tag: "latest"
+          automatic_release_tag: "1.0-SNAPSHOT"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          title: "Official version"
+          title: "1.0-SNAPSHOT"
           prerelease: false
           files: |
             GameAPI/GameAPI-1.0-SNAPSHOT.jar
