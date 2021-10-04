@@ -18,8 +18,4 @@ public abstract class TimeState extends GameState {
   public Duration getDuration() {
     return Duration.ofSeconds(secondsToEnd);
   }
-
-  protected int playersSize() {
-    return getPlayers().size();
-  }
 }

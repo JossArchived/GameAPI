@@ -121,6 +121,10 @@ public abstract class GameState extends State implements Listener {
       .forEach(player -> player.sendTip(TextFormat.colorize(message)));
   }
 
+  protected int playersSize() {
+    return getPlayers().size();
+  }
+
   protected final void broadcastActionBar(
     String title,
     int fadeIn,
