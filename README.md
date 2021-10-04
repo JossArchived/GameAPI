@@ -113,6 +113,8 @@ public class SkyWars extends Game {
 }
 ```
 
+Any class that extends GameState can add events and they will be listened to, GameState is registered as an event listener class.
+
 ### Methods of the Game class
 
 ```java
@@ -140,7 +142,7 @@ public class SkyWars extends Game {
     // skipState, This is used to skip to the next state, example, if you are in the "Preparing Game" state you want to skip, it will continue to the next state in the order as you registered them.
     // stopStates, This is used for debugging, this prohibits the system from continuing with the states and staying frozen in the current state.
     // continueStates, If the states are paused, this will continue, remove the system freeze.
-
+    // To execute all these commands, the user must have the permission "minigame.admin.permission"
     
     // This method can register any command that extends to the command class of nukkit
     registerCommand(new MyPositionCommand());
