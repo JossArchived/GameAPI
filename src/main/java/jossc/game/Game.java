@@ -1,18 +1,21 @@
 package jossc.game;
 
 import cn.nukkit.command.Command;
+import cn.nukkit.command.SimpleCommandMap;
 import cn.nukkit.event.Listener;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
 import java.util.Arrays;
+import jossc.game.command.ContinueStatesCommand;
+import jossc.game.command.SkipStateCommand;
+import jossc.game.command.StopStatesCommand;
+import jossc.game.state.ScheduledStateSeries;
 
 public abstract class Game extends PluginBase implements IGame {
 
   @Override
   public void onEnable() {
     super.onEnable();
-
-    getServer().getCommandMap().clearCommands();
 
     init();
 
@@ -26,6 +29,23 @@ public abstract class Game extends PluginBase implements IGame {
     close();
 
     getLogger().info(TextFormat.RED + "This game has been disabled!");
+  }
+
+  protected void registerDefaultCommands(ScheduledStateSeries mainState) {
+    registerCommands(
+      new SkipStateCommand(mainState),
+      new StopStatesCommand(mainState),
+      new ContinueStatesCommand(mainState)
+    );
+  }
+
+  protected void unregisterAllCommands() {
+    SimpleCommandMap commandMap = getServer().getCommandMap();
+
+    commandMap
+      .getCommands()
+      .values()
+      .forEach(command -> command.unregister(commandMap));
   }
 
   protected void registerCommand(Command command) {
