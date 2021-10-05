@@ -3,6 +3,7 @@ package jossc.game;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.SimpleCommandMap;
 import cn.nukkit.event.Listener;
+import cn.nukkit.level.Level;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
 import java.util.Arrays;
@@ -72,6 +73,27 @@ public abstract class Game extends PluginBase implements IGame {
         listener ->
           getServer().getPluginManager().registerEvents(listener, this)
       );
+  }
+
+  protected void prepareMap(String mapName) {
+    prepareMap(mapName, Level.TIME_DAY);
+  }
+
+  protected void prepareMap(String mapName, int time) {
+    if (!getServer().isLevelLoaded(mapName)) {
+      getServer().loadLevel(mapName);
+    }
+
+    Level level = getServer().getLevelByName(mapName);
+
+    if (level == null) {
+      return;
+    }
+
+    level.setTime(time);
+    level.stopTime();
+    level.setRaining(false);
+    level.setThundering(false);
   }
 
   @Override
