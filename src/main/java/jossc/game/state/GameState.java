@@ -44,32 +44,33 @@ public abstract class GameState extends State implements Listener {
     tasks.clear();
   }
 
-  protected final Collection<? extends Player> getSpectators() {
-    return new ArrayList<Player>(getPlayers(Player.SPECTATOR));
+  protected final Collection<? extends Player> getPlayers() {
+    return Server.getInstance().getOnlinePlayers().values();
   }
 
-  protected final Collection<? extends Player> getPlayers() {
+  protected final Collection<? extends Player> getSpectators() {
+    return new ArrayList<Player>(filterPlayerByGamemode(Player.SPECTATOR));
+  }
+
+  protected final Collection<? extends Player> getNeutralPlayers() {
     List<Player> players = new ArrayList<>();
 
-    players.addAll(getPlayers(Player.SURVIVAL));
-    players.addAll(getPlayers(Player.ADVENTURE));
-    players.addAll(getPlayers(Player.CREATIVE));
+    players.addAll(filterPlayerByGamemode(Player.SURVIVAL));
+    players.addAll(filterPlayerByGamemode(Player.ADVENTURE));
+    players.addAll(filterPlayerByGamemode(Player.CREATIVE));
 
     return players;
   }
 
-  protected final Collection<? extends Player> getPlayers(int gamemode) {
-    return Server
-      .getInstance()
-      .getOnlinePlayers()
-      .values()
+  private Collection<? extends Player> filterPlayerByGamemode(int gamemode) {
+    return getPlayers()
       .stream()
       .filter(player -> player.getGamemode() == gamemode)
       .collect(Collectors.toList());
   }
 
-  protected int playersSize() {
-    return getPlayers().size();
+  protected int neutralPlayersSize() {
+    return getNeutralPlayers().size();
   }
 
   protected int spectatorsSize() {
@@ -96,7 +97,7 @@ public abstract class GameState extends State implements Listener {
     if (toSpectator) {
       getSpectators().forEach(spectator -> playSound(spectator, soundName));
     } else {
-      getPlayers().forEach(player -> playSound(player, soundName));
+      getNeutralPlayers().forEach(player -> playSound(player, soundName));
     }
   }
 
@@ -111,7 +112,7 @@ public abstract class GameState extends State implements Listener {
           spectator -> spectator.sendMessage(TextFormat.colorize(message))
         );
     } else {
-      getPlayers()
+      getNeutralPlayers()
         .forEach(player -> player.sendMessage(TextFormat.colorize(message)));
     }
   }
@@ -127,7 +128,7 @@ public abstract class GameState extends State implements Listener {
           spectator -> spectator.sendActionBar(TextFormat.colorize(title))
         );
     } else {
-      getPlayers()
+      getNeutralPlayers()
         .forEach(player -> player.sendActionBar(TextFormat.colorize(title)));
     }
   }
@@ -160,7 +161,7 @@ public abstract class GameState extends State implements Listener {
             )
         );
     } else {
-      getPlayers()
+      getNeutralPlayers()
         .forEach(
           player ->
             player.sendActionBar(
@@ -196,7 +197,7 @@ public abstract class GameState extends State implements Listener {
       getSpectators()
         .forEach(spectator -> spectator.sendTitle(TextFormat.colorize(title)));
     } else {
-      getPlayers()
+      getNeutralPlayers()
         .forEach(player -> player.sendTitle(TextFormat.colorize(title)));
     }
   }
@@ -216,7 +217,7 @@ public abstract class GameState extends State implements Listener {
             )
         );
     } else {
-      getPlayers()
+      getNeutralPlayers()
         .forEach(
           player ->
             player.sendTitle(
@@ -248,7 +249,7 @@ public abstract class GameState extends State implements Listener {
             )
         );
     } else {
-      getPlayers()
+      getNeutralPlayers()
         .forEach(
           player ->
             player.sendTitle(
@@ -273,7 +274,7 @@ public abstract class GameState extends State implements Listener {
           spectator -> spectator.sendPopup(TextFormat.colorize(message))
         );
     } else {
-      getPlayers()
+      getNeutralPlayers()
         .forEach(player -> player.sendPopup(TextFormat.colorize(message)));
     }
   }
@@ -287,7 +288,7 @@ public abstract class GameState extends State implements Listener {
       getSpectators()
         .forEach(spectator -> spectator.sendTip(TextFormat.colorize(message)));
     } else {
-      getPlayers()
+      getNeutralPlayers()
         .forEach(player -> player.sendTip(TextFormat.colorize(message)));
     }
   }
