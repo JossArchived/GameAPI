@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class GameState extends State implements Listener {
 
   protected final PluginBase plugin;
-  private final Duration duration;
+  protected final Duration duration;
 
   protected final Set<Listener> listeners = new HashSet<>();
   protected final Set<TaskHandler> tasks = new HashSet<>();
