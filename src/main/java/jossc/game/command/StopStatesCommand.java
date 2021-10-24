@@ -7,7 +7,7 @@ import net.minikloon.fsmgasm.StateSeries;
 public class StopStatesCommand extends StateCommand {
 
   public StopStatesCommand(StateSeries mainState) {
-    super("stopStates", "Stop all states", mainState);
+    super("stopstates", "Stop all states", mainState);
   }
 
   @Override

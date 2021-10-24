@@ -7,7 +7,7 @@ import net.minikloon.fsmgasm.StateSeries;
 public class SkipStateCommand extends StateCommand {
 
   public SkipStateCommand(StateSeries mainState) {
-    super("skipState", "Skip states", mainState);
+    super("skipstate", "Skip states", mainState);
   }
 
   @Override

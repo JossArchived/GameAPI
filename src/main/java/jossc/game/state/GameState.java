@@ -8,19 +8,34 @@ import cn.nukkit.network.protocol.PlaySoundPacket;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.TextFormat;
+
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 import net.minikloon.fsmgasm.State;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class GameState extends State implements Listener {
 
   protected final PluginBase plugin;
+  private final Duration duration;
 
   protected final Set<Listener> listeners = new HashSet<>();
   protected final Set<TaskHandler> tasks = new HashSet<>();
 
   public GameState(PluginBase plugin) {
+    this(plugin, Duration.ZERO);
+  }
+
+  public GameState(PluginBase plugin, Duration duration) {
     this.plugin = plugin;
+    this.duration = duration;
+  }
+
+  @NotNull
+  @Override
+  public Duration getDuration() {
+    return duration;
   }
 
   @Override

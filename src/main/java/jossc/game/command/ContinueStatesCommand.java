@@ -7,7 +7,7 @@ import net.minikloon.fsmgasm.StateSeries;
 public class ContinueStatesCommand extends StateCommand {
 
   public ContinueStatesCommand(StateSeries mainState) {
-    super("continueStates", "Continue with the states", mainState);
+    super("continuestates", "Continue with the states", mainState);
   }
 
   @Override
