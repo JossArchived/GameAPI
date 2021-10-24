@@ -6,16 +6,16 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class TimeState extends GameState {
 
-  protected int secondsToEnd;
+  protected Duration duration;
 
-  public TimeState(PluginBase plugin, int secondsToEnd) {
+  public TimeState(PluginBase plugin, Duration duration) {
     super(plugin);
-    this.secondsToEnd = secondsToEnd;
+    this.duration = duration;
   }
 
   @NotNull
   @Override
   public Duration getDuration() {
-    return Duration.ofSeconds(secondsToEnd);
+    return duration;
   }
 }

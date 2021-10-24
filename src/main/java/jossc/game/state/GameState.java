@@ -78,26 +78,38 @@ public abstract class GameState extends State implements Listener {
   }
 
   protected final void playSound(Player player, String soundName) {
+    playSound(player, soundName, 1, 1);
+  }
+
+  protected final void playSound(Player player, String soundName, int pitch, int volume) {
     PlaySoundPacket pk = new PlaySoundPacket();
     pk.name = soundName;
     pk.x = (int) player.x;
     pk.y = (int) player.y;
     pk.z = (int) player.z;
-    pk.pitch = 1;
-    pk.volume = 1;
+    pk.pitch = pitch;
+    pk.volume = volume;
 
     player.dataPacket(pk);
   }
 
-  protected final void broadcastSound(String soundName) {
-    broadcastSound(soundName, false);
+  protected final void broadcastSound(String soundName, boolean toSpectator) {
+    broadcastSound(soundName, 1, 1, toSpectator);
   }
 
-  protected final void broadcastSound(String soundName, boolean toSpectator) {
+  protected final void broadcastSound(String soundName) {
+    broadcastSound(soundName, 1, 1, false);
+  }
+
+  protected final void broadcastSound(String soundName, int pitch, int volume) {
+    broadcastSound(soundName, pitch, volume, false);
+  }
+
+  protected final void broadcastSound(String soundName, int pitch, int volume, boolean toSpectator) {
     if (toSpectator) {
-      getSpectators().forEach(spectator -> playSound(spectator, soundName));
+      getSpectators().forEach(spectator -> playSound(spectator, soundName, pitch, volume));
     } else {
-      getNeutralPlayers().forEach(player -> playSound(player, soundName));
+      getNeutralPlayers().forEach(player -> playSound(player, soundName, pitch, volume));
     }
   }
 
