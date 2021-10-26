@@ -8,7 +8,6 @@ import cn.nukkit.network.protocol.PlaySoundPacket;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.TextFormat;
-
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -96,7 +95,12 @@ public abstract class GameState extends State implements Listener {
     playSound(player, soundName, 1, 1);
   }
 
-  protected final void playSound(Player player, String soundName, int pitch, int volume) {
+  protected final void playSound(
+    Player player,
+    String soundName,
+    int pitch,
+    int volume
+  ) {
     PlaySoundPacket pk = new PlaySoundPacket();
     pk.name = soundName;
     pk.x = (int) player.x;
@@ -120,11 +124,18 @@ public abstract class GameState extends State implements Listener {
     broadcastSound(soundName, pitch, volume, false);
   }
 
-  protected final void broadcastSound(String soundName, int pitch, int volume, boolean toSpectator) {
+  protected final void broadcastSound(
+    String soundName,
+    int pitch,
+    int volume,
+    boolean toSpectator
+  ) {
     if (toSpectator) {
-      getSpectators().forEach(spectator -> playSound(spectator, soundName, pitch, volume));
+      getSpectators()
+        .forEach(spectator -> playSound(spectator, soundName, pitch, volume));
     } else {
-      getNeutralPlayers().forEach(player -> playSound(player, soundName, pitch, volume));
+      getNeutralPlayers()
+        .forEach(player -> playSound(player, soundName, pitch, volume));
     }
   }
 

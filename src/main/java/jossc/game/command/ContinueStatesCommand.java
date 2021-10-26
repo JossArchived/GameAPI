@@ -18,9 +18,8 @@ public class ContinueStatesCommand extends StateCommand {
       mainState.setFrozen(false);
       sender
         .getServer()
-        .broadcast(
-          TextFormat.GREEN + sender.getName() + " continued with all states!",
-          getPermission()
+        .broadcastMessage(
+          TextFormat.GREEN + sender.getName() + " continued with all states!"
         );
     } else {
       sender.sendMessage(TextFormat.RED + "The states are not stopped!");

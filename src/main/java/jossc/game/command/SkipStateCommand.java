@@ -16,9 +16,8 @@ public class SkipStateCommand extends StateCommand {
 
     sender
       .getServer()
-      .broadcast(
-        TextFormat.RED + sender.getName() + " has skipped to the next state!",
-        getPermission()
+      .broadcastMessage(
+        TextFormat.RED + sender.getName() + " has skipped to the next state!"
       );
 
     mainState.skip();

@@ -18,9 +18,8 @@ public class StopStatesCommand extends StateCommand {
       mainState.setFrozen(true);
       sender
         .getServer()
-        .broadcast(
-          TextFormat.RED + sender.getName() + " stopped the states!",
-          getPermission()
+        .broadcastMessage(
+          TextFormat.RED + sender.getName() + " stopped the states!"
         );
     } else {
       sender.sendMessage(TextFormat.RED + "The states are already stopped!");
