@@ -12,7 +12,7 @@ import jossc.game.command.SkipStateCommand;
 import jossc.game.command.StopStatesCommand;
 import jossc.game.state.ScheduledStateSeries;
 
-public abstract class Game extends PluginBase implements IGame {
+public abstract class Game extends PluginBase {
 
   @Override
   public void onEnable() {
@@ -96,9 +96,7 @@ public abstract class Game extends PluginBase implements IGame {
     level.setThundering(false);
   }
 
-  @Override
-  public void init() {}
+  public abstract void init();
 
-  @Override
-  public void close() {}
+  public abstract void close();
 }

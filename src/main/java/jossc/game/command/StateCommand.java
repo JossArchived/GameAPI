@@ -3,17 +3,17 @@ package jossc.game.command;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
-import net.minikloon.fsmgasm.StateSeries;
+import jossc.game.state.ScheduledStateSeries;
 
 public abstract class StateCommand extends Command {
 
-  protected final StateSeries mainState;
+  protected final ScheduledStateSeries mainState;
 
-  public StateCommand(String name, StateSeries mainState) {
+  public StateCommand(String name, ScheduledStateSeries mainState) {
     this(name, "", mainState);
   }
 
-  public StateCommand(String name, String description, StateSeries mainState) {
+  public StateCommand(String name, String description, ScheduledStateSeries mainState) {
     this(name, description, "", mainState);
   }
 
@@ -21,7 +21,7 @@ public abstract class StateCommand extends Command {
     String name,
     String description,
     String usageMessage,
-    StateSeries mainState
+    ScheduledStateSeries mainState
   ) {
     this(name, description, usageMessage, new String[] {}, mainState);
   }
@@ -31,7 +31,7 @@ public abstract class StateCommand extends Command {
     String description,
     String usageMessage,
     String[] aliases,
-    StateSeries mainState
+    ScheduledStateSeries mainState
   ) {
     super(name, description, usageMessage, aliases);
     this.mainState = mainState;
