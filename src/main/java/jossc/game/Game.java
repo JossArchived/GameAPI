@@ -1,8 +1,10 @@
 package jossc.game;
 
+import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.event.Listener;
 import cn.nukkit.level.Level;
+import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
@@ -31,13 +33,15 @@ public abstract class Game extends PluginBase {
 
   protected String mapName;
 
-  protected Vector3 waitingLobby;
+  protected Position waitingLobby;
 
-  protected List<Vector3> slots = new LinkedList<>();
+  protected List<Vector3> spawns = new LinkedList<>();
 
   protected boolean developmentMode = false;
 
   protected boolean starting = false;
+
+  protected int defaultGameMode = Player.SURVIVAL;
 
   @Override
   public void onEnable() {
@@ -56,15 +60,15 @@ public abstract class Game extends PluginBase {
     getLogger().info(TextFormat.GREEN + "This game has been enabled!");
   }
 
-  protected Level getMap() {
+  public Level getMap() {
     return getServer().getLevelByName(mapName);
   }
 
-  protected boolean isFull() {
+  public boolean isFull() {
     return getServer().getOnlinePlayers().size() >= maxPlayers;
   }
 
-  protected boolean isAvailable() {
+  public boolean isAvailable() {
     return !isFull() && !starting;
   }
 
@@ -143,6 +147,10 @@ public abstract class Game extends PluginBase {
     level.setRaining(false);
     level.setThundering(false);
   }
+
+  public abstract String getGameName();
+
+  public abstract String getInstruction();
 
   public abstract void init();
 

@@ -2,8 +2,12 @@ package jossc.game.phase;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.Listener;
+import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerLoginEvent;
+import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.network.protocol.PlaySoundPacket;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.TaskHandler;
@@ -11,6 +15,7 @@ import cn.nukkit.utils.TextFormat;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
+import jossc.game.Game;
 import net.minikloon.fsmgasm.State;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,6 +27,8 @@ public abstract class GamePhase extends State implements Listener {
   protected final Set<Listener> listeners = new HashSet<>();
   protected final Set<TaskHandler> tasks = new HashSet<>();
 
+  protected final Game game;
+
   public GamePhase(PluginBase plugin) {
     this(plugin, Duration.ZERO);
   }
@@ -29,6 +36,7 @@ public abstract class GamePhase extends State implements Listener {
   public GamePhase(PluginBase plugin, Duration duration) {
     this.plugin = plugin;
     this.duration = duration;
+    this.game = Game.getInstance();
   }
 
   @NotNull
@@ -52,9 +60,14 @@ public abstract class GamePhase extends State implements Listener {
       return;
     }
 
+    cleanup();
+  }
+
+  protected final void cleanup() {
     listeners.forEach(HandlerList::unregisterAll);
-    tasks.forEach(TaskHandler::cancel);
     listeners.clear();
+
+    tasks.forEach(TaskHandler::cancel);
     tasks.clear();
   }
 
@@ -357,4 +370,82 @@ public abstract class GamePhase extends State implements Listener {
 
   @Override
   protected void onEnd() {}
+
+  @EventHandler
+  public void onLogin(PlayerLoginEvent event) {
+    Player player = event.getPlayer();
+
+    if (player.hasPermission("allow.login.to.spectate")) {
+      return;
+    }
+
+    if (game.isStarting()) {
+      player.kick(TextFormat.RED + "This game is already in progress", false);
+
+      return;
+    }
+
+    if (game.isFull()) {
+      player.kick(TextFormat.RED + "This game is full", false);
+    }
+  }
+
+  @EventHandler
+  public void onJoin(PlayerJoinEvent event) {
+    Player player = event.getPlayer();
+
+    if (!game.isAvailable()) {
+      event.setJoinMessage("");
+
+      player.setGamemode(Player.SPECTATOR);
+      player.teleport(game.getMap().getSafeSpawn().add(0, 1));
+      player.getServer().removeOnlinePlayer(player);
+
+      return;
+    }
+
+    player.teleport(game.getWaitingLobby());
+    player.setGamemode(Player.SURVIVAL);
+
+    int players = neutralPlayersSize();
+    int maxPlayers = game.getMaxPlayers();
+
+    event.setJoinMessage(
+      TextFormat.colorize(
+        "&a&l» &r&7" +
+        player.getName() +
+        " has joined. &8[" +
+        players +
+        "/" +
+        maxPlayers +
+        "]"
+      )
+    );
+  }
+
+  @EventHandler
+  public void onQuit(PlayerQuitEvent event) {
+    Player player = event.getPlayer();
+
+    if (player.isSpectator()) {
+      event.setQuitMessage("");
+
+      return;
+    }
+
+    int players = (neutralPlayersSize() - 1);
+    int maxPlayers = game.getMaxPlayers();
+
+    event.setQuitMessage(
+      TextFormat.colorize(
+        "&c&l» &r&7" +
+        player.getName() +
+        " has left. &8[" +
+        players +
+        "/" +
+        maxPlayers +
+        "]"
+      )
+    );
+  }
 }
