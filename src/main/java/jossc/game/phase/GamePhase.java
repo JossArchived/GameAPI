@@ -1,4 +1,4 @@
-package jossc.game.state;
+package jossc.game.phase;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import net.minikloon.fsmgasm.State;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class GameState extends State implements Listener {
+public abstract class GamePhase extends State implements Listener {
 
   protected final PluginBase plugin;
   protected final Duration duration;
@@ -22,11 +22,11 @@ public abstract class GameState extends State implements Listener {
   protected final Set<Listener> listeners = new HashSet<>();
   protected final Set<TaskHandler> tasks = new HashSet<>();
 
-  public GameState(PluginBase plugin) {
+  public GamePhase(PluginBase plugin) {
     this(plugin, Duration.ZERO);
   }
 
-  public GameState(PluginBase plugin, Duration duration) {
+  public GamePhase(PluginBase plugin, Duration duration) {
     this.plugin = plugin;
     this.duration = duration;
   }

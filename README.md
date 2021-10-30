@@ -33,7 +33,7 @@ public class SkyWars extends Game {
 First, create your statuses!. If you want a state where you can spend seconds to finish as a parameter, use TimeState, extend your class to it. If you want a custom State, use Game State, still extend your class to it. Example:
 
 ```java
-import jossc.game.state.TimeState;
+import jossc.game.phase.TimeState;
 
 public class ExampleStateOne extends TimeState {
 
@@ -59,9 +59,9 @@ public class ExampleStateOne extends TimeState {
 ```
 
 ```java
-import jossc.game.state.GameState;
+import jossc.game.phase.GamePhase;
 
-public class ExampleStateTwo extends GameState {
+public class ExampleStateTwo extends GamePhase {
 
   public ExampleStateTwo(PluginBase plugin) {
     super(plugin);
@@ -70,7 +70,7 @@ public class ExampleStateTwo extends GameState {
   @NotNull
   @Override
   public Duration getDuration() {
-    return Duration.ZERO; 
+    return Duration.ZERO;
   }
 
   @Override
@@ -97,7 +97,8 @@ public class ExampleStateTwo extends GameState {
 
 ```java
 import jossc.game.Game;
-import jossc.game.state.ScheduledStateSeries;
+import jossc.game.phase.PhaseSeries;
+import jossc.game.phase.ScheduledStateSeries;
 
 public class SkyWars extends Game {
 
@@ -105,7 +106,7 @@ public class SkyWars extends Game {
   public void init() {
     super.init();
 
-    ScheduledStateSeries mainState = new ScheduledStateSeries();
+    PhaseSeries mainState = new PhaseSeries();
     mainState.add(new ExampleStateOne(this, 10)); // This means that this state, after starting, only lasts 10 seconds.
     mainState.add(new ExampleStateTwo(this));
     mainState.start();
@@ -120,7 +121,8 @@ Any class that extends GameState can add events and they will be listened to, Ga
 ```java
 import jossc.game.Game;
 import jossc.game.command.MyPositionCommand;
-import jossc.game.state.ScheduledStateSeries;
+import jossc.game.phase.PhaseSeries;
+import jossc.game.phase.ScheduledStateSeries;
 
 public class SkyWars extends Game {
 
@@ -128,10 +130,10 @@ public class SkyWars extends Game {
   public void init() {
     super.init();
 
-    ScheduledStateSeries mainState = new ScheduledStateSeries();
+    PhaseSeries mainState = new PhaseSeries();
     //TODO: Here you add your states
     mainState.start();
-    
+
 
     // You have to pass the mainState variable as a parameter,
     // which returns the series of states that you registered
@@ -143,27 +145,27 @@ public class SkyWars extends Game {
     // stopStates, This is used for debugging, this prohibits the system from continuing with the states and staying frozen in the current state.
     // continueStates, If the states are paused, this will continue, remove the system freeze.
     // To execute all these commands, the user must have the permission "minigame.admin.permission"
-    
+
     // This method can register any command that extends to the command class of nukkit
     registerCommand(new MyPositionCommand());
-    
+
     //The MyPosition command, as its name indicates,
     // reveals your position in a message,
     // this command has already been created in this API, if you want to register it,
     // execute the previous command
-    
-    
+
+
     // This method allows you to register several commands at the same time, all separated by the symbol ","
     registerCommands(new MyPositionCommand(), ...other command);
-    
+
     // This method, as its name implies, deletes all the commands registered so far.
     unregisterAllCommands();
-    
-    
+
+
     // and last but not least, the methods that listeners register
     registerListener(a listener here);
-    
-    registerListeners(multiple listeners separated by ",");
+
+    registerListeners(multiple listeners separated by",");
   }
 }
 ```

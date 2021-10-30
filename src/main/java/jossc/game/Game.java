@@ -7,10 +7,10 @@ import cn.nukkit.level.Level;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
 import java.util.Arrays;
-import jossc.game.command.ContinueStatesCommand;
-import jossc.game.command.SkipStateCommand;
-import jossc.game.command.StopStatesCommand;
-import jossc.game.state.ScheduledStateSeries;
+import jossc.game.command.FreezePhasesCommand;
+import jossc.game.command.SkipPhaseCommand;
+import jossc.game.command.UnfreezePhasesCommand;
+import jossc.game.phase.PhaseSeries;
 
 public abstract class Game extends PluginBase {
 
@@ -32,11 +32,11 @@ public abstract class Game extends PluginBase {
     getLogger().info(TextFormat.RED + "This game has been disabled!");
   }
 
-  protected void registerDefaultCommands(ScheduledStateSeries mainState) {
+  protected void registerDefaultCommands(PhaseSeries mainState) {
     registerCommands(
-      new SkipStateCommand(mainState),
-      new StopStatesCommand(mainState),
-      new ContinueStatesCommand(mainState)
+      new SkipPhaseCommand(mainState),
+      new FreezePhasesCommand(mainState),
+      new UnfreezePhasesCommand(mainState)
     );
   }
 

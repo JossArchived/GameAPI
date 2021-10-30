@@ -1,14 +1,14 @@
-package jossc.game.state;
+package jossc.game.phase;
 
 import java.time.Duration;
 import net.minikloon.fsmgasm.State;
 import org.jetbrains.annotations.NotNull;
 
-class PrintState extends State {
+class PrintPhase extends State {
 
   private final String toPrint;
 
-  public PrintState(String toPrint) {
+  public PrintPhase(String toPrint) {
     this.toPrint = toPrint;
   }
 
