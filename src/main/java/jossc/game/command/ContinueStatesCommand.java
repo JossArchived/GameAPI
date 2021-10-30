@@ -2,11 +2,11 @@ package jossc.game.command;
 
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
-import net.minikloon.fsmgasm.StateSeries;
+import jossc.game.state.ScheduledStateSeries;
 
 public class ContinueStatesCommand extends StateCommand {
 
-  public ContinueStatesCommand(StateSeries mainState) {
+  public ContinueStatesCommand(ScheduledStateSeries mainState) {
     super("continuestates", "Continue with the states", mainState);
   }
 

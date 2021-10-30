@@ -2,11 +2,11 @@ package jossc.game.command;
 
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
-import net.minikloon.fsmgasm.StateSeries;
+import jossc.game.state.ScheduledStateSeries;
 
 public class StopStatesCommand extends StateCommand {
 
-  public StopStatesCommand(StateSeries mainState) {
+  public StopStatesCommand(ScheduledStateSeries mainState) {
     super("stopstates", "Stop all states", mainState);
   }
 

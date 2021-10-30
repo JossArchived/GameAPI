@@ -2,11 +2,11 @@ package jossc.game.command;
 
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
-import net.minikloon.fsmgasm.StateSeries;
+import jossc.game.state.ScheduledStateSeries;
 
 public class SkipStateCommand extends StateCommand {
 
-  public SkipStateCommand(StateSeries mainState) {
+  public SkipStateCommand(ScheduledStateSeries mainState) {
     super("skipstate", "Skip states", mainState);
   }
 
