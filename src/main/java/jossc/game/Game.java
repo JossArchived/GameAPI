@@ -9,7 +9,6 @@ import cn.nukkit.utils.TextFormat;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
 import jossc.game.command.FreezePhasesCommand;
 import jossc.game.command.MyPositionCommand;
 import jossc.game.command.SkipPhaseCommand;
@@ -38,6 +37,8 @@ public abstract class Game extends PluginBase {
 
   protected boolean developmentMode = false;
 
+  protected boolean starting = false;
+
   @Override
   public void onEnable() {
     super.onEnable();
@@ -53,6 +54,18 @@ public abstract class Game extends PluginBase {
     init();
 
     getLogger().info(TextFormat.GREEN + "This game has been enabled!");
+  }
+
+  protected Level getMap() {
+    return getServer().getLevelByName(mapName);
+  }
+
+  protected boolean isFull() {
+    return getServer().getOnlinePlayers().size() >= maxPlayers;
+  }
+
+  protected boolean isAvailable() {
+    return !isFull() && !starting;
   }
 
   @Override

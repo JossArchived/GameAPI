@@ -1,9 +1,8 @@
 package jossc.game.phase.lobby;
 
 import cn.nukkit.plugin.PluginBase;
-import jossc.game.phase.GamePhase;
-
 import java.time.Duration;
+import jossc.game.phase.GamePhase;
 
 public abstract class LobbyPhase extends GamePhase {
 

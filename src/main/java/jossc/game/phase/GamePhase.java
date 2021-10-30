@@ -354,4 +354,7 @@ public abstract class GamePhase extends State implements Listener {
 
     tasks.add(task);
   }
+
+  @Override
+  protected void onEnd() {}
 }

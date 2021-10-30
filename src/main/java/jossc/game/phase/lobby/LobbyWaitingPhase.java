@@ -1,4 +1,3 @@
 package jossc.game.phase.lobby;
 
-public class LobbyWaitingPhase {
-}
+public class LobbyWaitingPhase {}
