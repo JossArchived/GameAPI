@@ -11,6 +11,7 @@ import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -21,6 +22,7 @@ import jossc.game.command.SkipPhaseCommand;
 import jossc.game.command.UnfreezePhasesCommand;
 import jossc.game.event.PlayerConvertSpectatorEvent;
 import jossc.game.phase.PhaseSeries;
+import jossc.game.utils.zipper.Zipper;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,6 +50,8 @@ public abstract class Game extends PluginBase {
   protected int defaultGameMode = Player.SURVIVAL;
 
   protected List<String> tips;
+
+  protected File mapBackupFile = null;
 
   @Override
   public void onEnable() {
@@ -258,6 +262,43 @@ public abstract class Game extends PluginBase {
 
   public void callEvent(Event event) {
     getServer().getPluginManager().callEvent(event);
+  }
+
+  public boolean existMapBackup() {
+    return mapBackupFile != null && mapBackupFile.exists();
+  }
+
+  public void removeMapBackup() {
+    if (!existMapBackup()) {
+      return;
+    }
+
+    mapBackupFile.delete();
+  }
+
+  public void resetMapBackup() {
+    if (mapName.equalsIgnoreCase("world")) {
+      getLogger().error("You can not use world default as game Map!");
+
+      return;
+    }
+
+    if (!existMapBackup()) {
+      return;
+    }
+
+    if (getServer().isLevelLoaded(mapName)) {
+      getServer().unloadLevel(getMap());
+    }
+
+    try {
+      Zipper.unzip(
+        mapBackupFile.toString(),
+        getServer().getDataPath() + "/worlds/"
+      );
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public abstract String getGameName();

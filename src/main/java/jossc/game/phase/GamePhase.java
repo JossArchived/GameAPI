@@ -15,6 +15,8 @@ import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 import jossc.game.Game;
+import jossc.game.utils.bossbar.BossbarBuilder;
+import jossc.game.utils.scoreboard.ScoreboardBuilder;
 import net.minikloon.fsmgasm.State;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,6 +28,10 @@ public abstract class GamePhase extends State implements Listener {
 
   protected final Set<Listener> listeners = new HashSet<>();
   protected final Set<TaskHandler> tasks = new HashSet<>();
+
+  protected ScoreboardBuilder scoreboard = new ScoreboardBuilder();
+
+  protected BossbarBuilder bossbar = new BossbarBuilder();
 
   public GamePhase(Game game) {
     this(game, Duration.ZERO);
@@ -341,6 +347,14 @@ public abstract class GamePhase extends State implements Listener {
     }
   }
 
+  protected final void removeScoreboardFromAll() {
+    getPlayers().forEach(player -> scoreboard.remove(player));
+  }
+
+  protected final void removeBossbarFromAll() {
+    bossbar.removeFromAll();
+  }
+
   protected void register(Listener listener) {
     listeners.add(listener);
 
@@ -366,7 +380,10 @@ public abstract class GamePhase extends State implements Listener {
   }
 
   @Override
-  protected void onEnd() {}
+  protected void onEnd() {
+    removeBossbarFromAll();
+    removeScoreboardFromAll();
+  }
 
   @EventHandler
   public void onLogin(PlayerLoginEvent event) {

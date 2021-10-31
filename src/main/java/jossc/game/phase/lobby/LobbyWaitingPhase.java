@@ -23,6 +23,8 @@ public class LobbyWaitingPhase extends LobbyPhase {
 
   @Override
   protected void onEnd() {
+    super.onEnd();
+
     broadcastActionBar("§•&aPreparing countdown...");
     broadcastSound("note.pling", 2, 1);
   }
