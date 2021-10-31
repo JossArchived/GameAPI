@@ -6,8 +6,8 @@ import jossc.game.phase.PhaseSeries;
 
 public class SkipPhaseCommand extends PhaseCommand {
 
-  public SkipPhaseCommand(PhaseSeries series) {
-    super("skipphase", "Skip to the next game phase", series);
+  public SkipPhaseCommand(PhaseSeries phaseSeries) {
+    super("skipphase", "Skip to the next game phase", phaseSeries);
   }
 
   @Override
@@ -17,7 +17,7 @@ public class SkipPhaseCommand extends PhaseCommand {
     broadcast(
       TextFormat.RED + sender.getName() + " has skipped to the next game phase"
     );
-    series.skip();
+    phaseSeries.skip();
 
     return true;
   }

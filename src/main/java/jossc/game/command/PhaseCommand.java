@@ -8,23 +8,27 @@ import jossc.game.phase.PhaseSeries;
 
 public abstract class PhaseCommand extends Command {
 
-  protected final PhaseSeries series;
+  protected final PhaseSeries phaseSeries;
 
-  public PhaseCommand(String name, PhaseSeries series) {
-    this(name, "", series);
+  public PhaseCommand(String name, PhaseSeries phaseSeries) {
+    this(name, "", phaseSeries);
   }
 
-  public PhaseCommand(String name, String description, PhaseSeries series) {
-    this(name, description, "", series);
+  public PhaseCommand(
+    String name,
+    String description,
+    PhaseSeries phaseSeries
+  ) {
+    this(name, description, "", phaseSeries);
   }
 
   public PhaseCommand(
     String name,
     String description,
     String usageMessage,
-    PhaseSeries series
+    PhaseSeries phaseSeries
   ) {
-    this(name, description, usageMessage, new String[] {}, series);
+    this(name, description, usageMessage, new String[] {}, phaseSeries);
   }
 
   public PhaseCommand(
@@ -32,10 +36,10 @@ public abstract class PhaseCommand extends Command {
     String description,
     String usageMessage,
     String[] aliases,
-    PhaseSeries series
+    PhaseSeries phaseSeries
   ) {
     super(name, description, usageMessage, aliases);
-    this.series = series;
+    this.phaseSeries = phaseSeries;
 
     setPermission("minigame.admin.permission");
     setPermissionMessage(

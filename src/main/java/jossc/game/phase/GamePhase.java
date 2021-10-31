@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 import jossc.game.Game;
+import jossc.game.utils.PlayerUtils;
 import net.minikloon.fsmgasm.State;
 import org.jetbrains.annotations.NotNull;
 
@@ -397,15 +398,14 @@ public abstract class GamePhase extends State implements Listener {
     if (!game.isAvailable()) {
       event.setJoinMessage("");
 
-      player.setGamemode(Player.SPECTATOR);
+      PlayerUtils.convertSpectator(player);
       player.teleport(game.getMap().getSafeSpawn().add(0, 1));
-      player.getServer().removeOnlinePlayer(player);
 
       return;
     }
 
     player.teleport(game.getWaitingLobby());
-    player.setGamemode(Player.SURVIVAL);
+    player.setGamemode(Player.ADVENTURE);
 
     int players = neutralPlayersSize();
     int maxPlayers = game.getMaxPlayers();

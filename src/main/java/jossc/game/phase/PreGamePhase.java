@@ -5,34 +5,24 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.utils.TextFormat;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import jossc.game.Game;
+
 import jossc.game.utils.math.MathUtils;
 
 public class PreGamePhase extends GamePhase {
-
-  private final int initialCountdown;
 
   private int countdown;
 
   public PreGamePhase(PluginBase plugin, int countdown) {
     super(plugin, Duration.ZERO);
-    this.initialCountdown = countdown;
     this.countdown = countdown;
   }
 
   @Override
   protected void onStart() {
-    broadcastMessage(
-      TextFormat.colorize(
-        "&d&l» &r&fThe game will begin in &d" + initialCountdown + "&f seconds!"
-      )
-    );
-
     spawnPlayers();
   }
 
@@ -66,38 +56,37 @@ public class PreGamePhase extends GamePhase {
     if (countdown > 0) {
       countdown--;
 
-      if (countdown < 6) {
-        broadcastActionBar(
-          TextFormat.GREEN +
-          "The game starts in " +
-          TextFormat.BOLD +
-          (countdown == 1 ? TextFormat.RED : TextFormat.GOLD) +
-          countdown
-        );
-        broadcastSound("note.bassattack", 1, 2);
+      if (countdown < 3) {
+        broadcastSound("");
       }
 
-      broadcastActionBar(
-        TextFormat.GREEN + "The game starts in " + TextFormat.BOLD + countdown
-      );
-
-      broadcastSound("note.snare", 1, 2);
+      broadcastActionBar("&eThe game starts in &l" + countdown);
 
       return;
     }
 
     if (countdown == 0) {
-      broadcastSound("liquid.lavapop", 2, 2);
-
       String instruction = game.getInstruction();
 
       if (!instruction.isEmpty()) {
-        broadcastMessage(TextFormat.colorize("&7&l» &r" + instruction));
+        broadcastMessage("&7&l» &r&f" + instruction);
       }
 
-      broadcastMessage(
-        TextFormat.BOLD.toString() + TextFormat.AQUA + "The game has begun!"
-      );
+      List<String> tips = game.getTips();
+
+      if (tips == null || tips.isEmpty()) {
+        return;
+      }
+
+      int index = MathUtils.nextInt(0, tips.size());
+      String tip = tips.get(index);
+
+      if (tip == null) {
+        return;
+      }
+
+      broadcastMessage("&b&l» &r&bTip: &7" + tip);
+      broadcastSound("random.toast");
     }
   }
 

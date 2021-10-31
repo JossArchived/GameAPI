@@ -13,10 +13,10 @@ import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerFoodLevelChangeEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.plugin.PluginBase;
-import java.time.Duration;
-
 import cn.nukkit.utils.TextFormat;
+import java.time.Duration;
 import jossc.game.phase.GamePhase;
+import jossc.game.utils.PlayerUtils;
 
 public abstract class LobbyPhase extends GamePhase {
 
@@ -35,57 +35,49 @@ public abstract class LobbyPhase extends GamePhase {
 
     Player player = event.getPlayer();
 
-    String playerName = TextFormat.GRAY + player.getName();
+    player.setGamemode(Player.ADVENTURE);
+    PlayerUtils.giveDefaultAttributes(player);
 
-    player.setDisplayName(playerName);
-    player.setNameTag(playerName);
+    player.setNameTag(TextFormat.GRAY + player.getName());
   }
 
-  @EventHandler (priority = EventPriority.HIGHEST)
-  public void onBlockPlace(BlockPlaceEvent event)
-  {
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onBlockPlace(BlockPlaceEvent event) {
     event.setCancelled();
   }
 
-  @EventHandler (priority = EventPriority.HIGHEST)
-  public void onBlockBreak(BlockBreakEvent event)
-  {
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onBlockBreak(BlockBreakEvent event) {
     event.setCancelled();
   }
 
-  @EventHandler (priority = EventPriority.HIGHEST)
-  public void onBlockBurn(BlockBurnEvent event)
-  {
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onBlockBurn(BlockBurnEvent event) {
     event.setCancelled();
   }
 
-  @EventHandler (priority = EventPriority.HIGHEST)
-  public void onEntityDamageByBlock(EntityDamageByBlockEvent event)
-  {
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onEntityDamageByBlock(EntityDamageByBlockEvent event) {
     event.setCancelled();
   }
 
-  @EventHandler (priority = EventPriority.HIGHEST)
-  public void onItemDrop(PlayerDropItemEvent event)
-  {
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onItemDrop(PlayerDropItemEvent event) {
     event.setCancelled();
   }
 
-  @EventHandler (priority = EventPriority.HIGHEST)
-  public void onDamage(EntityDamageEvent event)
-  {
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onDamage(EntityDamageEvent event) {
     event.setCancelled();
   }
 
-  @EventHandler (priority = EventPriority.HIGHEST)
-  public void onEntitySpawn(CreatureSpawnEvent event)
-  {
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onEntitySpawn(CreatureSpawnEvent event) {
     event.setCancelled();
   }
 
-  @EventHandler (priority = EventPriority.HIGHEST)
-  public void onFoodLevelChange(PlayerFoodLevelChangeEvent event)
-  {
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onFoodLevelChange(PlayerFoodLevelChangeEvent event) {
     event.setCancelled();
   }
 }

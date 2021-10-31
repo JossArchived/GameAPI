@@ -8,6 +8,7 @@ import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,6 @@ import jossc.game.command.FreezePhasesCommand;
 import jossc.game.command.MyPositionCommand;
 import jossc.game.command.SkipPhaseCommand;
 import jossc.game.command.UnfreezePhasesCommand;
-import jossc.game.listener.MainEventListener;
 import jossc.game.phase.PhaseSeries;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +35,7 @@ public abstract class Game extends PluginBase {
 
   protected Position waitingLobby;
 
-  protected List<Vector3> spawns = new LinkedList<>();
+  protected List<Vector3> spawns;
 
   protected boolean developmentMode = false;
 
@@ -43,13 +43,16 @@ public abstract class Game extends PluginBase {
 
   protected int defaultGameMode = Player.SURVIVAL;
 
+  protected List<String> tips;
+
   @Override
   public void onEnable() {
     super.onEnable();
 
     instance = this;
 
-    registerListener(new MainEventListener());
+    spawns = new LinkedList<>();
+    tips = new ArrayList<>();
 
     if (developmentMode) {
       registerCommand(new MyPositionCommand());
@@ -81,11 +84,11 @@ public abstract class Game extends PluginBase {
     getLogger().info(TextFormat.RED + "This game has been disabled!");
   }
 
-  protected void registerDefaultCommands(PhaseSeries series) {
+  protected void registerDefaultCommands(PhaseSeries phaseSeries) {
     registerCommands(
-      new SkipPhaseCommand(series),
-      new FreezePhasesCommand(series),
-      new UnfreezePhasesCommand(series)
+      new SkipPhaseCommand(phaseSeries),
+      new FreezePhasesCommand(phaseSeries),
+      new UnfreezePhasesCommand(phaseSeries)
     );
   }
 
