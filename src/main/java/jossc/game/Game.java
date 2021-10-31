@@ -30,9 +30,6 @@ import lombok.Setter;
 @Setter
 public abstract class Game extends PluginBase {
 
-  @Getter
-  protected static Game instance;
-
   protected int minPlayers = 2;
 
   protected int maxPlayers = 12;
@@ -56,8 +53,6 @@ public abstract class Game extends PluginBase {
   @Override
   public void onEnable() {
     super.onEnable();
-
-    instance = this;
 
     spawns = new LinkedList<>();
     tips = new ArrayList<>();
