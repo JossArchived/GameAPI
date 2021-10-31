@@ -2,7 +2,10 @@ package jossc.game;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
+import cn.nukkit.event.Event;
 import cn.nukkit.event.Listener;
+import cn.nukkit.inventory.PlayerInventory;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
@@ -16,6 +19,7 @@ import jossc.game.command.FreezePhasesCommand;
 import jossc.game.command.MyPositionCommand;
 import jossc.game.command.SkipPhaseCommand;
 import jossc.game.command.UnfreezePhasesCommand;
+import jossc.game.event.PlayerConvertSpectatorEvent;
 import jossc.game.phase.PhaseSeries;
 import lombok.Getter;
 import lombok.Setter;
@@ -149,6 +153,111 @@ public abstract class Game extends PluginBase {
     level.stopTime();
     level.setRaining(false);
     level.setThundering(false);
+  }
+
+  public String getTimeInCharacter(int currentTime, int initialTime) {
+    String character = "█";
+
+    StringBuilder finalResult = new StringBuilder();
+
+    for (int i = 1; i <= initialTime; i++) {
+      finalResult
+        .append(
+          i <= currentTime
+            ? (currentTime <= 3 ? TextFormat.RED : TextFormat.YELLOW)
+            : TextFormat.GRAY
+        )
+        .append(character);
+    }
+
+    return finalResult.toString();
+  }
+
+  public String formatTime(int time) {
+    int minutes = Math.floorDiv(time, 60);
+    int seconds = (int) Math.floor(time % 60);
+    return (
+      (minutes < 10 ? "0" : "") +
+      minutes +
+      ":" +
+      (seconds < 10 ? "0" : "") +
+      seconds
+    );
+  }
+
+  public void clearAllPlayerArmorInventory(Player player) {
+    Item air = Item.get(Item.AIR);
+
+    PlayerInventory inventory = player.getInventory();
+    inventory.setHelmet(air);
+    inventory.setChestplate(air);
+    inventory.setLeggings(air);
+    inventory.setBoots(air);
+
+    updatePlayerInventory(player);
+  }
+
+  public void clearAllPlayerInventory(Player player) {
+    player.getInventory().clearAll();
+    clearAllPlayerArmorInventory(player);
+    updatePlayerInventory(player);
+  }
+
+  public void updatePlayerInventory(Player player) {
+    PlayerInventory inventory = player.getInventory();
+    inventory.sendArmorContents(player);
+    inventory.sendContents(player);
+    inventory.sendHeldItem(player);
+  }
+
+  public void giveDefaultAttributes(Player player) {
+    player.setAllowFlight(false);
+    player.setHealth(20);
+    player.setMaxHealth(20);
+    player.setOnFire(0);
+    player.extinguish();
+    player.setFoodEnabled(false);
+    player.getFoodData().setLevel(20);
+    player.setExperience(0);
+    player.setImmobile(false);
+    player.setMovementSpeed(0.1F);
+    player.sendExperienceLevel(0);
+    player.getInventory().clearAll();
+    player.getCraftingGrid().clearAll();
+    player.getCursorInventory().clearAll();
+    player.getUIInventory().clearAll();
+    player.getOffhandInventory().clearAll();
+    player.getEnderChestInventory().clearAll();
+    player.removeAllEffects();
+    clearAllPlayerArmorInventory(player);
+    updatePlayerInventory(player);
+  }
+
+  public void convertSpectator(Player player) {
+    convertSpectator(player, false);
+  }
+
+  public void convertSpectator(Player player, boolean haveLost) {
+    player.setGamemode(Player.SPECTATOR);
+    giveDefaultAttributes(player);
+    player.getServer().removeOnlinePlayer(player);
+
+    if (haveLost) {
+      player.sendTitle(
+        TextFormat.BOLD.toString() + TextFormat.RED + "You have lost!",
+        TextFormat.YELLOW + "Now spectating."
+      );
+
+      callEvent(new PlayerConvertSpectatorEvent(player, true));
+
+      return;
+    }
+
+    callEvent(new PlayerConvertSpectatorEvent(player, false));
+  }
+
+  public void callEvent(Event event) {
+    getServer().getPluginManager().callEvent(event);
   }
 
   public abstract String getGameName();

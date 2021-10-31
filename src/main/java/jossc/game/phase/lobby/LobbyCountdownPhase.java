@@ -1,18 +1,41 @@
 package jossc.game.phase.lobby;
 
-import cn.nukkit.plugin.PluginBase;
 import java.time.Duration;
+import jossc.game.Game;
 
 public class LobbyCountdownPhase extends LobbyPhase {
 
-  public LobbyCountdownPhase(PluginBase plugin) {
-    super(plugin);
-  }
-
-  public LobbyCountdownPhase(PluginBase plugin, Duration duration) {
-    super(plugin, duration);
+  public LobbyCountdownPhase(Game game, Duration duration) {
+    super(game, duration);
   }
 
   @Override
-  public void onUpdate() {}
+  public void onUpdate() {
+    if (neutralPlayersSize() < game.getMinPlayers()) {
+      setFrozen(true);
+
+      if (neutralPlayersSize() < 1) {
+        end();
+      }
+
+      return;
+    }
+
+    setFrozen(false);
+
+    int remainingDuration = (int) getRemainingDuration().getSeconds();
+
+    if (remainingDuration <= 3) {
+      broadcastSound("note.hat", 1, 2);
+    }
+
+    broadcastActionBar(
+      "&aThe game starts in &l" + (remainingDuration <= 3 ? "&c" : "&a")
+    );
+  }
+
+  @Override
+  public boolean isReadyToEnd() {
+    return super.isReadyToEnd() && neutralPlayersSize() >= game.getMinPlayers();
+  }
 }

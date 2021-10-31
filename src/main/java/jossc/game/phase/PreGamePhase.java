@@ -4,25 +4,28 @@ import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.math.Vector3;
-import cn.nukkit.plugin.PluginBase;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import jossc.game.Game;
 import jossc.game.utils.math.MathUtils;
 
 public class PreGamePhase extends GamePhase {
 
+  private final int initialCountdown;
   private int countdown;
 
-  public PreGamePhase(PluginBase plugin, int countdown) {
-    super(plugin, Duration.ZERO);
+  public PreGamePhase(Game game, int countdown) {
+    super(game, Duration.ZERO);
+    this.initialCountdown = countdown;
     this.countdown = countdown;
   }
 
   @Override
   protected void onStart() {
+    game.setStarting(true);
+
     spawnPlayers();
   }
 
@@ -57,10 +60,15 @@ public class PreGamePhase extends GamePhase {
       countdown--;
 
       if (countdown < 3) {
-        broadcastSound("");
+        broadcastSound("note.harp", 2, 2);
       }
 
-      broadcastActionBar("&eThe game starts in &l" + countdown);
+      broadcastActionBar(
+        "&eStart game: &l»&r " +
+        game.getTimeInCharacter(countdown, initialCountdown) +
+        "&f " +
+        countdown
+      );
 
       return;
     }

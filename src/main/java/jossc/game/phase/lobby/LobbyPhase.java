@@ -12,21 +12,23 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerFoodLevelChangeEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
-import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
 import java.time.Duration;
+import jossc.game.Game;
 import jossc.game.phase.GamePhase;
-import jossc.game.utils.PlayerUtils;
 
 public abstract class LobbyPhase extends GamePhase {
 
-  public LobbyPhase(PluginBase plugin) {
-    super(plugin);
+  public LobbyPhase(Game game) {
+    super(game);
   }
 
-  public LobbyPhase(PluginBase plugin, Duration duration) {
-    super(plugin, duration);
+  public LobbyPhase(Game game, Duration duration) {
+    super(game, duration);
   }
+
+  @Override
+  protected void onStart() {}
 
   @Override
   @EventHandler
@@ -36,7 +38,7 @@ public abstract class LobbyPhase extends GamePhase {
     Player player = event.getPlayer();
 
     player.setGamemode(Player.ADVENTURE);
-    PlayerUtils.giveDefaultAttributes(player);
+    game.giveDefaultAttributes(player);
 
     player.setNameTag(TextFormat.GRAY + player.getName());
   }

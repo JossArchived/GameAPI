@@ -9,35 +9,31 @@ import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.network.protocol.PlaySoundPacket;
-import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.TextFormat;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 import jossc.game.Game;
-import jossc.game.utils.PlayerUtils;
 import net.minikloon.fsmgasm.State;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class GamePhase extends State implements Listener {
 
-  protected final PluginBase plugin;
+  protected final Game game;
+
   protected final Duration duration;
 
   protected final Set<Listener> listeners = new HashSet<>();
   protected final Set<TaskHandler> tasks = new HashSet<>();
 
-  protected final Game game;
-
-  public GamePhase(PluginBase plugin) {
-    this(plugin, Duration.ZERO);
+  public GamePhase(Game game) {
+    this(game, Duration.ZERO);
   }
 
-  public GamePhase(PluginBase plugin, Duration duration) {
-    this.plugin = plugin;
+  public GamePhase(Game game, Duration duration) {
+    this.game = game;
     this.duration = duration;
-    this.game = Game.getInstance();
   }
 
   @NotNull
@@ -348,23 +344,23 @@ public abstract class GamePhase extends State implements Listener {
   protected void register(Listener listener) {
     listeners.add(listener);
 
-    plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+    game.getServer().getPluginManager().registerEvents(listener, game);
   }
 
   protected void schedule(Runnable runnable, int delay) {
-    TaskHandler task = plugin
+    TaskHandler task = game
       .getServer()
       .getScheduler()
-      .scheduleDelayedTask(plugin, runnable, delay);
+      .scheduleDelayedTask(game, runnable, delay);
 
     tasks.add(task);
   }
 
   protected void scheduleRepeating(Runnable runnable, int delay, int interval) {
-    TaskHandler task = plugin
+    TaskHandler task = game
       .getServer()
       .getScheduler()
-      .scheduleDelayedRepeatingTask(plugin, runnable, delay, interval);
+      .scheduleDelayedRepeatingTask(game, runnable, delay, interval);
 
     tasks.add(task);
   }
@@ -398,7 +394,7 @@ public abstract class GamePhase extends State implements Listener {
     if (!game.isAvailable()) {
       event.setJoinMessage("");
 
-      PlayerUtils.convertSpectator(player);
+      game.convertSpectator(player);
       player.teleport(game.getMap().getSafeSpawn().add(0, 1));
 
       return;
