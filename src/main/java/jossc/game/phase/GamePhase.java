@@ -5,6 +5,7 @@ import cn.nukkit.Server;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.Listener;
+import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
@@ -460,5 +461,17 @@ public abstract class GamePhase extends State implements Listener {
         "]"
       )
     );
+  }
+
+  @EventHandler
+  public void onChat(PlayerChatEvent event) {
+    Player player = event.getPlayer();
+
+    broadcastMessage(
+      "&7" + player.getName() + "&l »&r&f " + event.getMessage(),
+      player.isSpectator()
+    );
+
+    event.setCancelled();
   }
 }

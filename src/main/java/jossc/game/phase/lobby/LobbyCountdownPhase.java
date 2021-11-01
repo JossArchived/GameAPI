@@ -30,7 +30,8 @@ public class LobbyCountdownPhase extends LobbyPhase {
     }
 
     broadcastActionBar(
-      "&aThe game starts in &l" + (remainingDuration <= 3 ? "&c" : "&a" + remainingDuration)
+      "&aThe game starts in &l" +
+      (remainingDuration <= 3 ? "&c" : "&a" + remainingDuration)
     );
   }
 
