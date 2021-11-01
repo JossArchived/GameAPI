@@ -56,9 +56,9 @@ public class PreGamePhase extends LobbyPhase {
 
   @Override
   public void onUpdate() {
-    if (countdown > 0) {
-      countdown--;
+    countdown--;
 
+    if (countdown > 0) {
       if (countdown < 3) {
         broadcastSound("note.harp", 2, 2);
       }
