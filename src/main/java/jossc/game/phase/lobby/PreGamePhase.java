@@ -60,16 +60,16 @@ public class PreGamePhase extends LobbyPhase {
     countdown--;
 
     if (countdown > 0) {
-      if (countdown <= 3) {
-        broadcastSound("note.harp", 2, 2);
-      }
-
       broadcastActionBar(
         "&eStart game: &l»&r " +
         game.getTimeInCharacter(countdown, initialCountdown) +
         "&f " +
         countdown
       );
+
+      if (countdown <= 3) {
+        broadcastSound("note.harp", 2, 2);
+      }
     } else if (countdown == 0) {
       String instruction = game.getInstruction();
 
@@ -96,7 +96,7 @@ public class PreGamePhase extends LobbyPhase {
           broadcastMessage("&b&l» &r&bTip: &7" + tip);
           broadcastSound("random.toast");
         },
-        20 * 5
+        25
       );
     }
   }
