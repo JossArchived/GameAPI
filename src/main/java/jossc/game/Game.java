@@ -30,25 +30,25 @@ import lombok.Setter;
 @Setter
 public abstract class Game extends PluginBase {
 
-  private int minPlayers = 2;
+  protected int minPlayers = 2;
 
-  private int maxPlayers = 12;
+  protected int maxPlayers = 12;
 
-  private String mapName;
+  protected String mapName;
 
-  private Position waitingLobby;
+  protected Position waitingLobby;
 
-  private List<Vector3> spawns;
+  protected List<Vector3> spawns;
 
-  private boolean developmentMode = false;
+  protected boolean developmentMode = false;
 
-  private boolean starting = false;
+  protected boolean starting = false;
 
-  private int defaultGameMode = Player.SURVIVAL;
+  protected int defaultGameMode = Player.SURVIVAL;
 
-  private List<String> tips;
+  protected List<String> tips;
 
-  private File mapBackupFile = null;
+  protected File mapBackupFile = null;
 
   @Override
   public void onEnable() {
@@ -155,7 +155,7 @@ public abstract class Game extends PluginBase {
   }
 
   public String getTimeInCharacter(int currentTime, int initialTime) {
-    String character = "█";
+    String character = "▌";
 
     StringBuilder finalResult = new StringBuilder();
 

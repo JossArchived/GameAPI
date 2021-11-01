@@ -1,4 +1,4 @@
-package jossc.game.phase;
+package jossc.game.phase.lobby;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
@@ -11,7 +11,7 @@ import java.util.Set;
 import jossc.game.Game;
 import jossc.game.utils.math.MathUtils;
 
-public class PreGamePhase extends GamePhase {
+public class PreGamePhase extends LobbyPhase {
 
   private final int initialCountdown;
   private int countdown;

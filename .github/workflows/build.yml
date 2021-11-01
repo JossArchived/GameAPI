@@ -48,6 +48,6 @@ jobs:
           automatic_release_tag: "1.1-SNAPSHOT"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           title: "1.1-SNAPSHOT"
-          prerelease: true
+          prerelease: false
           files: |
             GameAPI/GameAPI-1.1-SNAPSHOT.jar
