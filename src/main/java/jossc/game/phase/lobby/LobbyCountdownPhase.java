@@ -25,17 +25,19 @@ public class LobbyCountdownPhase extends LobbyPhase {
 
     int remainingDuration = (int) getRemainingDuration().getSeconds();
 
-    if (remainingDuration > 0) {
-      if (remainingDuration <= 3) {
-        broadcastSound("note.hat", 1, 2);
-      }
-
-      broadcastActionBar(
-        "&aThe game starts in &l" +
-        (remainingDuration <= 3 ? "&c" : "&a") +
-        remainingDuration
-      );
+    if (remainingDuration <= 0) {
+      return;
     }
+
+    if (remainingDuration <= 3) {
+      broadcastSound("note.hat", 1, 2);
+    }
+
+    broadcastActionBar(
+      "&aThe game starts in &l" +
+      (remainingDuration <= 3 ? "&c" : "&a") +
+      remainingDuration
+    );
   }
 
   @Override

@@ -7,6 +7,7 @@ import cn.nukkit.math.Vector3;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import jossc.game.Game;
 import jossc.game.utils.math.MathUtils;
@@ -82,8 +83,9 @@ public class PreGamePhase extends LobbyPhase {
         return;
       }
 
-      int index = MathUtils.nextInt(0, tips.size());
-      String tip = tips.get(index);
+      Random rand = new Random();
+
+      String tip = tips.get(rand.nextInt(tips.size()));
 
       if (tip == null) {
         return;
