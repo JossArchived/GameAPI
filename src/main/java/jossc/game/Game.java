@@ -10,6 +10,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.TextFormat;
 import java.io.File;
 import java.util.ArrayList;
@@ -242,8 +243,15 @@ public abstract class Game extends PluginBase {
     player.getServer().removeOnlinePlayer(player);
 
     if (haveLost) {
+      player.addEffect(
+        Effect
+          .getEffect(Effect.BLINDNESS)
+          .setDuration(5)
+          .setAmplifier(2)
+          .setVisible(true)
+      );
       player.sendTitle(
-        TextFormat.BOLD.toString() + TextFormat.RED + "You have lost!",
+        TextFormat.RED + "You have lost!",
         TextFormat.YELLOW + "Now spectating."
       );
 
@@ -298,6 +306,11 @@ public abstract class Game extends PluginBase {
 
   public void schedule(Runnable runnable, int delay) {
     getServer().getScheduler().scheduleDelayedTask(this, runnable, delay);
+  }
+
+  public void shutdown() {
+    close();
+    getServer().shutdown();
   }
 
   public abstract String getGameName();

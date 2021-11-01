@@ -11,17 +11,11 @@ public class LobbyCountdownPhase extends LobbyPhase {
 
   @Override
   public void onUpdate() {
-    if (neutralPlayersSize() < game.getMinPlayers()) {
-      setFrozen(true);
-
-      if (neutralPlayersSize() < 1) {
-        end();
-      }
+    if (neutralPlayersSize() < 1) {
+      game.shutdown();
 
       return;
     }
-
-    setFrozen(false);
 
     int remainingDuration = (int) getRemainingDuration().getSeconds();
 
@@ -38,11 +32,6 @@ public class LobbyCountdownPhase extends LobbyPhase {
       (remainingDuration <= 3 ? "&c" : "&a") +
       remainingDuration
     );
-  }
-
-  @Override
-  public boolean isReadyToEnd() {
-    return super.isReadyToEnd() && neutralPlayersSize() >= game.getMinPlayers();
   }
 
   @Override
