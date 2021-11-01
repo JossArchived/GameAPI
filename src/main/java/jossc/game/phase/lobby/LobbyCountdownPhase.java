@@ -30,12 +30,18 @@ public class LobbyCountdownPhase extends LobbyPhase {
     }
 
     broadcastActionBar(
-      "&aThe game starts in &l" + (remainingDuration <= 3 ? "&c" : "&a")
+      "&aThe game starts in &l" + (remainingDuration <= 3 ? "&c" : "&a" + remainingDuration)
     );
   }
 
   @Override
   public boolean isReadyToEnd() {
     return super.isReadyToEnd() && neutralPlayersSize() >= game.getMinPlayers();
+  }
+
+  @Override
+  protected void onEnd() {
+    super.onEnd();
+    broadcastActionBar("§•&aPreparing map...");
   }
 }

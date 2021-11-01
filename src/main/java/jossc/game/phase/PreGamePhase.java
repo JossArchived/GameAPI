@@ -69,11 +69,7 @@ public class PreGamePhase extends GamePhase {
         "&f " +
         countdown
       );
-
-      return;
-    }
-
-    if (countdown == 0) {
+    } else if (countdown == 0) {
       String instruction = game.getInstruction();
 
       if (!instruction.isEmpty()) {
