@@ -91,12 +91,12 @@ public class PreGamePhase extends LobbyPhase {
         return;
       }
 
-      schedule(
+      game.schedule(
         () -> {
           broadcastMessage("&b&l» &r&bTip: &7" + tip);
           broadcastSound("random.toast");
         },
-        25
+        30
       );
     }
   }

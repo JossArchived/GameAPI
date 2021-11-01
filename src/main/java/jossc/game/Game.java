@@ -296,6 +296,10 @@ public abstract class Game extends PluginBase {
     }
   }
 
+  public void schedule(Runnable runnable, int delay) {
+    getServer().getScheduler().scheduleDelayedTask(this, runnable, delay);
+  }
+
   public abstract String getGameName();
 
   public abstract String getInstruction();
