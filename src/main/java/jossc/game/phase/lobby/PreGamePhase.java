@@ -60,7 +60,7 @@ public class PreGamePhase extends LobbyPhase {
     countdown--;
 
     if (countdown > 0) {
-      if (countdown < 3) {
+      if (countdown <= 3) {
         broadcastSound("note.harp", 2, 2);
       }
 
@@ -91,8 +91,13 @@ public class PreGamePhase extends LobbyPhase {
         return;
       }
 
-      broadcastMessage("&b&l» &r&bTip: &7" + tip);
-      broadcastSound("random.toast");
+      schedule(
+        () -> {
+          broadcastMessage("&b&l» &r&bTip: &7" + tip);
+          broadcastSound("random.toast");
+        },
+        10
+      );
     }
   }
 
