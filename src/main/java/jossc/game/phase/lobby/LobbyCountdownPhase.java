@@ -29,7 +29,7 @@ public class LobbyCountdownPhase extends LobbyPhase {
       return;
     }
 
-    if (remainingDuration <= 3) {
+    if (remainingDuration <= 4) {
       broadcastSound("note.hat", 1, 2);
     }
 

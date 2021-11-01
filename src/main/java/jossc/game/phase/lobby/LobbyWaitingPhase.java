@@ -26,6 +26,5 @@ public class LobbyWaitingPhase extends LobbyPhase {
     super.onEnd();
 
     broadcastActionBar("§•&aPreparing countdown...");
-    broadcastSound("note.pling", 2, 1);
   }
 }

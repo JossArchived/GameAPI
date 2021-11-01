@@ -96,7 +96,7 @@ public class PreGamePhase extends LobbyPhase {
           broadcastMessage("&b&l» &r&bTip: &7" + tip);
           broadcastSound("random.toast");
         },
-        10
+        20 * 5
       );
     }
   }
