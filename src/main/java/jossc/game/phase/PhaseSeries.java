@@ -1,25 +1,25 @@
-package jossc.game.state;
+package jossc.game.phase;
 
-import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.TaskHandler;
 import java.util.LinkedList;
 import java.util.List;
+import jossc.game.Game;
 import net.minikloon.fsmgasm.StateSeries;
 
-public class ScheduledStateSeries extends StateSeries {
+public class PhaseSeries extends StateSeries {
 
-  private final PluginBase plugin;
+  private final Game game;
   private final int interval;
   protected TaskHandler scheduledTask;
 
   protected List<Runnable> onUpdate = new LinkedList<>();
 
-  public ScheduledStateSeries(PluginBase plugin) {
-    this(plugin, 20);
+  public PhaseSeries(Game game) {
+    this(game, 20);
   }
 
-  public ScheduledStateSeries(PluginBase plugin, int interval) {
-    this.plugin = plugin;
+  public PhaseSeries(Game game, int interval) {
+    this.game = game;
     this.interval = interval;
   }
 
@@ -28,11 +28,11 @@ public class ScheduledStateSeries extends StateSeries {
     super.onStart();
 
     scheduledTask =
-      plugin
+      game
         .getServer()
         .getScheduler()
         .scheduleRepeatingTask(
-          plugin,
+          game,
           () -> {
             update();
             onUpdate.forEach(Runnable::run);

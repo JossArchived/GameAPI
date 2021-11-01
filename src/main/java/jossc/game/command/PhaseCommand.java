@@ -1,46 +1,51 @@
 package jossc.game.command;
 
+import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
-import net.minikloon.fsmgasm.StateSeries;
+import jossc.game.phase.PhaseSeries;
 
-public abstract class StateCommand extends Command {
+public abstract class PhaseCommand extends Command {
 
-  protected final StateSeries mainState;
+  protected final PhaseSeries phaseSeries;
 
-  public StateCommand(String name, StateSeries mainState) {
-    this(name, "", mainState);
+  public PhaseCommand(String name, PhaseSeries phaseSeries) {
+    this(name, "", phaseSeries);
   }
 
-  public StateCommand(String name, String description, StateSeries mainState) {
-    this(name, description, "", mainState);
+  public PhaseCommand(
+    String name,
+    String description,
+    PhaseSeries phaseSeries
+  ) {
+    this(name, description, "", phaseSeries);
   }
 
-  public StateCommand(
+  public PhaseCommand(
     String name,
     String description,
     String usageMessage,
-    StateSeries mainState
+    PhaseSeries phaseSeries
   ) {
-    this(name, description, usageMessage, new String[] {}, mainState);
+    this(name, description, usageMessage, new String[] {}, phaseSeries);
   }
 
-  public StateCommand(
+  public PhaseCommand(
     String name,
     String description,
     String usageMessage,
     String[] aliases,
-    StateSeries mainState
+    PhaseSeries phaseSeries
   ) {
     super(name, description, usageMessage, aliases);
-    this.mainState = mainState;
+    this.phaseSeries = phaseSeries;
 
+    setPermission("minigame.admin.permission");
     setPermissionMessage(
       TextFormat.RED +
       "You need to have an administrator rank or a higher rank to execute this command!"
     );
-    setPermission("minigame.admin.permission");
   }
 
   @Override
@@ -52,5 +57,9 @@ public abstract class StateCommand extends Command {
     }
 
     return true;
+  }
+
+  public void broadcast(String message) {
+    Server.getInstance().broadcastMessage(message);
   }
 }

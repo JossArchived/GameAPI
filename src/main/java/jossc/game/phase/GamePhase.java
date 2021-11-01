@@ -1,33 +1,45 @@
-package jossc.game.state;
+package jossc.game.phase;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.Listener;
+import cn.nukkit.event.player.PlayerChatEvent;
+import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerLoginEvent;
+import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.network.protocol.PlaySoundPacket;
-import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.TextFormat;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
+import jossc.game.Game;
+import jossc.game.utils.bossbar.BossbarBuilder;
+import jossc.game.utils.scoreboard.ScoreboardBuilder;
 import net.minikloon.fsmgasm.State;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class GameState extends State implements Listener {
+public abstract class GamePhase extends State implements Listener {
 
-  protected final PluginBase plugin;
+  protected final Game game;
+
   protected final Duration duration;
 
   protected final Set<Listener> listeners = new HashSet<>();
   protected final Set<TaskHandler> tasks = new HashSet<>();
 
-  public GameState(PluginBase plugin) {
-    this(plugin, Duration.ZERO);
+  protected ScoreboardBuilder scoreboard = new ScoreboardBuilder();
+
+  protected BossbarBuilder bossbar = new BossbarBuilder();
+
+  public GamePhase(Game game) {
+    this(game, Duration.ZERO);
   }
 
-  public GameState(PluginBase plugin, Duration duration) {
-    this.plugin = plugin;
+  public GamePhase(Game game, Duration duration) {
+    this.game = game;
     this.duration = duration;
   }
 
@@ -52,9 +64,14 @@ public abstract class GameState extends State implements Listener {
       return;
     }
 
+    cleanup();
+  }
+
+  protected final void cleanup() {
     listeners.forEach(HandlerList::unregisterAll);
-    tasks.forEach(TaskHandler::cancel);
     listeners.clear();
+
+    tasks.forEach(TaskHandler::cancel);
     tasks.clear();
   }
 
@@ -331,27 +348,130 @@ public abstract class GameState extends State implements Listener {
     }
   }
 
+  protected final void removeScoreboardFromAll() {
+    getPlayers().forEach(player -> scoreboard.remove(player));
+  }
+
+  protected final void removeBossbarFromAll() {
+    bossbar.removeFromAll();
+  }
+
   protected void register(Listener listener) {
     listeners.add(listener);
 
-    plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+    game.getServer().getPluginManager().registerEvents(listener, game);
   }
 
   protected void schedule(Runnable runnable, int delay) {
-    TaskHandler task = plugin
+    TaskHandler task = game
       .getServer()
       .getScheduler()
-      .scheduleDelayedTask(plugin, runnable, delay);
+      .scheduleDelayedTask(game, runnable, delay);
 
     tasks.add(task);
   }
 
   protected void scheduleRepeating(Runnable runnable, int delay, int interval) {
-    TaskHandler task = plugin
+    TaskHandler task = game
       .getServer()
       .getScheduler()
-      .scheduleDelayedRepeatingTask(plugin, runnable, delay, interval);
+      .scheduleDelayedRepeatingTask(game, runnable, delay, interval);
 
     tasks.add(task);
+  }
+
+  @Override
+  protected void onEnd() {
+    removeBossbarFromAll();
+    removeScoreboardFromAll();
+  }
+
+  @EventHandler
+  public void onLogin(PlayerLoginEvent event) {
+    Player player = event.getPlayer();
+
+    if (player.hasPermission("allow.login.to.spectate")) {
+      return;
+    }
+
+    if (game.isStarting()) {
+      player.kick(TextFormat.RED + "This game is already in progress", false);
+
+      return;
+    }
+
+    if (game.isFull()) {
+      player.kick(TextFormat.RED + "This game is full", false);
+    }
+  }
+
+  @EventHandler
+  public void onJoin(PlayerJoinEvent event) {
+    Player player = event.getPlayer();
+
+    if (!game.isAvailable()) {
+      event.setJoinMessage("");
+
+      game.convertSpectator(player);
+      player.teleport(game.getMap().getSafeSpawn().add(0, 1));
+
+      return;
+    }
+
+    player.teleport(game.getWaitingLobby());
+    player.setGamemode(Player.ADVENTURE);
+
+    int players = neutralPlayersSize();
+    int maxPlayers = game.getMaxPlayers();
+
+    event.setJoinMessage(
+      TextFormat.colorize(
+        "&a&l» &r&7" +
+        player.getName() +
+        " has joined. &8[" +
+        players +
+        "/" +
+        maxPlayers +
+        "]"
+      )
+    );
+  }
+
+  @EventHandler
+  public void onQuit(PlayerQuitEvent event) {
+    Player player = event.getPlayer();
+
+    if (player.isSpectator()) {
+      event.setQuitMessage("");
+
+      return;
+    }
+
+    int players = (neutralPlayersSize() - 1);
+    int maxPlayers = game.getMaxPlayers();
+
+    event.setQuitMessage(
+      TextFormat.colorize(
+        "&c&l» &r&7" +
+        player.getName() +
+        " has left. &8[" +
+        players +
+        "/" +
+        maxPlayers +
+        "]"
+      )
+    );
+  }
+
+  @EventHandler
+  public void onChat(PlayerChatEvent event) {
+    Player player = event.getPlayer();
+
+    broadcastMessage(
+      "&7" + player.getName() + "&l »&r&f " + event.getMessage(),
+      player.isSpectator()
+    );
+
+    event.setCancelled();
   }
 }

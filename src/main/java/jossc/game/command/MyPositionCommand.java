@@ -22,11 +22,11 @@ public class MyPositionCommand extends Command {
     sender.sendMessage(
       TextFormat.YELLOW +
       "x: " +
-      player.x +
+      (int) player.x +
       ", y: " +
-      player.y +
+      (int) player.y +
       ", z: " +
-      player.z
+      (int) player.z
     );
 
     return true;
