@@ -8,6 +8,7 @@ import cn.nukkit.utils.TextFormat;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
+import jossc.game.utils.Firework;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.citizen.entity.Citizen;
@@ -50,14 +51,16 @@ public class Top {
         (winner == null ? "None" : winner.getName())
       );
 
-    Random rand = new Random();
-
-    citizen.executeEmote(emotes.get(rand.nextInt(emotes.size())));
     Server
       .getInstance()
       .getOnlinePlayers()
       .values()
       .forEach(player -> citizen.spawnTo(player));
+
+    Random rand = new Random();
+    citizen.executeEmote(emotes.get(rand.nextInt(emotes.size())));
+
+    Firework.spawn(pedestalPosition);
   }
 
   public void despawnEntity() {

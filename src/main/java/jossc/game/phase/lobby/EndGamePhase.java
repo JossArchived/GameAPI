@@ -90,11 +90,11 @@ public class EndGamePhase extends LobbyPhase {
   protected void onEnd() {
     super.onEnd();
 
-    broadcastActionBar("&dSending you to a game.");
+    broadcastActionBar("&bSending you to a game.");
 
     topList.forEach(Top::despawnEntity);
     game.callEvent(new GameEndEvent(getPlayers()));
 
-    schedule(game::shutdown, 20 * 10);
+    game.schedule(game::shutdown, 20 * 10);
   }
 }
