@@ -111,6 +111,13 @@
             <version>bd1b505</version>
         </dependency>
 
+        <!-- libCitizen Library -->
+        <dependency>
+            <groupId>com.github.Josscoder</groupId>
+            <artifactId>libCitizen</artifactId>
+            <version>6fb5cee7c2</version>
+        </dependency>
+
     </dependencies>
 
 </project>

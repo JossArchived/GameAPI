@@ -9,6 +9,7 @@ import java.util.Map;
 import jossc.game.Game;
 import jossc.game.event.GameEndEvent;
 import jossc.game.top.Top;
+import org.citizen.attributes.EmoteId;
 
 public class EndGamePhase extends LobbyPhase {
 
@@ -39,7 +40,16 @@ public class EndGamePhase extends LobbyPhase {
     winners.forEach(
       (winner, ranking) -> {
         Position pedestalPosition = game.getPedestalList().get(ranking);
-        topList.add(ranking, new Top(ranking, winner, pedestalPosition));
+
+        List<String> emoteList = new ArrayList<>();
+        emoteList.add(EmoteId.GHAST_DANCE.getId());
+        emoteList.add(EmoteId.REBOOTING.getId());
+        emoteList.add(EmoteId.VICTORY_CHEER.getId());
+
+        topList.add(
+          ranking,
+          new Top(ranking, winner, pedestalPosition, emoteList)
+        );
       }
     );
 
@@ -53,7 +63,7 @@ public class EndGamePhase extends LobbyPhase {
     if (countdown > 0) {
       broadcastActionBar("&dEnding game...");
     } else if (countdown == 0) {
-      broadcastActionBar("&6Game over, thanks for playing!");
+      broadcastActionBar("&6Game over!");
     }
   }
 

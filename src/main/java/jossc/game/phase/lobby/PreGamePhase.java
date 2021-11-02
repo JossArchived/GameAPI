@@ -96,13 +96,8 @@ public class PreGamePhase extends LobbyPhase {
         return;
       }
 
-      game.schedule(
-        () -> {
-          broadcastMessage("&b&l» &r&bTip: &7" + tip);
-          broadcastSound("random.toast");
-        },
-        25
-      );
+      broadcastMessage("&b&l» &r&bTip: &7" + tip);
+      broadcastSound("random.toast");
     }
   }
 
