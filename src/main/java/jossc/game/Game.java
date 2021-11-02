@@ -18,6 +18,7 @@ import jossc.game.command.FreezePhasesCommand;
 import jossc.game.command.MyPositionCommand;
 import jossc.game.command.SkipPhaseCommand;
 import jossc.game.command.UnfreezePhasesCommand;
+import jossc.game.dimension.DimensionEventListener;
 import jossc.game.event.ConvertPlayerEvent;
 import jossc.game.event.ConvertSpectatorEvent;
 import jossc.game.phase.PhaseSeries;
@@ -64,6 +65,8 @@ public abstract class Game extends PluginBase {
     if (developmentMode) {
       registerCommand(new MyPositionCommand());
     }
+
+    registerListener(new DimensionEventListener());
 
     init();
 
