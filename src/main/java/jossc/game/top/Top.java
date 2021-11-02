@@ -39,13 +39,20 @@ public class Top {
     citizen
       .getTagEditor()
       .putLine(
-        TextFormat.colorize("&e#" + ranking + "&r&f ") +
+        TextFormat.colorize(
+          ranking == 1
+            ? "&e1st place"
+            : ranking == 2 ? "&72nd place" : ranking == 3 ? "&63rd place" : ""
+        )
+      )
+      .putLine(
+        TextFormat.colorize("&f&l") +
         (winner == null ? "None" : winner.getName())
       );
 
     Random rand = new Random();
 
-    citizen.executeEmote(emotes.get(rand.nextInt(emotes.size())), true, 15);
+    citizen.executeEmote(emotes.get(rand.nextInt(emotes.size())));
     Server
       .getInstance()
       .getOnlinePlayers()

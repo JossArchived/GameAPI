@@ -15,21 +15,38 @@ public class EndGamePhase extends LobbyPhase {
 
   private final Map<Player, Integer> winners;
   private final List<Top> topList;
-  private int countdown = 11;
 
-  public EndGamePhase(Game game, Map<Player, Integer> winners) {
-    super(game, Duration.ZERO);
+  public EndGamePhase(
+    Game game,
+    Duration duration,
+    Map<Player, Integer> winners
+  ) {
+    super(game, duration);
     this.winners = winners;
     this.topList = new ArrayList<>();
   }
 
   @Override
   protected void onStart() {
+    broadcastTitle("&l&6»&r&c Game Over &l&6«");
+    broadcastMessage("&l&c» Game Over!");
+    broadcastSound("mob.ghast.fireball");
+
     getPlayers()
       .forEach(
         player -> {
           game.convertPlayer(player, true);
-          player.teleport(game.getPedestalPosition());
+
+          schedule(
+            () -> {
+              Position pedestalPosition = game.getPedestalPosition();
+
+              if (pedestalPosition != null) {
+                player.teleport(pedestalPosition);
+              }
+            },
+            20 * 3
+          );
         }
       );
 
@@ -58,33 +75,24 @@ public class EndGamePhase extends LobbyPhase {
 
   @Override
   public void onUpdate() {
-    countdown--;
-
-    if (countdown > 0) {
-      broadcastActionBar("&dEnding game...");
-    } else if (countdown == 0) {
-      broadcastActionBar("&6Game over!");
-    }
+    broadcastActionBar(
+      "&eSearching for a new game in &f" + duration.getSeconds() + "&e..."
+    );
   }
 
   @Override
   public boolean isReadyToEnd() {
-    return (
-      super.isReadyToEnd() ||
-      neutralPlayersSize() < 1 ||
-      countdown == 0 ||
-      winners == null
-    );
+    return super.isReadyToEnd() || neutralPlayersSize() < 1 && winners == null;
   }
 
   @Override
   protected void onEnd() {
     super.onEnd();
 
+    broadcastActionBar("&dSending you to a game.");
+
     topList.forEach(Top::despawnEntity);
-
     game.callEvent(new GameEndEvent(getPlayers()));
-
     game.shutdown();
   }
 }
