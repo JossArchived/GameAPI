@@ -15,6 +15,7 @@ import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.utils.TextFormat;
 import java.time.Duration;
 import jossc.game.Game;
+import jossc.game.event.PlayerJoinGameEvent;
 import jossc.game.phase.GamePhase;
 
 public abstract class LobbyPhase extends GamePhase {
@@ -37,10 +38,9 @@ public abstract class LobbyPhase extends GamePhase {
 
     Player player = event.getPlayer();
 
-    player.setGamemode(Player.ADVENTURE);
-    game.giveDefaultAttributes(player);
+    game.convertPlayer(player);
 
-    player.setNameTag(TextFormat.GRAY + player.getName());
+    game.callEvent(new PlayerJoinGameEvent(player));
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)

@@ -13,15 +13,13 @@ import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.TextFormat;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import jossc.game.command.FreezePhasesCommand;
 import jossc.game.command.MyPositionCommand;
 import jossc.game.command.SkipPhaseCommand;
 import jossc.game.command.UnfreezePhasesCommand;
-import jossc.game.event.PlayerConvertSpectatorEvent;
+import jossc.game.event.ConvertPlayerEvent;
+import jossc.game.event.ConvertSpectatorEvent;
 import jossc.game.phase.PhaseSeries;
 import jossc.game.utils.zipper.Zipper;
 import lombok.Getter;
@@ -51,12 +49,17 @@ public abstract class Game extends PluginBase {
 
   protected File mapBackupFile = null;
 
+  protected Map<Integer, Position> pedestalList;
+
+  protected Position pedestalPosition;
+
   @Override
   public void onEnable() {
     super.onEnable();
 
     spawns = new LinkedList<>();
     tips = new ArrayList<>();
+    pedestalList = new HashMap<>();
 
     if (developmentMode) {
       registerCommand(new MyPositionCommand());
@@ -246,21 +249,34 @@ public abstract class Game extends PluginBase {
       player.addEffect(
         Effect
           .getEffect(Effect.BLINDNESS)
-          .setDuration(5)
+          .setDuration(20 * 5)
           .setAmplifier(2)
-          .setVisible(true)
+          .setVisible(false)
       );
       player.sendTitle(
         TextFormat.RED + "You have lost!",
         TextFormat.YELLOW + "Now spectating."
       );
 
-      callEvent(new PlayerConvertSpectatorEvent(player, true));
+      callEvent(new ConvertSpectatorEvent(player, true));
 
       return;
     }
 
-    callEvent(new PlayerConvertSpectatorEvent(player, false));
+    callEvent(new ConvertSpectatorEvent(player, false));
+  }
+
+  public void convertPlayer(Player player) {
+    convertPlayer(player, false);
+  }
+
+  public void convertPlayer(Player player, boolean forcedToEnd) {
+    player.setGamemode(Player.ADVENTURE);
+    giveDefaultAttributes(player);
+
+    player.setNameTag(TextFormat.GRAY + player.getName());
+
+    callEvent(new ConvertPlayerEvent(player, forcedToEnd));
   }
 
   public void callEvent(Event event) {
@@ -309,8 +325,7 @@ public abstract class Game extends PluginBase {
   }
 
   public void shutdown() {
-    close();
-    getServer().shutdown();
+    getServer().forceShutdown();
   }
 
   public abstract String getGameName();

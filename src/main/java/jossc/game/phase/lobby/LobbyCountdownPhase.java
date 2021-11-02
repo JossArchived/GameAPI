@@ -23,13 +23,13 @@ public class LobbyCountdownPhase extends LobbyPhase {
       return;
     }
 
-    if (remainingDuration <= 3) {
+    if (remainingDuration <= 5) {
       broadcastSound("note.hat", 1, 2);
     }
 
     broadcastActionBar(
       "&aThe game starts in &l" +
-      (remainingDuration <= 3 ? "&c" : "&a") +
+      (remainingDuration <= 5 ? "&c" : "&a") +
       remainingDuration
     );
   }

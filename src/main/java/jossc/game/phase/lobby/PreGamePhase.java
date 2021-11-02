@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import jossc.game.Game;
+import jossc.game.event.PlayerSpawnEvent;
 import jossc.game.utils.math.MathUtils;
 
 public class PreGamePhase extends LobbyPhase {
@@ -51,7 +52,11 @@ public class PreGamePhase extends LobbyPhase {
       i = MathUtils.nextInt(spawns.size());
     } while (spawnsUsed.contains(i));
 
-    player.teleport(spawns.get(i));
+    Vector3 spawn = spawns.get(i);
+
+    player.teleport(spawn);
+    game.callEvent(new PlayerSpawnEvent(player, spawn));
+
     spawnsUsed.add(i);
   }
 
@@ -96,7 +101,7 @@ public class PreGamePhase extends LobbyPhase {
           broadcastMessage("&b&l» &r&bTip: &7" + tip);
           broadcastSound("random.toast");
         },
-        30
+        25
       );
     }
   }

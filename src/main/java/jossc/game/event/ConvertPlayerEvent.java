@@ -5,16 +5,16 @@ import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.player.PlayerEvent;
 import lombok.Getter;
 
-public class PlayerConvertSpectatorEvent extends PlayerEvent {
+public class ConvertPlayerEvent extends PlayerEvent {
 
   private static final HandlerList handlers = new HandlerList();
 
   @Getter
-  private final boolean hasLost;
+  private final boolean forcedToEnd;
 
-  public PlayerConvertSpectatorEvent(Player player, boolean hasLost) {
+  public ConvertPlayerEvent(Player player, boolean forcedToEnd) {
     this.player = player;
-    this.hasLost = hasLost;
+    this.forcedToEnd = forcedToEnd;
   }
 
   public static HandlerList getHandlers() {
