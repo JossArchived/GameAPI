@@ -56,7 +56,10 @@ public class EndGamePhase extends LobbyPhase {
 
     winners.forEach(
       (winner, ranking) -> {
-        Position pedestalPosition = game.getPedestalList().get(ranking);
+        Position pedestalPosition = Position.fromObject(
+          game.getPedestalList().get(ranking),
+          game.getWaitingLobby().getLevel()
+        );
 
         List<String> emoteList = new ArrayList<>();
         emoteList.add(EmoteId.GHAST_DANCE.getId());

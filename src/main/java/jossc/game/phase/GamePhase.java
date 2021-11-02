@@ -418,7 +418,6 @@ public abstract class GamePhase extends State implements Listener {
       return;
     }
 
-    player.teleport(game.getWaitingLobby());
     player.setGamemode(Player.ADVENTURE);
 
     int players = neutralPlayersSize();

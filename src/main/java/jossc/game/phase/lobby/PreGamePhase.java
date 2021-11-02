@@ -3,6 +3,7 @@ package jossc.game.phase.lobby;
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.player.PlayerMoveEvent;
+import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import java.time.Duration;
 import java.util.HashSet;
@@ -54,7 +55,7 @@ public class PreGamePhase extends LobbyPhase {
 
     Vector3 spawn = spawns.get(i);
 
-    player.teleport(spawn);
+    player.teleport(Position.fromObject(spawn, game.getMap()));
     game.callEvent(new PlayerSpawnEvent(player, spawn));
 
     spawnsUsed.add(i);

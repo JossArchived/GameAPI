@@ -39,6 +39,7 @@ public abstract class LobbyPhase extends GamePhase {
     Player player = event.getPlayer();
 
     game.convertPlayer(player);
+    player.teleport(game.getWaitingLobby());
 
     game.callEvent(new PlayerJoinGameEvent(player));
   }

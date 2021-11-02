@@ -51,7 +51,7 @@ public abstract class Game extends PluginBase {
 
   protected File mapBackupFile = null;
 
-  protected Map<Integer, Position> pedestalList;
+  protected Map<Integer, Vector3> pedestalList;
 
   protected Position pedestalPosition;
 
