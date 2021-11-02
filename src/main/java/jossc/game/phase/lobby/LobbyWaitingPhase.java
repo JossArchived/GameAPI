@@ -22,11 +22,4 @@ public class LobbyWaitingPhase extends LobbyPhase {
   public boolean isReadyToEnd() {
     return super.isReadyToEnd() && neutralPlayersSize() >= neededPlayers;
   }
-
-  @Override
-  protected void onEnd() {
-    super.onEnd();
-
-    broadcastActionBar("§•&aPreparing countdown...");
-  }
 }
