@@ -9,6 +9,8 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.network.protocol.ChangeDimensionPacket;
+import cn.nukkit.network.protocol.PlayStatusPacket;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.TextFormat;
@@ -18,7 +20,6 @@ import jossc.game.command.FreezePhasesCommand;
 import jossc.game.command.MyPositionCommand;
 import jossc.game.command.SkipPhaseCommand;
 import jossc.game.command.UnfreezePhasesCommand;
-import jossc.game.dimension.DimensionEventListener;
 import jossc.game.event.ConvertPlayerEvent;
 import jossc.game.event.ConvertSpectatorEvent;
 import jossc.game.phase.PhaseSeries;
@@ -54,6 +55,8 @@ public abstract class Game extends PluginBase {
 
   protected Position pedestalPosition;
 
+  protected PhaseSeries phaseSeries = null;
+
   @Override
   public void onEnable() {
     super.onEnable();
@@ -65,8 +68,6 @@ public abstract class Game extends PluginBase {
     if (developmentMode) {
       registerCommand(new MyPositionCommand());
     }
-
-    registerListener(new DimensionEventListener());
 
     init();
 
@@ -94,7 +95,11 @@ public abstract class Game extends PluginBase {
     getLogger().info(TextFormat.RED + "This game has been disabled!");
   }
 
-  protected void registerDefaultCommands(PhaseSeries phaseSeries) {
+  protected void registerDefaultCommands() {
+    if (phaseSeries == null) {
+      return;
+    }
+
     registerCommands(
       new SkipPhaseCommand(phaseSeries),
       new FreezePhasesCommand(phaseSeries),
@@ -325,6 +330,28 @@ public abstract class Game extends PluginBase {
 
   public void schedule(Runnable runnable, int delay) {
     getServer().getScheduler().scheduleDelayedTask(this, runnable, delay);
+  }
+
+  public void sendChangeDimensionPacket(Player player, int dimension) {
+    ChangeDimensionPacket changeDimensionPacket = new ChangeDimensionPacket();
+
+    changeDimensionPacket.dimension = dimension;
+    changeDimensionPacket.x = (float) player.x;
+    changeDimensionPacket.y = (float) player.y;
+    changeDimensionPacket.z = (float) player.z;
+
+    player.dataPacket(changeDimensionPacket);
+
+    getServer()
+      .getScheduler()
+      .scheduleDelayedTask(
+        () -> {
+          PlayStatusPacket playStatusPacket = new PlayStatusPacket();
+          playStatusPacket.status = PlayStatusPacket.PLAYER_SPAWN;
+          player.dataPacket(playStatusPacket);
+        },
+        10
+      );
   }
 
   public void shutdown() {
