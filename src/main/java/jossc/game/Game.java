@@ -251,7 +251,6 @@ public abstract class Game extends PluginBase {
   public void convertSpectator(Player player, boolean haveLost) {
     player.setGamemode(Player.SPECTATOR);
     giveDefaultAttributes(player);
-    player.getServer().removeOnlinePlayer(player);
 
     if (haveLost) {
       player.addEffect(
