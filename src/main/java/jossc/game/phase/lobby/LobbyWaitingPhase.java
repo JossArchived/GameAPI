@@ -15,7 +15,13 @@ public class LobbyWaitingPhase extends LobbyPhase {
   public void onUpdate() {
     int restMorePlayers = (neededPlayers - neutralPlayersSize());
 
-    broadcastActionBar("&f" + restMorePlayers + "&e more players to start...");
+    broadcastActionBar(
+      "&f" +
+      restMorePlayers +
+      "&e more player" +
+      (restMorePlayers == 1 ? "" : "s") +
+      " to start..."
+    );
   }
 
   @Override
