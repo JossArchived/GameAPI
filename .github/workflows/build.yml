@@ -5,7 +5,7 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, '[ci skip]') != 'true'
+    if: contains(github.event.head_commit.message, '[build]')
     steps:
 
       - uses: actions/checkout@v2
@@ -30,12 +30,12 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: GameAPI
-          path: staging/GameAPI-1.1-SNAPSHOT.jar
+          path: staging/GameAPI-1.0-SNAPSHOT.jar
 
   prepare-release:
     runs-on: ubuntu-latest
     needs: [build]
-    if: contains(github.event.head_commit.message, '[ci skip]') != 'true'
+    if: contains(github.event.head_commit.message, '[build]')
     steps:
       - uses: actions/checkout@v2
 
@@ -45,9 +45,9 @@ jobs:
       - name: Create and Publish Release
         uses: marvinpinto/action-automatic-releases@v1.1.1
         with:
-          automatic_release_tag: "1.1-SNAPSHOT"
+          automatic_release_tag: "1.0-SNAPSHOT"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          title: "1.1-SNAPSHOT"
+          title: "Last version"
           prerelease: false
           files: |
-            GameAPI/GameAPI-1.1-SNAPSHOT.jar
+            GameAPI/GameAPI-1.0-SNAPSHOT.jar

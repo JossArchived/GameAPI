@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>jossc.game</groupId>
+    <groupId>net.josscoder.gameapi</groupId>
     <artifactId>GameAPI</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>GameAPI</name>
@@ -25,7 +25,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                jossc.game.Game
+                              net.josscoder.gameapi.Game
                             </mainClass>
                         </manifest>
                     </archive>
@@ -57,66 +57,43 @@
 
     <repositories>
 
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-
-        <repository>
-            <id>opencollab-repo-release</id>
-            <url>https://repo.opencollab.dev/maven-releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-
-        <repository>
-            <id>opencollab-repo-snapshot</id>
-            <url>https://repo.opencollab.dev/maven-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
+      <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+      </repository>
 
     </repositories>
 
     <dependencies>
 
-        <!-- Lombok Annotation -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
-            <scope>provided</scope>
-        </dependency>
+      <!-- Lombok Annotation -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.22</version>
+        <scope>provided</scope>
+      </dependency>
 
-        <!-- NukkitX 1.0.0 Software -->
-        <dependency>
-            <groupId>cn.nukkit</groupId>
-            <artifactId>nukkit</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+      <!-- NukkitPetteriM1Edition -->
+      <dependency>
+        <groupId>com.github.PetteriM1</groupId>
+        <artifactId>NukkitPetteriM1Edition</artifactId>
+        <version>1682</version>
+      </dependency>
 
-        <!-- FSMgasm Library -->
-        <dependency>
-            <groupId>com.github.Minikloon</groupId>
-            <artifactId>FSMgasm</artifactId>
-            <version>bd1b505</version>
-        </dependency>
+      <!-- FSMgasm -->
+      <dependency>
+        <groupId>com.github.Minikloon</groupId>
+        <artifactId>FSMgasm</artifactId>
+        <version>bd1b505</version>
+      </dependency>
 
-        <!-- libCitizen Library -->
-        <dependency>
-            <groupId>com.github.Josscoder</groupId>
-            <artifactId>libCitizen</artifactId>
-            <version>6fb5cee7c2</version>
-        </dependency>
+      <!-- libCitizen -->
+      <dependency>
+        <groupId>com.github.Josscoder</groupId>
+        <artifactId>libCitizen</artifactId>
+        <version>111b5ad268</version>
+      </dependency>
 
     </dependencies>
 

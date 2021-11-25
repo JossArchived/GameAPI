@@ -113,7 +113,3 @@ buildNumber.properties
 run/
 
 /node_modules/
-.editorconfig
-.prettierrc.yaml
-package-lock.json
-package.json
