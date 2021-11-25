@@ -79,6 +79,7 @@
         <groupId>com.github.PetteriM1</groupId>
         <artifactId>NukkitPetteriM1Edition</artifactId>
         <version>1682</version>
+        <scope>provided</scope>
       </dependency>
 
       <!-- FSMgasm -->
