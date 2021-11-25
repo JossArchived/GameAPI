@@ -79,6 +79,9 @@ public abstract class Game extends PluginBase {
   @Setter
   protected boolean moveInPreGame = false;
 
+  @Setter
+  protected boolean canVoteMap = true;
+
   protected List<String> tips;
 
   protected PhaseSeries phaseSeries = null;
@@ -141,7 +144,11 @@ public abstract class Game extends PluginBase {
 
     if (developmentMode) {
       getLogger().info(TextFormat.GOLD + "Development mode is enabled!");
-      registerCommand(new SoundCommand(), new MyPositionCommand());
+      registerCommand(
+        new SoundCommand(),
+        new MyPositionCommand(),
+        new SetWaitingRoomCommand(this)
+      );
     }
 
     new Thread(
@@ -157,12 +164,14 @@ public abstract class Game extends PluginBase {
   }
 
   protected void initDefaultItems() {
-    CustomItem voteMapItem = new CustomItem(
-      Item.get(ItemID.PAPER),
-      "&r&bVote Map &7[Use]"
-    );
-    voteMapItem.setTransferable(false).addCommands("vote");
-    waitingLobbyItems.put(0, voteMapItem);
+    if (canVoteMap) {
+      CustomItem voteMapItem = new CustomItem(
+        Item.get(ItemID.PAPER),
+        "&r&bVote Map &7[Use]"
+      );
+      voteMapItem.setTransferable(false).addCommands("vote");
+      waitingLobbyItems.put(0, voteMapItem);
+    }
 
     CustomItem exitItem = new CustomItem(
       Item.get(ItemID.DRAGON_BREATH),

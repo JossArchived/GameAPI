@@ -44,7 +44,7 @@ public class LobbyCountdownPhase extends LobbyPhase {
       return;
     }
 
-    if (remainingDuration == 3) {
+    if (remainingDuration == 3 && game.isCanVoteMap()) {
       game.setMapVoteFinished(true);
       broadcastMessage("&l&b» &aThe vote is over!");
 

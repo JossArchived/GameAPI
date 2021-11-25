@@ -10,26 +10,12 @@ The game design this API is based on TheHive Bedrock game design
 Repository:
 
 ```xml
-	<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
-```
-Dependency:
-```xml
-	<dependency>
-	    <groupId>com.github.Josscoder</groupId>
-	    <artifactId>GameAPI</artifactId>
-	    <version>1.1-SNAPSHOT</version>
-	</dependency>
 ```
 
 ## What is this?
 
-This is an API to create mini-games in easy steps, to avoid repeating the process every time you make a game and avoid clutter when creating a very large game. This API is designed for large Minecraft Bedrock networks, by this I mean that each map will be a server, to avoid lag.
-In short, it is an API for semi-long servers.
+It is an API to create mini-games in simple steps, to avoid repeating the process every time you make a game and avoid clutter when creating a very large game. This API is designed for large Minecraft Bedrock networks, by this I mean that one map will be played per server, but you can vote for maps or always have a map, to avoid lag.
+In short, it is an API for semi-long or long servers.
 
 ## How to use this?
 
