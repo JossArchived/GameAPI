@@ -30,16 +30,15 @@ import java.time.Duration;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import net.josscoder.gameapi.Game;
+import net.josscoder.gameapi.map.WaitingRoomMap;
+import net.josscoder.gameapi.phase.base.EndGamePhase;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.user.event.UserJoinServerEvent;
 import net.josscoder.gameapi.user.event.UserQuitServerEvent;
-import net.minikloon.fsmgasm.State;
-import net.josscoder.gameapi.map.WaitingRoomMap;
-import net.josscoder.gameapi.phase.base.EndGamePhase;
 import net.josscoder.gameapi.user.factory.UserFactory;
 import net.josscoder.gameapi.util.PacketUtils;
+import net.minikloon.fsmgasm.State;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class GamePhase extends State implements Listener {

@@ -27,7 +27,6 @@ import cn.nukkit.nbt.tag.FloatTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.utils.DyeColor;
 import java.util.SplittableRandom;
-
 import net.josscoder.gameapi.util.entity.CustomItemFirework;
 
 public class Firework {

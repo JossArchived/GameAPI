@@ -9,9 +9,9 @@ import cn.nukkit.event.inventory.InventoryTransactionEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.item.Item;
-import net.josscoder.gameapi.customitem.factory.CustomItemFactory;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.customitem.CustomItem;
+import net.josscoder.gameapi.customitem.factory.CustomItemFactory;
 import net.josscoder.gameapi.listener.GameListener;
 import net.josscoder.gameapi.user.User;
 

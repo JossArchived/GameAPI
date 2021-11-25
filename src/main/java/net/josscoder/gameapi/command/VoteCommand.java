@@ -19,16 +19,12 @@ package net.josscoder.gameapi.command;
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.denzelcode.form.element.Button;
+import com.denzelcode.form.element.ImageType;
+import com.denzelcode.form.window.SimpleWindowForm;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.map.manager.GameMapManager;
 import net.josscoder.gameapi.util.PacketUtils;
-import nl.apocalypsje.bedrock.FormAPI;
-import nl.apocalypsje.bedrock.element.ElementButton;
-import nl.apocalypsje.bedrock.window.SimpleWindow;
-import org.jetbrains.annotations.NotNull;
 
 public class VoteCommand extends GameCommand {
 
@@ -50,9 +46,13 @@ public class VoteCommand extends GameCommand {
 
     PacketUtils.playSoundDataPacket(player, "random.pop", 0.5f, 1);
 
-    Map<String, ElementButton> buttons = new HashMap<>();
-
     GameMapManager mapManager = game.getGameMapManager();
+
+    SimpleWindowForm form = new SimpleWindowForm(
+      null,
+      TextFormat.BOLD.toString() + TextFormat.DARK_PURPLE + "Choice of map",
+      TextFormat.GRAY + "Choose the map you want to play!"
+    );
 
     mapManager
       .getMaps()
@@ -60,49 +60,41 @@ public class VoteCommand extends GameCommand {
       .forEach(
         map -> {
           String mapName = map.getName();
-
-          buttons.put(
-            map.getName(),
-            new ElementButton(mapName, mapName)
-              .imageType(ElementButton.ImageType.URL)
-              .imageData("https://i.imgur.com/iRXE3aY.png")
+          form.addButton(
+            mapName,
+            mapName,
+            ImageType.URL,
+            "https://i.imgur.com/iRXE3aY.png"
           );
         }
       );
 
-    @NotNull
-    SimpleWindow form = FormAPI.simpleWindow(
-      TextFormat.BOLD.toString() + TextFormat.DARK_PURPLE + "Choice of map",
-      TextFormat.GRAY + "Choose the map you want to play!",
-      buttons
+    form.addHandler(
+      event -> {
+        Button button = event.getButton();
+
+        if (button == null) {
+          return;
+        }
+
+        String mapName = button.getName();
+
+        if (game.isStarted() || game.isMapVoteFinished()) {
+          return;
+        }
+
+        if (mapManager.hasVoted(player, mapName)) {
+          return;
+        }
+
+        mapManager.ifHasVotedRemoveAndVoteFor(mapName, player);
+        player.sendMessage(
+          TextFormat.colorize("&l&b» &r&7You voted for &e") + mapName
+        );
+      }
     );
 
-    form
-      .getFormButtons()
-      .values()
-      .forEach(
-        button ->
-          button.onClick(
-            () -> {
-              String mapName = button.getElementId();
-
-              if (game.isStarted() || game.isMapVoteFinished()) {
-                return;
-              }
-
-              if (mapManager.hasVoted(player, mapName)) {
-                return;
-              }
-
-              mapManager.ifHasVotedRemoveAndVoteFor(mapName, player);
-              player.sendMessage(
-                TextFormat.colorize("&l&b» &r&7You voted for &e") + mapName
-              );
-            }
-          )
-      );
-
-    form.send(player);
+    form.sendTo(player);
 
     return true;
   }

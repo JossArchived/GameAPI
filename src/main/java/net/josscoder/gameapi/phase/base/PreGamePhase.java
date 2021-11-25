@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.map.GameMap;
 import net.josscoder.gameapi.phase.event.GameStartEvent;
@@ -118,7 +117,8 @@ public class PreGamePhase extends LobbyPhase {
 
   @Override
   protected void onEnd() {
-    getNeutralPlayers().forEach(player -> player.setGamemode(game.getDefaultGamemode()));
+    getNeutralPlayers()
+      .forEach(player -> player.setGamemode(game.getDefaultGamemode()));
 
     String gameName = game.getGameName();
 

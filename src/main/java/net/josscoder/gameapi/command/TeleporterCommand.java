@@ -19,15 +19,10 @@ package net.josscoder.gameapi.command;
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.denzelcode.form.element.Button;
+import com.denzelcode.form.window.SimpleWindowForm;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.util.PacketUtils;
-import nl.apocalypsje.bedrock.FormAPI;
-import nl.apocalypsje.bedrock.element.ElementButton;
-import nl.apocalypsje.bedrock.window.SimpleWindow;
-import org.jetbrains.annotations.NotNull;
 
 public class TeleporterCommand extends GameCommand {
 
@@ -49,50 +44,44 @@ public class TeleporterCommand extends GameCommand {
 
     PacketUtils.playSoundDataPacket(player, "random.pop", 0.5f, 1);
 
-    Map<String, ElementButton> buttons = new HashMap<>();
+    SimpleWindowForm form = new SimpleWindowForm(
+      null,
+      "Player teleporter",
+      "Click on a name to teleport!"
+    );
 
     for (Player onlinePlayer : game.getServer().getOnlinePlayers().values()) {
       if (onlinePlayer.isSpectator()) {
         continue;
       }
 
-      buttons.put(
+      form.addButton(
         onlinePlayer.getName(),
-        new ElementButton(
-          onlinePlayer.getName(),
-          onlinePlayer.getName() + "\n" + TextFormat.GRAY + "Select to teleport"
-        )
+        onlinePlayer.getName() + "\n" + TextFormat.GRAY + "Select to teleport"
       );
     }
 
-    @NotNull
-    SimpleWindow form = FormAPI.simpleWindow(
-      "Player teleporter",
-      "Click on a name to teleport!",
-      buttons
+    form.addHandler(
+      event -> {
+        Button button = event.getButton();
+
+        if (button == null) {
+          return;
+        }
+
+        String targetName = button.getName();
+
+        Player target = game.getServer().getPlayer(targetName);
+
+        if (target == null) {
+          return;
+        }
+
+        player.teleport(target.getPosition());
+      }
     );
 
-    form
-      .getFormButtons()
-      .values()
-      .forEach(
-        button ->
-          button.onClick(
-            () -> {
-              String targetName = button.getElementId();
-
-              Player target = game.getServer().getPlayer(targetName);
-
-              if (target == null) {
-                return;
-              }
-
-              player.teleport(target.getPosition());
-            }
-          )
-      );
-
-    form.send(player);
+    form.sendTo(player);
 
     return true;
   }

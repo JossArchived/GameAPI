@@ -22,11 +22,10 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.map.WaitingRoomMap;
-import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.phase.event.GameEndEvent;
+import net.josscoder.gameapi.user.User;
 
 public class EndGamePhase extends LobbyPhase {
 

@@ -19,7 +19,6 @@ package net.josscoder.gameapi.phase;
 import cn.nukkit.scheduler.TaskHandler;
 import java.util.LinkedList;
 import java.util.List;
-
 import net.josscoder.gameapi.Game;
 import net.minikloon.fsmgasm.StateSeries;
 

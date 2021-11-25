@@ -95,6 +95,13 @@
         <version>111b5ad268</version>
       </dependency>
 
+      <!-- FormAPI -->
+      <dependency>
+        <groupId>com.github.Josscoder</groupId>
+        <artifactId>FormAPI</artifactId>
+        <version>2.1-SNAPSHOT</version>
+      </dependency>
+
     </dependencies>
 
 </project>
