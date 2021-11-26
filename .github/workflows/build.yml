@@ -45,7 +45,7 @@ jobs:
       - name: Create and Publish Release
         uses: marvinpinto/action-automatic-releases@v1.1.1
         with:
-          automatic_release_tag: "1.0-SNAPSHOT"
+          automatic_release_tag: "thehivemc-1.0-SNAPSHOT"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           title: "Last TheHive version"
           prerelease: false
