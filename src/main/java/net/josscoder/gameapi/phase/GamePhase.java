@@ -459,7 +459,9 @@ public abstract class GamePhase extends State implements Listener {
     Player player = event.getPlayer();
 
     String message =
-      TextFormat.colorize("&7" + player.getName() + "&l »&r&f ") +
+      TextFormat.GRAY +
+      player.getName() +
+      TextFormat.colorize("&l »&r&f ") +
       event.getMessage();
 
     getPlayers(gamePlayer -> gamePlayer.getGamemode() == player.getGamemode())
