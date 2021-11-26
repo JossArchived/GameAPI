@@ -33,7 +33,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.josscoder.gameapi.command.*;
-import net.josscoder.gameapi.command.*;
 import net.josscoder.gameapi.customitem.CustomItem;
 import net.josscoder.gameapi.customitem.factory.CustomItemFactory;
 import net.josscoder.gameapi.customitem.listener.BlockListener;
@@ -77,7 +76,7 @@ public abstract class Game extends PluginBase {
   protected int maxPlayers = 12;
 
   @Setter
-  protected boolean moveInPreGame = false;
+  protected boolean canMoveInPreGame = false;
 
   @Setter
   protected boolean canVoteMap = true;
@@ -134,7 +133,11 @@ public abstract class Game extends PluginBase {
       new InventoryListener(this)
     );
 
-    registerCommand(new VoteCommand(this), new TeleporterCommand(this));
+    if (canVoteMap) {
+      registerCommand(new VoteCommand(this));
+    }
+
+    registerCommand(new TeleporterCommand(this));
 
     Entity.registerEntity("CustomItemFirework", CustomItemFirework.class, true);
 
@@ -144,11 +147,7 @@ public abstract class Game extends PluginBase {
 
     if (developmentMode) {
       getLogger().info(TextFormat.GOLD + "Development mode is enabled!");
-      registerCommand(
-        new SoundCommand(),
-        new MyPositionCommand(),
-        new SetWaitingRoomCommand(this)
-      );
+      registerCommand(new SoundCommand(), new MyPositionCommand());
     }
 
     new Thread(
@@ -315,9 +314,7 @@ public abstract class Game extends PluginBase {
 
     if (shutdown) {
       schedule(
-        () ->
-          getServer()
-            .forceShutdown("§cThe game: " + getId() + " has been reset!"),
+        () -> getServer().forceShutdown("§cThe game has been reset!"),
         20 * 5
       );
     }

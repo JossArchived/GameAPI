@@ -10,6 +10,18 @@ The game design this API is based on TheHive Bedrock game design
 Repository:
 
 ```xml
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+
+<dependency>
+ <groupId>com.github.Josscoder</groupId>
+   <artifactId>GameAPI</artifactId>
+ <version>thehivemc-SNAPSHOT</version>
+</dependency>
 ```
 
 ## What is this?
@@ -24,73 +36,313 @@ In the next part I will show you a couple of examples, of how to use each method
 - Create a game class and and configure game attributes
 
 ```java
-package jossc.game.test;
+package test;
 
 import cn.nukkit.Player;
-import cn.nukkit.level.Level;
 import cn.nukkit.math.Vector3;
-import jossc.game.Game;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import cn.nukkit.utils.TextFormat;
+import java.time.Duration;
+import java.util.List;
+import java.util.UUID;
+import net.josscoder.gameapi.Game;
+import net.josscoder.gameapi.map.WaitingRoomMap;
+import net.josscoder.gameapi.phase.GamePhase;
+import test.phase.FightPhase;
 
 public class SkyWars extends Game {
 
   @Override
-  public void init() {
-    setDefaultGameMode(Player.SURVIVAL); //When preparing the game, this is the game mode that will give the player
-
-    setMapBackupFile(new File(getDataFolder() + "/Trees.zip")); //This is the path of the backup .zip file of your map, this is optional, but if you want to resetBackup later, you won't be able to do it because you don't have a defined path.
-
-    setMapName("Trees"); //With this method you can define the name of the map
-
-    setMaxPlayers(24); //With this method you can define the maximum number of players on this map
-
-    setMinPlayers(4); //With this method you will define the minimum number of players to start the game
-
-    setSpawns(new LinkedList<Vector3>(){{ //These are the spawns that the player will teleport to when the game is preparing
-      add(new Vector3(13, 56, 132));
-      add(new Vector3(0, 5, 0));
-      //and more...
-    }});
-
-    setTips(new ArrayList<String>(){{ //When you start the game, it will give you a random tip of these that you have here
-      add("tip 1");
-      add("tip 2");
-      add("tip 3");
-      add("tip 4");
-      //you can add more
-    }});
-
-    prepareMap("world"); //With this method you can prepare a world, so that it is playable, it will load the level, remove the storm, remove the rain, and change the time of the map to day
-
-    setWaitingLobby(getServer().getDefaultLevel().getSafeSpawn()); //This will be the level or position to which the player will be sent to wait for others
-
-    resetMapBackup(); //If you defined a backup path, you can reset that backup. I recommend using an async task or something like that when copying the file to reduce lag
-
-    prepareMap(mapName, Level.TIME_SUNRISE); //You can spend the time you want me to put when preparing it
-
-    setDevelopmentMode(false); // By default it is false, this is just an example
+  public String getId() {
+    return UUID.randomUUID().toString();
   }
 
   @Override
   public String getGameName() {
-    return "Sky Wars"; //That is the name of your game, it will be used in scoreboards, bossbar, messages, etc.
+    // This is the name that the game will receive and will be shown to the player when starting the game.
+    return TextFormat.AQUA + "SkyWars: " + TextFormat.LIGHT_PURPLE + "Solo";
   }
 
   @Override
   public String getInstruction() {
-    return "You have to be the last person standing, for this you have to kill your opponents, you can equip yourself with the best loot you find in the chests and FIGHT!";
-    // This is an instruction on how to play this game, this is for new players to orient themselves a bit, this is optional.
+    // These are the instructions that will be shown to the player when starting the game (THIS IS OPTIONAL)
+    return "You have to be the last person standing! For this you have to equip yourself with the best of the loot found in the chests!";
+  }
+
+  @Override
+  public void init() {
+    initGameSettings();
+
+    List<GamePhase> lobbyPhases = createPreGamePhase();
+
+    phaseSeries.addAll(lobbyPhases);
+    phaseSeries.add(new FightPhase(this, Duration.ofMinutes(30)));
+    phaseSeries.start();
+
+    registerPhaseCommands();
+  }
+
+  private void initGameSettings() {
+    /*
+    If the development mode is enabled,
+    the following will be enabled: SoundCommand(so you can play sounds and listen to them with the sound or pitch you want),
+    MyPositionCommand(to get the position you are in, this counts yaw and pitch) and
+    SetWaitingRoomCommand(to configure the game waiting room)
+     */
+
+    setDevelopmentMode(true);
+
+    /*
+    This new call from WaitingRoomMap helps us to register (as the name implies) the waiting room. The waiting room as such needs:
+    - Exit Entity Spawn: this is the coordinate to know where to generate the exit entity.
+    - Pedestal Center Spawn: this is the coordinate to know where to spawn the players at the end of the game, this has use in EndGamePhase.
+    - Pedestal One Spawn: this is the coordinate to know where the first entity or the winning entity or # 1 of the game is generated.
+    - Two Spawn Pedestal: this serves the same as the above, but this time it will be for the winner # 2 or player in the second position.
+    - Three Spawn Pedestal: like the last data, this will serve to generate the entity to show the winner # 3.
+
+    The above were necessary data ...
+
+    Now the optional data:
+
+    - Corner One & Corner Two: this serves to generate an invisible barrier in which the player will not be able to pass.
+    - MaxY & minY: this is used to set the maximum number of blocks that a player can build and the minimum number that a player can be in.
+     */
+    WaitingRoomMap waitingRoom = new WaitingRoomMap(
+        this,
+        "WaitingMap",
+        new Vector3(0, 100, 0)
+    );
+    waitingRoom.setExitEntitySpawn(new Vector3(0, 100, 0));
+    waitingRoom.setPedestalCenterSpawn(new Vector3(0, 100, 0));
+    waitingRoom.setPedestalOneSpawn(new Vector3(0, 100, 0));
+    waitingRoom.setPedestalTwoSpawn(new Vector3(0, 100, 10));
+    waitingRoom.setPedestalThreeSpawn(new Vector3(0, 100, 0));
+    waitingRoom.setCornerOne(new Vector3(0, 100, 0));
+    waitingRoom.setCornerTwo(new Vector3(0, 100, 0));
+    waitingRoom.setMaxY(256);
+    waitingRoom.setMinY(2);
+
+    // This is the help method to give the game the aforementioned data.
+
+    setWaitingRoomMap(waitingRoom);
+
+    // If this method is passed a false variable, it will not show messages and/or items about map voting.
+
+    setCanVoteMap(true);
+
+    // This will be the game mode that will be awarded to the player at the start of the game.
+
+    setDefaultGamemode(Player.SURVIVAL);
+
+    // This is the minimum number of players required to start the game.
+
+    setMinPlayers(3);
+
+    // This is the maximum number of players this game can handle.
+
+    setMaxPlayers(12);
+
+    // if true is passed as a parameter, the player will be able to move or move when the game is starting, that is, in PreGamePhase
+
+    setCanMoveInPreGame(false);
   }
 
   @Override
   public void close() {
-    resetMapBackup();
+    getLogger().info(TextFormat.BLUE + "Closing Game...");
   }
 }
 
 ```
+- Create the phases of the game!
 
-#### More documentation will be added soon...
+```java
+package test.phase;
+
+import cn.nukkit.Player;
+import cn.nukkit.entity.Entity;
+import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.player.PlayerDeathEvent;
+import cn.nukkit.item.Item;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+import net.josscoder.gameapi.Game;
+import net.josscoder.gameapi.phase.GamePhase;
+import net.josscoder.gameapi.phase.base.EndGamePhase;
+import net.josscoder.gameapi.user.User;
+import net.josscoder.gameapi.util.TimeUtils;
+
+public class FightPhase extends GamePhase {
+
+  public FightPhase(Game game, Duration duration) {
+    super(game, duration);
+  }
+
+  @Override
+  protected void onStart() {
+    broadcastMessage("&l&6»&r &fThe game has started, good luck!");
+  }
+
+  @Override
+  public void onUpdate() {
+    if (countNeutralPlayers() <= 1) {
+      Map<Player, Integer> pedestalWinners = new HashMap<>();
+
+      if (countNeutralPlayers() == 1) {
+        Player winner = getNeutralPlayers().get(0);
+
+        if (winner != null) {
+          pedestalWinners.put(winner, 1);
+          broadcastMessage(
+            "&l&b»&r &7" + winner.getName() + " is the winner!",
+            onlinePlayer -> getOnlinePlayers().contains(onlinePlayer)
+          );
+        }
+      } else {
+        broadcastMessage(
+          "&l&c»&r &cThere are no winners!",
+          onlinePlayer -> getOnlinePlayers().contains(onlinePlayer)
+        );
+      }
+
+      game
+        .getPhaseSeries()
+        .addNext(
+          new EndGamePhase(game, Duration.ofSeconds(20), (pedestalWinners))
+        );
+
+      end();
+
+      return;
+    }
+
+    broadcastActionBar(
+      "&b&lGame ends in &r&b" +
+      TimeUtils.timeToString((int) getRemainingDuration().getSeconds())
+    );
+  }
+
+  @Override
+  protected void onEnd() {}
+
+  @EventHandler(priority = EventPriority.NORMAL)
+  public void onDeath(PlayerDeathEvent event) {
+    event.setDeathMessage("");
+  }
+
+  @EventHandler(priority = EventPriority.NORMAL)
+  public void onEntityDamage(EntityDamageEvent event) {
+    if (event.isCancelled()) {
+      return;
+    }
+
+    Entity entity = event.getEntity();
+
+    if (!(entity instanceof Player)) {
+      return;
+    }
+
+    Player player = (Player) entity;
+
+    User user = userFactory.get(player);
+
+    if (user == null) {
+      return;
+    }
+
+    if (event.getFinalDamage() < entity.getHealth()) {
+      return;
+    }
+
+    event.setCancelled();
+
+    for (Item drop : player.getDrops()) {
+      entity.getLevel().dropItem(entity, drop);
+    }
+
+    player.teleport(
+      game.getGameMapManager().getMapWinner().getSafeSpawn().add(0, 1)
+    );
+    user.convertSpectator(true);
+
+    String message = "";
+
+    switch (event.getCause()) {
+      case ENTITY_ATTACK:
+        if (event instanceof EntityDamageByEntityEvent) {
+          Entity damager = ((EntityDamageByEntityEvent) event).getDamager();
+
+          if (damager instanceof Player) {
+            message = "was killed by " + damager.getName();
+          }
+        }
+        break;
+      case PROJECTILE:
+        message = "was shot by projectile";
+        break;
+      case FALL:
+        message = "has hit on the ground";
+        break;
+      case VOID:
+        message = "fell into the void";
+        break;
+      case ENTITY_EXPLOSION:
+      case BLOCK_EXPLOSION:
+        message = "has exploded";
+        break;
+      case LAVA:
+        message = "did not survive in the lava";
+        break;
+      case FIRE:
+      case FIRE_TICK:
+        message = "did not survive the fire";
+        break;
+      case MAGIC:
+        message = "died by a witchcraft";
+        break;
+      case DROWNING:
+        message = "has drowned";
+        break;
+      case SUFFOCATION:
+        message = "died suffocated somewhere";
+        break;
+      case SUICIDE:
+        message = "couldn't take it anymore and he committed suicide";
+        break;
+      case HUNGER:
+        message = "had no food";
+        break;
+      case LIGHTNING:
+        message = "was struck by lightning";
+        break;
+      default:
+        message = "has died";
+        break;
+    }
+
+    broadcastMessage(
+      "&l&c»&r &8" + player.getName() + " &7" + message + "&f!",
+      onlinePlayer -> getOnlinePlayers().contains(onlinePlayer)
+    );
+    broadcastSound(
+      "mob.guardian.death",
+      onlinePlayer -> getOnlinePlayers().contains(onlinePlayer)
+    );
+  }
+}
+```
+
+## Could you show me an example?
+
+Of course. This is the most recent version:
+
+[![Watch the video](https://i.imgur.com/k2nVeg8.png)](https://youtu.be/Rr-WE7pSW_k)
+
+This is an old version:
+
+[![Watch the video](https://i.imgur.com/6UbLrVs.png)](https://youtu.be/WKgsZYjWeOU)
+
+#### You can do thousands of other things... What are you waiting for? Discover them!

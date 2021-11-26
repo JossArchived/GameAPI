@@ -160,7 +160,7 @@ public class PreGamePhase extends LobbyPhase {
   @Override
   @EventHandler
   public void onMove(PlayerMoveEvent event) {
-    if (!game.isMoveInPreGame()) {
+    if (!game.isCanMoveInPreGame()) {
       event.setTo(event.getFrom());
     }
   }
