@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RushNationNET/GameAPI.git"
+    "url": "git+https://github.com/Josscoder/GameAPI.git"
   },
   "author": "Josscoder",
   "license": "GNU",
   "bugs": {
-    "url": "https://github.com/Jooscoder/GameAPI#issues"
+    "url": "https://github.com/Josscoder/GameAPI#issues"
   },
   "homepage": "https://github.com/Josscoder/GameAPI#readme",
   "devDependencies": {

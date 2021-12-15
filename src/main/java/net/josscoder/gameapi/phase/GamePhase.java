@@ -193,7 +193,7 @@ public abstract class GamePhase extends State implements Listener {
   }
 
   protected void broadcastSound(String soundName, float pitch, float volume) {
-    broadcastSound(soundName, pitch, volume, player -> !player.isSpectator());
+    broadcastSound(soundName, pitch, volume, player -> getOnlinePlayers().contains(player));
   }
 
   protected void broadcastSound(String soundName, float pitch) {
@@ -213,7 +213,7 @@ public abstract class GamePhase extends State implements Listener {
   }
 
   protected void broadcastMessage(String message) {
-    broadcastMessage(message, player -> !player.isSpectator());
+    broadcastMessage(message, player -> getOnlinePlayers().contains(player));
   }
 
   protected void broadcastActionBar(
@@ -246,7 +246,7 @@ public abstract class GamePhase extends State implements Listener {
       fadeIn,
       duration,
       fadeOut,
-      player -> !player.isSpectator()
+      player -> getOnlinePlayers().contains(player)
     );
   }
 
@@ -329,7 +329,7 @@ public abstract class GamePhase extends State implements Listener {
       fadeIn,
       stay,
       fadeOut,
-      player -> !player.isSpectator()
+      player -> getOnlinePlayers().contains(player)
     );
   }
 
@@ -350,7 +350,7 @@ public abstract class GamePhase extends State implements Listener {
   }
 
   protected void broadcastTip(String message) {
-    broadcastTip(message, player -> !player.isSpectator());
+    broadcastTip(message, player -> getOnlinePlayers().contains(player));
   }
 
   protected void broadcastPopup(
@@ -376,7 +376,7 @@ public abstract class GamePhase extends State implements Listener {
   }
 
   protected void broadcastPopup(String message, String subTitle) {
-    broadcastPopup(message, subTitle, player -> !player.isSpectator());
+    broadcastPopup(message, subTitle, player -> getOnlinePlayers().contains(player));
   }
 
   protected void broadcastPopup(String message) {
