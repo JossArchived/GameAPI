@@ -1,4 +1,7 @@
 # GameAPI [![Build](https://github.com/Josscoder/GameAPI/actions/workflows/build.yml/badge.svg)](https://github.com/Josscoder/GameAPI/actions/workflows/build.yml) [![](https://jitpack.io/v/Josscoder/GameAPI.svg)](https://jitpack.io/#Josscoder/GameAPI)
+
+## 📙 Description
+
 A simple API to create games based on game states
 
 My idea to create this API was because of inspiration from [this spigot thread.](https://www.spigotmc.org/threads/organizing-your-minigame-code-using-fsmgasm.235786/)
@@ -6,7 +9,7 @@ All credits for the idea goes to Minikloon.
 
 The game design this API is based on TheHive Bedrock game design
 
-## Add as maven dependency
+## 🌏 Add as maven dependency
 Repository:
 
 ```xml
@@ -24,12 +27,12 @@ Repository:
 </dependency>
 ```
 
-## What is this?
+## 🤔 What is this?
 
 It is an API to create mini-games in simple steps, to avoid repeating the process every time you make a game and avoid clutter when creating a very large game. This API is designed for large Minecraft Bedrock networks, by this I mean that one map will be played per server, but you can vote for maps or always have a map, to avoid lag.
 In short, it is an API for semi-long or long servers.
 
-## How to use this?
+## 📜 How to use this?
 
 In the next part I will show you a couple of examples, of how to use each method and class.
  
@@ -331,7 +334,9 @@ public class FightPhase extends GamePhase {
 
 ## Could you show me an example?
 
-Of course. This is the most recent version:
+Of course 😉 
+
+This is the most recent version:
 
 [![Watch the video](https://i.imgur.com/k2nVeg8.png)](https://youtu.be/Rr-WE7pSW_k)
 
@@ -339,4 +344,4 @@ This is an old version:
 
 [![Watch the video](https://i.imgur.com/6UbLrVs.png)](https://youtu.be/WKgsZYjWeOU)
 
-#### You can do thousands of other things... What are you waiting for? Discover them!
+#### You can do thousands of other things... What are you waiting for? Discover them! 🐱
