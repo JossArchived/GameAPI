@@ -193,7 +193,12 @@ public abstract class GamePhase extends State implements Listener {
   }
 
   protected void broadcastSound(String soundName, float pitch, float volume) {
-    broadcastSound(soundName, pitch, volume, player -> getOnlinePlayers().contains(player));
+    broadcastSound(
+      soundName,
+      pitch,
+      volume,
+      player -> getOnlinePlayers().contains(player)
+    );
   }
 
   protected void broadcastSound(String soundName, float pitch) {
@@ -376,7 +381,11 @@ public abstract class GamePhase extends State implements Listener {
   }
 
   protected void broadcastPopup(String message, String subTitle) {
-    broadcastPopup(message, subTitle, player -> getOnlinePlayers().contains(player));
+    broadcastPopup(
+      message,
+      subTitle,
+      player -> getOnlinePlayers().contains(player)
+    );
   }
 
   protected void broadcastPopup(String message) {
