@@ -7,7 +7,7 @@ A simple API to create games based on game states
 My idea to create this API was because of inspiration from [this spigot thread.](https://www.spigotmc.org/threads/organizing-your-minigame-code-using-fsmgasm.235786/)
 All credits for the idea goes to Minikloon.
 
-The game design this API is based on TheHive Bedrock game design
+The game design this API is based on TheHive Bedrock game design.
 
 ## 🌏 Add as maven dependency
 Repository:
