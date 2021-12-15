@@ -323,14 +323,8 @@ public class FightPhase extends GamePhase {
         break;
     }
 
-    broadcastMessage(
-      "&l&c»&r &8" + player.getName() + " &7" + message + "&f!",
-      onlinePlayer -> getOnlinePlayers().contains(onlinePlayer)
-    );
-    broadcastSound(
-      "mob.guardian.death",
-      onlinePlayer -> getOnlinePlayers().contains(onlinePlayer)
-    );
+    broadcastMessage("&l&c»&r &8" + player.getName() + " &7" + message + "&f!");
+    broadcastSound("mob.guardian.death");
   }
 }
 ```
