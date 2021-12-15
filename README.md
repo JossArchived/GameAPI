@@ -1,4 +1,4 @@
-# GameAPI [![Build](https://github.com/Josscoder/GameAPI/actions/workflows/build.yml/badge.svg)](https://github.com/Josscoder/GameAPI/actions/workflows/build.yml) [![](https://jitpack.io/v/Josscoder/GameAPI.svg)](https://jitpack.io/#Josscoder/GameAPI)
+# GameAPI [![Build](https://github.com/Josscoder/GameAPI/actions/workflows/build.yml/badge.svg?branch=thehivemc)](https://github.com/Josscoder/GameAPI/actions/workflows/build.yml) [![](https://jitpack.io/v/Josscoder/GameAPI.svg)](https://jitpack.io/#Josscoder/GameAPI)
 
 ## 📙 Description
 
