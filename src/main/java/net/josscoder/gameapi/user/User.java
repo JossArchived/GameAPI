@@ -126,10 +126,10 @@ public class User {
   }
 
   public void convertSpectator() {
-    convertSpectator(false);
+    convertSpectator(false, false);
   }
 
-  public void convertSpectator(boolean hasLost) {
+  public void convertSpectator(boolean hasLost, boolean teleport) {
     Player player = getPlayer();
 
     if (player == null) {
@@ -138,6 +138,10 @@ public class User {
 
     player.setGamemode(Player.SPECTATOR);
     giveDefaultAttributes();
+
+    if (teleport) {
+      teleportToMapWinnerSafeSpawn();
+    }
 
     game
       .getSpectatorItems()
@@ -213,6 +217,10 @@ public class User {
   public void lookAt(Vector3 vector3) {
     Player player = getPlayer();
 
+    if (player == null) {
+      return;
+    }
+
     double xDist = (vector3.x - player.getPosition().x);
     double zDist = (vector3.z - player.getPosition().z);
 
@@ -223,5 +231,17 @@ public class User {
     }
 
     player.teleport(new Location(player.x, player.y, player.z, player.yaw, 0));
+  }
+
+  public void teleportToMapWinnerSafeSpawn() {
+    Player player = getPlayer();
+
+    if (player == null) {
+      return;
+    }
+
+    player.teleport(
+        game.getGameMapManager().getMapWinner().getSafeSpawn().add(0, 1)
+    );
   }
 }

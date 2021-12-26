@@ -217,7 +217,7 @@ public class FightPhase extends GamePhase {
       broadcastMessage("&l&c»&r &cThere are no winners!");
     }
 
-    game.endGame(pedestalWinners);
+    game.end(pedestalWinners);
   }
 
   @EventHandler(priority = EventPriority.NORMAL)

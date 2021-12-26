@@ -393,11 +393,15 @@ public abstract class Game extends PluginBase {
     getServer().unloadLevel(level);
   }
 
-  public void endGame(Map<Player, Integer> pedestalWinners) {
-    endGame(pedestalWinners, 20);
+  public void end() {
+    end(null);
   }
 
-  public void endGame(Map<Player, Integer> pedestalWinners, int time) {
+  public void end(Map<Player, Integer> pedestalWinners) {
+    end(pedestalWinners, 20);
+  }
+
+  public void end(Map<Player, Integer> pedestalWinners, int time) {
     phaseSeries = new PhaseSeries(this);
     phaseSeries.add(new EndGamePhase(this, Duration.ofSeconds(time), pedestalWinners));
     phaseSeries.start();

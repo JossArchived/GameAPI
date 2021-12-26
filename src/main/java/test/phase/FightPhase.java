@@ -56,7 +56,7 @@ public class FightPhase extends GamePhase {
       broadcastMessage("&l&c»&r &cThere are no winners!");
     }
 
-    game.endGame(pedestalWinners);
+    game.end(pedestalWinners);
   }
 
   @EventHandler(priority = EventPriority.NORMAL)
@@ -94,10 +94,7 @@ public class FightPhase extends GamePhase {
       entity.getLevel().dropItem(entity, drop);
     }
 
-    player.teleport(
-      game.getGameMapManager().getMapWinner().getSafeSpawn().add(0, 1)
-    );
-    user.convertSpectator(true);
+    user.convertSpectator(true, true);
 
     String message = "";
 
