@@ -1,4 +1,4 @@
-package net.josscoder.gameapi.features.customitem.listener;
+package net.josscoder.gameapi.customitem.listener;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.Cancellable;
@@ -8,8 +8,8 @@ import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.item.Item;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.api.listener.GameListener;
-import net.josscoder.gameapi.features.customitem.CustomItem;
-import net.josscoder.gameapi.features.customitem.factory.CustomItemFactory;
+import net.josscoder.gameapi.customitem.CustomItem;
+import net.josscoder.gameapi.customitem.factory.CustomItemFactory;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.TimeUtils;
 

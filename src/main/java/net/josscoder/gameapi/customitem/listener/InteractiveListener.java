@@ -1,4 +1,4 @@
-package net.josscoder.gameapi.features.customitem.listener;
+package net.josscoder.gameapi.customitem.listener;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
@@ -17,8 +17,8 @@ import cn.nukkit.network.protocol.InventoryTransactionPacket;
 import cn.nukkit.network.protocol.PlayerActionPacket;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.features.customitem.CustomItem;
-import net.josscoder.gameapi.features.customitem.factory.CustomItemFactory;
+import net.josscoder.gameapi.customitem.CustomItem;
+import net.josscoder.gameapi.customitem.factory.CustomItemFactory;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.TimeUtils;
 

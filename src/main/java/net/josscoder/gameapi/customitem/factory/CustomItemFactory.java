@@ -1,8 +1,9 @@
-package net.josscoder.gameapi.features.customitem.factory;
+package net.josscoder.gameapi.customitem.factory;
 
 import java.util.HashMap;
 import java.util.Map;
-import net.josscoder.gameapi.features.customitem.CustomItem;
+
+import net.josscoder.gameapi.customitem.CustomItem;
 
 public class CustomItemFactory {
 

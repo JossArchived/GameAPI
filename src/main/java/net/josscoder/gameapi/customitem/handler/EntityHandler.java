@@ -1,4 +1,4 @@
-package net.josscoder.gameapi.features.customitem.handler;
+package net.josscoder.gameapi.customitem.handler;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;

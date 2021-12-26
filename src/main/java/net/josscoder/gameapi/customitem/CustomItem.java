@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.features.customitem;
+package net.josscoder.gameapi.customitem;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -26,9 +26,9 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.TextFormat;
 import java.util.*;
 import lombok.Getter;
-import net.josscoder.gameapi.features.customitem.factory.CustomItemFactory;
-import net.josscoder.gameapi.features.customitem.handler.EntityHandler;
-import net.josscoder.gameapi.features.customitem.handler.Handler;
+import net.josscoder.gameapi.customitem.factory.CustomItemFactory;
+import net.josscoder.gameapi.customitem.handler.EntityHandler;
+import net.josscoder.gameapi.customitem.handler.Handler;
 import net.josscoder.gameapi.user.User;
 
 @Getter

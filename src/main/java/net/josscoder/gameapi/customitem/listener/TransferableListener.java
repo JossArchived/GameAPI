@@ -1,4 +1,4 @@
-package net.josscoder.gameapi.features.customitem.listener;
+package net.josscoder.gameapi.customitem.listener;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
