@@ -41,6 +41,7 @@ import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.map.manager.GameMapManager;
 import net.josscoder.gameapi.phase.GamePhase;
 import net.josscoder.gameapi.phase.PhaseSeries;
+import net.josscoder.gameapi.phase.base.EndGamePhase;
 import net.josscoder.gameapi.phase.base.LobbyCountdownPhase;
 import net.josscoder.gameapi.phase.base.LobbyWaitingPhase;
 import net.josscoder.gameapi.phase.base.PreGamePhase;
@@ -390,6 +391,16 @@ public abstract class Game extends PluginBase {
     level.setAutoSave(false);
 
     getServer().unloadLevel(level);
+  }
+
+  public void endGame(Map<Player, Integer> pedestalWinners) {
+    endGame(pedestalWinners, 20);
+  }
+
+  public void endGame(Map<Player, Integer> pedestalWinners, int time) {
+    phaseSeries = new PhaseSeries(this);
+    phaseSeries.add(new EndGamePhase(this, Duration.ofSeconds(time), pedestalWinners));
+    phaseSeries.start();
   }
 
   public void searchNewGameFor(Player player) {

@@ -169,14 +169,14 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.item.Item;
+import net.josscoder.gameapi.Game;
+import net.josscoder.gameapi.phase.GamePhase;
+import net.josscoder.gameapi.user.User;
+import net.josscoder.gameapi.util.TimeUtils;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.phase.GamePhase;
-import net.josscoder.gameapi.phase.base.EndGamePhase;
-import net.josscoder.gameapi.user.User;
-import net.josscoder.gameapi.util.TimeUtils;
 
 public class FightPhase extends GamePhase {
 
@@ -191,45 +191,34 @@ public class FightPhase extends GamePhase {
 
   @Override
   public void onUpdate() {
-    if (countNeutralPlayers() <= 1) {
-      Map<Player, Integer> pedestalWinners = new HashMap<>();
-
-      if (countNeutralPlayers() == 1) {
-        Player winner = getNeutralPlayers().get(0);
-
-        if (winner != null) {
-          pedestalWinners.put(winner, 1);
-          broadcastMessage(
-            "&l&b»&r &7" + winner.getName() + " is the winner!",
-            onlinePlayer -> getOnlinePlayers().contains(onlinePlayer)
-          );
-        }
-      } else {
-        broadcastMessage(
-          "&l&c»&r &cThere are no winners!",
-          onlinePlayer -> getOnlinePlayers().contains(onlinePlayer)
-        );
-      }
-
-      game
-        .getPhaseSeries()
-        .addNext(
-          new EndGamePhase(game, Duration.ofSeconds(20), (pedestalWinners))
-        );
-
-      end();
-
-      return;
-    }
-
     broadcastActionBar(
-      "&b&lGame ends in &r&b" +
-      TimeUtils.timeToString((int) getRemainingDuration().getSeconds())
+        "&b&lGame ends in &r&b" +
+            TimeUtils.timeToString((int) getRemainingDuration().getSeconds())
     );
   }
 
   @Override
-  protected void onEnd() {}
+  public boolean isReadyToEnd() {
+    return super.isReadyToEnd() || countNeutralPlayers() <= 1;
+  }
+
+  @Override
+  protected void onEnd() {
+    Map<Player, Integer> pedestalWinners = new HashMap<>();
+
+    if (countNeutralPlayers() == 1) {
+      Player winner = getNeutralPlayers().get(0);
+
+      if (winner != null) {
+        pedestalWinners.put(winner, 1);
+        broadcastMessage("&l&b»&r &7" + winner.getName() + " is the winner!");
+      }
+    } else {
+      broadcastMessage("&l&c»&r &cThere are no winners!");
+    }
+
+    game.endGame(pedestalWinners);
+  }
 
   @EventHandler(priority = EventPriority.NORMAL)
   public void onDeath(PlayerDeathEvent event) {
@@ -267,7 +256,7 @@ public class FightPhase extends GamePhase {
     }
 
     player.teleport(
-      game.getGameMapManager().getMapWinner().getSafeSpawn().add(0, 1)
+        game.getGameMapManager().getMapWinner().getSafeSpawn().add(0, 1)
     );
     user.convertSpectator(true);
 
@@ -330,6 +319,7 @@ public class FightPhase extends GamePhase {
     broadcastSound("mob.guardian.death");
   }
 }
+
 ```
 
 ## Could you show me an example?
