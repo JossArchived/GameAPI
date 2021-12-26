@@ -45,9 +45,10 @@ public class UserEventListener extends GameListener {
 
     if (game.isFull()) {
       player.kick(
-        TextFormat.RED +
-        "This game is full and it is starting, to be a spectator you have to wait for the game to start!",
-        false
+          TextFormat.colorize(
+              "&8Unexpected? Report this &7(" + game.getId() + ")&8: &cSever full!"
+          ),
+          false
       );
     }
   }

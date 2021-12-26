@@ -44,7 +44,7 @@ public class InteractiveListener extends CustomItemListener {
       ((PlayerActionPacket) packet).action ==
       PlayerActionPacket.ACTION_START_BREAK
     ) {
-      if (handleInteraction(event.getPlayer())) {
+      if (handleAction(event.getPlayer())) {
         return;
       }
     }
@@ -63,7 +63,7 @@ public class InteractiveListener extends CustomItemListener {
       return;
     }
 
-    handleInteraction(event.getPlayer());
+    handleAction(event.getPlayer());
   }
 
   @EventHandler(priority = EventPriority.NORMAL)

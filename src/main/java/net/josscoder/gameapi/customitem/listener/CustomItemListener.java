@@ -54,7 +54,7 @@ abstract class CustomItemListener extends GameListener {
     event.setCancelled();
   }
 
-  public boolean handleInteraction(Player player) {
+  public boolean handleAction(Player player) {
     User user = userFactory.get(player);
 
     if (user == null) {
