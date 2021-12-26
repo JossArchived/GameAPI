@@ -24,10 +24,10 @@ import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.utils.TextFormat;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.listener.GameListener;
-import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.api.event.user.UserJoinServerEvent;
 import net.josscoder.gameapi.api.event.user.UserQuitServerEvent;
+import net.josscoder.gameapi.api.listener.GameListener;
+import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.user.factory.UserFactory;
 
 public class UserEventListener extends GameListener {
@@ -45,10 +45,10 @@ public class UserEventListener extends GameListener {
 
     if (game.isFull()) {
       player.kick(
-          TextFormat.colorize(
-              "&8Unexpected? Report this &7(" + game.getId() + ")&8: &cSever full!"
-          ),
-          false
+        TextFormat.colorize(
+          "&8Unexpected? Report this &7(" + game.getId() + ")&8: &cSever full!"
+        ),
+        false
       );
     }
   }

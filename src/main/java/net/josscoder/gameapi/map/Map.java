@@ -30,8 +30,8 @@ import cn.nukkit.utils.TextFormat;
 import lombok.Getter;
 import lombok.Setter;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.listener.GameListener;
 import net.josscoder.gameapi.api.event.user.PlayerRequestToLoseEvent;
+import net.josscoder.gameapi.api.listener.GameListener;
 import net.josscoder.gameapi.util.Utils;
 
 @Getter

@@ -160,7 +160,8 @@ public abstract class Game extends PluginBase {
     if (canVoteMap) {
       int mapsSize = gameMapManager.mapsSize();
 
-      getLogger().info(TextFormat.AQUA.toString() + mapsSize + " map(s) registered");
+      getLogger()
+        .info(TextFormat.AQUA.toString() + mapsSize + " map(s) registered");
     }
 
     getLogger().info(TextFormat.GREEN + "This game has been enabled!");
