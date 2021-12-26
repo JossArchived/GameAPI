@@ -23,8 +23,9 @@ import com.denzelcode.form.element.Button;
 import com.denzelcode.form.element.ImageType;
 import com.denzelcode.form.window.SimpleWindowForm;
 import net.josscoder.gameapi.Game;
+import net.josscoder.gameapi.api.command.GameCommand;
 import net.josscoder.gameapi.map.manager.GameMapManager;
-import net.josscoder.gameapi.util.PacketUtils;
+import net.josscoder.gameapi.util.Utils;
 
 public class VoteCommand extends GameCommand {
 
@@ -44,7 +45,7 @@ public class VoteCommand extends GameCommand {
 
     Player player = (Player) sender;
 
-    PacketUtils.playSoundDataPacket(player, "random.pop", 0.5f, 1);
+    Utils.playSoundDataPacket(player, "random.pop", 0.5f, 1);
 
     GameMapManager mapManager = game.getGameMapManager();
 

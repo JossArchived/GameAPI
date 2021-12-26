@@ -22,7 +22,8 @@ import cn.nukkit.utils.TextFormat;
 import com.denzelcode.form.element.Button;
 import com.denzelcode.form.window.SimpleWindowForm;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.util.PacketUtils;
+import net.josscoder.gameapi.api.command.GameCommand;
+import net.josscoder.gameapi.util.Utils;
 
 public class TeleporterCommand extends GameCommand {
 
@@ -42,7 +43,7 @@ public class TeleporterCommand extends GameCommand {
       return false;
     }
 
-    PacketUtils.playSoundDataPacket(player, "random.pop", 0.5f, 1);
+    Utils.playSoundDataPacket(player, "random.pop", 0.5f, 1);
 
     SimpleWindowForm form = new SimpleWindowForm(
       null,

@@ -14,27 +14,8 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.util;
+package net.josscoder.gameapi.api.event;
 
-import cn.nukkit.Player;
-import cn.nukkit.network.protocol.PlaySoundPacket;
+import cn.nukkit.event.Event;
 
-public class PacketUtils {
-
-  public static void playSoundDataPacket(
-    Player player,
-    String soundName,
-    float pitch,
-    float volume
-  ) {
-    PlaySoundPacket pk = new PlaySoundPacket();
-    pk.name = soundName;
-    pk.x = (int) player.x;
-    pk.y = (int) player.y;
-    pk.z = (int) player.z;
-    pk.pitch = pitch;
-    pk.volume = volume;
-
-    player.dataPacket(pk);
-  }
-}
+public abstract class GameEvent extends Event {}

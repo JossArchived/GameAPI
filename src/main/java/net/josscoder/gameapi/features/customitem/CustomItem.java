@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.customitem;
+package net.josscoder.gameapi.features.customitem;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -26,9 +26,9 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.TextFormat;
 import java.util.*;
 import lombok.Getter;
-import net.josscoder.gameapi.customitem.factory.CustomItemFactory;
-import net.josscoder.gameapi.customitem.handler.EntityHandler;
-import net.josscoder.gameapi.customitem.handler.Handler;
+import net.josscoder.gameapi.features.customitem.factory.CustomItemFactory;
+import net.josscoder.gameapi.features.customitem.handler.EntityHandler;
+import net.josscoder.gameapi.features.customitem.handler.Handler;
 import net.josscoder.gameapi.user.User;
 
 @Getter
@@ -190,7 +190,7 @@ public class CustomItem {
     return this;
   }
 
-  public void handle(User user, Player player) {
+  public void executeAction(User user, Player player) {
     for (String command : commands) {
       if (command == null) {
         continue;
@@ -200,7 +200,7 @@ public class CustomItem {
     }
 
     if (interactHandler != null) {
-      interactHandler.handle(user, player);
+      interactHandler.executeAction(user, player);
     }
   }
 
@@ -211,22 +211,19 @@ public class CustomItem {
     DataPacketReceiveEvent event
   ) {
     if (entityDamageHandler != null) {
-      entityDamageHandler.handle(event, user, player, to);
+      entityDamageHandler.execute(event, user, player, to);
     }
   }
 
-  public void handleEntityInteract(
+  public void executeEntityInteract(
     User user,
     Player player,
     Entity to,
     DataPacketReceiveEvent event
   ) {
-    if (entityInteractHandler != null) entityInteractHandler.handle(
-      event,
-      user,
-      player,
-      to
-    );
+    if (entityInteractHandler != null) {
+      entityInteractHandler.execute(event, user, player, to);
+    }
   }
 
   public void addEnchantment(Enchantment... enchantment) {

@@ -24,7 +24,7 @@ import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.utils.TextFormat;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.listener.GameListener;
+import net.josscoder.gameapi.api.listener.GameListener;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.user.event.UserJoinServerEvent;
 import net.josscoder.gameapi.user.event.UserQuitServerEvent;

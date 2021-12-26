@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import net.josscoder.gameapi.Game;
+import net.josscoder.gameapi.api.event.GameStartEvent;
 import net.josscoder.gameapi.map.GameMap;
-import net.josscoder.gameapi.phase.event.GameStartEvent;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.CharUtils;
 import net.josscoder.gameapi.util.MathUtils;
@@ -90,6 +90,10 @@ public class PreGamePhase extends LobbyPhase {
 
     user.clearAllInventory();
     user.lookAt(mapWinner.getSafeSpawn());
+
+    if (!game.canMoveInPreGame()) {
+      player.setImmobile(true);
+    }
   }
 
   @Override
@@ -118,7 +122,12 @@ public class PreGamePhase extends LobbyPhase {
   @Override
   protected void onEnd() {
     getNeutralPlayers()
-      .forEach(player -> player.setGamemode(game.getDefaultGamemode()));
+      .forEach(
+        player -> {
+          player.setGamemode(game.getDefaultGamemode());
+          player.setImmobile(false);
+        }
+      );
 
     String gameName = game.getGameName();
 
@@ -155,13 +164,5 @@ public class PreGamePhase extends LobbyPhase {
       },
       20 * 3
     );
-  }
-
-  @Override
-  @EventHandler
-  public void onMove(PlayerMoveEvent event) {
-    if (!game.isCanMoveInPreGame()) {
-      event.setTo(event.getFrom());
-    }
   }
 }

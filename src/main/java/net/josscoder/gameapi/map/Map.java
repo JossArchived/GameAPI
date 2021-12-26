@@ -30,9 +30,9 @@ import cn.nukkit.utils.TextFormat;
 import lombok.Getter;
 import lombok.Setter;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.listener.GameListener;
+import net.josscoder.gameapi.api.listener.GameListener;
 import net.josscoder.gameapi.user.event.PlayerRequestToLoseEvent;
-import net.josscoder.gameapi.util.PacketUtils;
+import net.josscoder.gameapi.util.Utils;
 
 @Getter
 @Setter
@@ -139,7 +139,7 @@ public abstract class Map extends GameListener {
   }
 
   private void broadcastAlert(Player player, String message) {
-    PacketUtils.playSoundDataPacket(player, "note.bass", 1, 1);
+    Utils.playSoundDataPacket(player, "note.bass", 1, 1);
     player.sendMessage(TextFormat.colorize("&c&l»&r&c ") + message);
   }
 

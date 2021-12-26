@@ -20,7 +20,7 @@ import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
-import net.josscoder.gameapi.util.PacketUtils;
+import net.josscoder.gameapi.util.Utils;
 
 public class SoundCommand extends Command {
 
@@ -75,7 +75,7 @@ public class SoundCommand extends Command {
       message = getUsage();
     }
 
-    PacketUtils.playSoundDataPacket(player, soundName, pitch, volume);
+    Utils.playSoundDataPacket(player, soundName, pitch, volume);
     sender.sendMessage(message);
 
     return false;

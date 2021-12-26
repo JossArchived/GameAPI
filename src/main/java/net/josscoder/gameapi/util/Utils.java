@@ -14,13 +14,27 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.phase.event;
+package net.josscoder.gameapi.util;
 
-import cn.nukkit.event.HandlerList;
-import lombok.Getter;
+import cn.nukkit.Player;
+import cn.nukkit.network.protocol.PlaySoundPacket;
 
-public class GameStartEvent extends GameEvent {
+public class Utils {
 
-  @Getter
-  private static final HandlerList handlers = new HandlerList();
+  public static void playSoundDataPacket(
+    Player player,
+    String soundName,
+    float pitch,
+    float volume
+  ) {
+    PlaySoundPacket pk = new PlaySoundPacket();
+    pk.name = soundName;
+    pk.x = (int) player.x;
+    pk.y = (int) player.y;
+    pk.z = (int) player.z;
+    pk.pitch = pitch;
+    pk.volume = volume;
+
+    player.dataPacket(pk);
+  }
 }

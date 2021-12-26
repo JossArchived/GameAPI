@@ -28,7 +28,7 @@ import lombok.Getter;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.user.event.UserConvertSpectatorEvent;
 import net.josscoder.gameapi.user.storage.LocalStorage;
-import net.josscoder.gameapi.util.PacketUtils;
+import net.josscoder.gameapi.util.Utils;
 
 @Getter
 public class User {
@@ -205,7 +205,7 @@ public class User {
       return;
     }
 
-    PacketUtils.playSoundDataPacket(player, soundName, pitch, volume);
+    Utils.playSoundDataPacket(player, soundName, pitch, volume);
   }
 
   public void sendMessage(String message) {

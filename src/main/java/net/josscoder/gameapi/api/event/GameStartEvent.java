@@ -14,12 +14,12 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.phase.event;
+package net.josscoder.gameapi.api.event;
 
 import cn.nukkit.event.HandlerList;
 import lombok.Getter;
 
-public class GameEndEvent extends GameEvent {
+public class GameStartEvent extends GameEvent {
 
   @Getter
   private static final HandlerList handlers = new HandlerList();

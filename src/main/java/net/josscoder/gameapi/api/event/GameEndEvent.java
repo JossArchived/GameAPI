@@ -14,19 +14,13 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.listener;
+package net.josscoder.gameapi.api.event;
 
-import cn.nukkit.event.Listener;
-import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.user.factory.UserFactory;
+import cn.nukkit.event.HandlerList;
+import lombok.Getter;
 
-public abstract class GameListener implements Listener {
+public class GameEndEvent extends GameEvent {
 
-  protected final Game game;
-  protected final UserFactory userFactory;
-
-  public GameListener(Game game) {
-    this.game = game;
-    this.userFactory = game.getUserFactory();
-  }
+  @Getter
+  private static final HandlerList handlers = new HandlerList();
 }

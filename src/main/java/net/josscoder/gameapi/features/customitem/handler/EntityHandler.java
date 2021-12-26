@@ -1,4 +1,4 @@
-package net.josscoder.gameapi.customitem.handler;
+package net.josscoder.gameapi.features.customitem.handler;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
@@ -6,7 +6,7 @@ import cn.nukkit.event.server.DataPacketReceiveEvent;
 import net.josscoder.gameapi.user.User;
 
 public interface EntityHandler {
-  void handle(
+  void execute(
     DataPacketReceiveEvent event,
     User fromUser,
     Player from,

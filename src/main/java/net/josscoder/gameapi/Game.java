@@ -33,11 +33,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.josscoder.gameapi.command.*;
-import net.josscoder.gameapi.customitem.CustomItem;
-import net.josscoder.gameapi.customitem.factory.CustomItemFactory;
-import net.josscoder.gameapi.customitem.listener.BlockListener;
-import net.josscoder.gameapi.customitem.listener.InventoryListener;
-import net.josscoder.gameapi.customitem.listener.ItemInteractListener;
+import net.josscoder.gameapi.features.customitem.CustomItem;
+import net.josscoder.gameapi.features.customitem.factory.CustomItemFactory;
+import net.josscoder.gameapi.features.customitem.listener.InteractiveListener;
+import net.josscoder.gameapi.features.customitem.listener.TransferableListener;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.map.manager.GameMapManager;
 import net.josscoder.gameapi.phase.GamePhase;
@@ -128,9 +127,8 @@ public abstract class Game extends PluginBase {
 
     registerListener(
       new UserEventListener(this),
-      new BlockListener(this),
-      new ItemInteractListener(this),
-      new InventoryListener(this)
+      new InteractiveListener(this),
+      new TransferableListener(this)
     );
 
     if (canVoteMap) {
@@ -399,6 +397,10 @@ public abstract class Game extends PluginBase {
   public void sendToTheGameCenter(Player player) {
     //TODO: implement this
     player.sendMessage("Send player to the game center!");
+  }
+
+  public boolean canMoveInPreGame() {
+    return canMoveInPreGame;
   }
 
   @Override

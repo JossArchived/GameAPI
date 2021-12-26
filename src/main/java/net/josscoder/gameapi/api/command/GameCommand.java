@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.command;
+package net.josscoder.gameapi.api.command;
 
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
