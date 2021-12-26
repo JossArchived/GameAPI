@@ -130,11 +130,11 @@ public abstract class Map extends GameListener {
     );
   }
 
-  public boolean isInThisLevel(Player player) {
-    return isInThisLevel(player.getLevel());
+  public boolean isThisLevel(Player player) {
+    return isThisLevel(player.getLevel());
   }
 
-  public boolean isInThisLevel(Level level) {
+  public boolean isThisLevel(Level level) {
     return level == toLevel();
   }
 
@@ -147,7 +147,7 @@ public abstract class Map extends GameListener {
   public void onMove(PlayerMoveEvent event) {
     Player player = event.getPlayer();
 
-    if (!isInThisLevel(player)) {
+    if (!isThisLevel(player)) {
       return;
     }
 
@@ -180,7 +180,7 @@ public abstract class Map extends GameListener {
   public void onBlockPlace(BlockPlaceEvent event) {
     Player player = event.getPlayer();
 
-    if (!isInThisLevel(player)) {
+    if (!isThisLevel(player)) {
       return;
     }
 
