@@ -31,6 +31,8 @@ public class GameMap extends Map {
 
   protected List<Vector3> spawns;
 
+  protected String image = "";
+
   public GameMap(Game game, String name, Vector3 safeSpawn) {
     super(game, name, safeSpawn);
     spawns = new LinkedList<>();

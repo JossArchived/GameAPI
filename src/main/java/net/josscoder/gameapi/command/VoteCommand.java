@@ -61,11 +61,13 @@ public class VoteCommand extends GameCommand {
       .forEach(
         map -> {
           String mapName = map.getName();
+          boolean isUrl = map.getImage().startsWith("http");
+
           form.addButton(
             mapName,
             mapName,
-            ImageType.URL,
-            "https://i.imgur.com/iRXE3aY.png"
+            (isUrl ? ImageType.URL : ImageType.PATH),
+            (mapName.isEmpty() ? "https://i.imgur.com/iRXE3aY.png" : mapName)
           );
         }
       );
