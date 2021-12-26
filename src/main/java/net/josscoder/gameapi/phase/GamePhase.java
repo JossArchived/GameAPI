@@ -34,8 +34,8 @@ import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.phase.base.EndGamePhase;
 import net.josscoder.gameapi.user.User;
-import net.josscoder.gameapi.user.event.UserJoinServerEvent;
-import net.josscoder.gameapi.user.event.UserQuitServerEvent;
+import net.josscoder.gameapi.api.event.user.UserJoinServerEvent;
+import net.josscoder.gameapi.api.event.user.UserQuitServerEvent;
 import net.josscoder.gameapi.user.factory.UserFactory;
 import net.josscoder.gameapi.util.Utils;
 import net.minikloon.fsmgasm.State;
@@ -164,7 +164,7 @@ public abstract class GamePhase extends State implements Listener {
     float pitch,
     float volume
   ) {
-    Utils.playSoundDataPacket(player, soundName, pitch, volume);
+    Utils.playSound(player, soundName, pitch, volume);
   }
 
   protected void broadcastSound(

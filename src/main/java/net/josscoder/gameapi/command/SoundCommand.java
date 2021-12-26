@@ -75,7 +75,7 @@ public class SoundCommand extends Command {
       message = getUsage();
     }
 
-    Utils.playSoundDataPacket(player, soundName, pitch, volume);
+    Utils.playSound(player, soundName, pitch, volume);
     sender.sendMessage(message);
 
     return false;

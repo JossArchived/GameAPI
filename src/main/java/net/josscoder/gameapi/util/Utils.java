@@ -21,7 +21,7 @@ import cn.nukkit.network.protocol.PlaySoundPacket;
 
 public class Utils {
 
-  public static void playSoundDataPacket(
+  public static void playSound(
     Player player,
     String soundName,
     float pitch,

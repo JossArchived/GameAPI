@@ -43,7 +43,7 @@ public class TeleporterCommand extends GameCommand {
       return false;
     }
 
-    Utils.playSoundDataPacket(player, "random.pop", 0.5f, 1);
+    Utils.playSound(player, "random.pop", 0.5f, 1);
 
     SimpleWindowForm form = new SimpleWindowForm(
       null,

@@ -17,8 +17,6 @@
 package net.josscoder.gameapi.phase.base;
 
 import cn.nukkit.Player;
-import cn.nukkit.event.EventHandler;
-import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import java.time.Duration;
@@ -27,7 +25,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.event.GameStartEvent;
+import net.josscoder.gameapi.api.event.game.GameStartEvent;
 import net.josscoder.gameapi.map.GameMap;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.CharUtils;

@@ -26,7 +26,7 @@ import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.TextFormat;
 import lombok.Getter;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.user.event.UserConvertSpectatorEvent;
+import net.josscoder.gameapi.api.event.user.UserConvertSpectatorEvent;
 import net.josscoder.gameapi.user.storage.LocalStorage;
 import net.josscoder.gameapi.util.Utils;
 
@@ -168,13 +168,9 @@ public class User {
         TextFormat.RED + "You have lost!",
         TextFormat.YELLOW + "Now spectating."
       );
-
-      game.callEvent(new UserConvertSpectatorEvent(this, true));
-
-      return;
     }
 
-    game.callEvent(new UserConvertSpectatorEvent(this, false));
+    game.callEvent(new UserConvertSpectatorEvent(this, hasLost));
   }
 
   public void convertPlayer() {
@@ -205,7 +201,7 @@ public class User {
       return;
     }
 
-    Utils.playSoundDataPacket(player, soundName, pitch, volume);
+    Utils.playSound(player, soundName, pitch, volume);
   }
 
   public void sendMessage(String message) {

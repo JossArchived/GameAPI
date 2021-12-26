@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.event.GameEndEvent;
+import net.josscoder.gameapi.api.event.game.GameEndEvent;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.user.User;
 

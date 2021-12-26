@@ -45,7 +45,7 @@ public class VoteCommand extends GameCommand {
 
     Player player = (Player) sender;
 
-    Utils.playSoundDataPacket(player, "random.pop", 0.5f, 1);
+    Utils.playSound(player, "random.pop", 0.5f, 1);
 
     GameMapManager mapManager = game.getGameMapManager();
 

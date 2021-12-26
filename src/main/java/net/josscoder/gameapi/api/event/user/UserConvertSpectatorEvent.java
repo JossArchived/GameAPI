@@ -14,8 +14,22 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.api.event;
+package net.josscoder.gameapi.api.event.user;
 
-import cn.nukkit.event.Event;
+import cn.nukkit.event.HandlerList;
+import lombok.Getter;
+import net.josscoder.gameapi.user.User;
 
-public abstract class GameEvent extends Event {}
+public class UserConvertSpectatorEvent extends UserEvent {
+
+  @Getter
+  private static final HandlerList handlers = new HandlerList();
+
+  @Getter
+  private final boolean hasLost;
+
+  public UserConvertSpectatorEvent(User user, boolean hasLost) {
+    super(user);
+    this.hasLost = hasLost;
+  }
+}
