@@ -403,7 +403,9 @@ public abstract class Game extends PluginBase {
 
   public void end(Map<Player, Integer> pedestalWinners, int time) {
     phaseSeries = new PhaseSeries(this);
-    phaseSeries.add(new EndGamePhase(this, Duration.ofSeconds(time), pedestalWinners));
+    phaseSeries.add(
+      new EndGamePhase(this, Duration.ofSeconds(time), pedestalWinners)
+    );
     phaseSeries.start();
   }
 

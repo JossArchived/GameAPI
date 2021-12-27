@@ -241,7 +241,7 @@ public class User {
     }
 
     player.teleport(
-        game.getGameMapManager().getMapWinner().getSafeSpawn().add(0, 1)
+      game.getGameMapManager().getMapWinner().getSafeSpawn().add(0, 1)
     );
   }
 }

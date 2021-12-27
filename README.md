@@ -169,14 +169,13 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.item.Item;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.phase.GamePhase;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.TimeUtils;
-
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 public class FightPhase extends GamePhase {
 
@@ -255,10 +254,7 @@ public class FightPhase extends GamePhase {
       entity.getLevel().dropItem(entity, drop);
     }
 
-    player.teleport(
-        game.getGameMapManager().getMapWinner().getSafeSpawn().add(0, 1)
-    );
-    user.convertSpectator(true);
+    user.convertSpectator(true, true);
 
     String message = "";
 
