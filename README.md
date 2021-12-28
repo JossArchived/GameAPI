@@ -2,7 +2,7 @@
 
 ## 📙 Description
 
-A simple API to create games based on game states
+A simple API to create games based on states
 
 My idea to create this API was because of inspiration from [this spigot thread.](https://www.spigotmc.org/threads/organizing-your-minigame-code-using-fsmgasm.235786/)
 All credits for the idea goes to Minikloon.
