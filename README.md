@@ -9,24 +9,6 @@ All credits for the idea goes to Minikloon.
 
 The game design this API is based on TheHive Bedrock game design.
 
-## 🌏 Add as maven dependency
-Repository:
-
-```xml
-<repositories>
-  <repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
-  </repository>
-</repositories>
-
-<dependency>
- <groupId>com.github.Josscoder</groupId>
-   <artifactId>GameAPI</artifactId>
- <version>thehivemc-SNAPSHOT</version>
-</dependency>
-```
-
 ## 🤔 What is this?
 
 It is an API to create mini-games in simple steps, to avoid repeating the process every time you make a game and avoid clutter when creating a very large game. This API is designed for large Minecraft Bedrock networks, by this I mean that one map will be played per server, but you can vote for maps or always have a map, to avoid lag.
@@ -329,5 +311,38 @@ This is the most recent version:
 This is an old version:
 
 [![Watch the video](https://i.imgur.com/6UbLrVs.png)](https://youtu.be/WKgsZYjWeOU)
+
+## 🌏 Add as dependency
+Maven:
+
+```xml
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+
+<dependency>
+ <groupId>com.github.Josscoder</groupId>
+   <artifactId>GameAPI</artifactId>
+ <version>thehivemc-SNAPSHOT</version>
+</dependency>
+```
+
+Gradle:
+
+```gradle
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+	
+	dependencies {
+	        implementation 'com.github.Josscoder:GameAPI:thehivemc-SNAPSHOT'
+	}
+```
 
 #### You can do thousands of other things... What are you waiting for? Discover them! 🐱
