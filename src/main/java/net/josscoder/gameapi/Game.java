@@ -27,8 +27,16 @@ import cn.nukkit.level.Level;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -425,6 +433,61 @@ public abstract class Game extends PluginBase {
 
   public boolean canMoveInPreGame() {
     return canMoveInPreGame;
+  }
+
+  public List<Path> getPathsFromResourceJAR(String folder)
+    throws URISyntaxException, IOException {
+    List<Path> result;
+
+    String jarPath = getClass()
+      .getProtectionDomain()
+      .getCodeSource()
+      .getLocation()
+      .toURI()
+      .getPath();
+
+    URI uri = URI.create("jar:file:" + jarPath);
+    try (
+      FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())
+    ) {
+      result =
+        Files
+          .walk(fs.getPath(folder))
+          .filter(Files::isRegularFile)
+          .collect(Collectors.toList());
+    }
+
+    return result;
+  }
+
+  public void moveResourcesToDataPath(String folderName) {
+    moveResourcesToPath(folderName, getDataFolder().toString());
+  }
+
+  public void moveResourcesToPath(String folderName, String path) {
+    File destinationPath = new File(path + "/" + folderName);
+
+    if (!destinationPath.exists()) {
+      destinationPath.mkdirs();
+    }
+
+    try {
+      List<Path> result = getPathsFromResourceJAR(folderName + "/");
+
+      for (Path resultPath : result) {
+        String filePathName = resultPath.toString();
+
+        File destinationFile = new File(path + filePathName);
+
+        if (destinationFile.exists()) {
+          continue;
+        }
+
+        saveResource(filePathName.substring(1));
+      }
+    } catch (URISyntaxException | IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
