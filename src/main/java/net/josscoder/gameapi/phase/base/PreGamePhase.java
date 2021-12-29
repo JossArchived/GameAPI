@@ -66,19 +66,23 @@ public class PreGamePhase extends LobbyPhase {
     List<Vector3> spawns,
     Set<Integer> spawnsUsed
   ) {
-    int i;
-
-    do {
-      i = MathUtils.nextInt(spawns.size());
-    } while (spawnsUsed.contains(i));
-
-    Vector3 spawn = spawns.get(i);
-
     GameMap mapWinner = game.getGameMapManager().getMapWinner();
 
-    player.teleport(Position.fromObject(spawn, mapWinner.toLevel()));
+    if (spawns.isEmpty()) {
+      mapWinner.teleportToSafeSpawn(player);
+    } else {
+      int i;
 
-    spawnsUsed.add(i);
+      do {
+        i = MathUtils.nextInt(spawns.size());
+      } while (spawnsUsed.contains(i));
+
+      Vector3 spawn = spawns.get(i);
+
+      player.teleport(Position.fromObject(spawn, mapWinner.toLevel()));
+
+      spawnsUsed.add(i);
+    }
 
     User user = userFactory.get(player);
 
