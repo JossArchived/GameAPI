@@ -112,7 +112,6 @@ public class User {
     player.getFoodData().setLevel(20);
     player.setExperience(0);
     player.setImmobile(false);
-    player.setMovementSpeed(0.1F);
     player.sendExperienceLevel(0);
     player.getInventory().clearAll();
     player.getCraftingGrid().clearAll();
