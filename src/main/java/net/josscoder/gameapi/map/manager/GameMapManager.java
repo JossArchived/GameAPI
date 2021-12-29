@@ -29,6 +29,8 @@ public class GameMapManager {
 
   private final Game game;
 
+  private GameMap mainMap = null;
+
   private Map<String, GameMap> maps;
 
   private final Map<Player, String> voters;
@@ -108,6 +110,10 @@ public class GameMapManager {
   }
 
   public GameMap getMapWinner() {
+    if (mainMap != null) {
+      return mainMap;
+    }
+
     if (mapsSize() <= 0) {
       return null;
     }
