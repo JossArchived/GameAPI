@@ -412,6 +412,8 @@ public abstract class Game extends PluginBase {
   public void end(Map<Player, Integer> pedestalWinners, int time) {
     if (phaseSeries != null) {
       phaseSeries.end();
+      phaseSeries.setFrozen(true);
+      phaseSeries.cleanup();
     }
 
     phaseSeries = new PhaseSeries(this);

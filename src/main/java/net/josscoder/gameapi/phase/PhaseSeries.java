@@ -66,6 +66,10 @@ public class PhaseSeries extends StateSeries {
     scheduledTask.cancel();
   }
 
+  public void cleanup() {
+    scheduledTask.cancel();
+  }
+
   public final void addOnUpdate(Runnable runnable) {
     onUpdate.add(runnable);
   }
