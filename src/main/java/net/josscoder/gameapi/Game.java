@@ -410,6 +410,10 @@ public abstract class Game extends PluginBase {
   }
 
   public void end(Map<Player, Integer> pedestalWinners, int time) {
+    if (phaseSeries != null) {
+      phaseSeries.end();
+    }
+
     phaseSeries = new PhaseSeries(this);
     phaseSeries.add(
       new EndGamePhase(this, Duration.ofSeconds(time), pedestalWinners)
@@ -417,19 +421,11 @@ public abstract class Game extends PluginBase {
     phaseSeries.start();
   }
 
-  public void searchNewGameFor(Player player) {
-    //TODO: implement this
-    player.sendMessage("Search a new game!");
-  }
+  public void searchNewGameFor(Player player) {}
 
-  public void searchNewGameFor(List<Player> players) {
-    players.forEach(this::searchNewGameFor);
-  }
+  public void searchNewGameFor(List<Player> players) {}
 
-  public void sendToTheGameCenter(Player player) {
-    //TODO: implement this
-    player.sendMessage("Send player to the game center!");
-  }
+  public void sendToTheGameCenter(Player player) {}
 
   public boolean canMoveInPreGame() {
     return canMoveInPreGame;
