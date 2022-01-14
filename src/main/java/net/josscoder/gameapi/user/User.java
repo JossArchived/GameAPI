@@ -125,6 +125,8 @@ public class User {
     player.removeAllEffects();
 
     clearAllInventory();
+
+    removeBossBar();
   }
 
   public void convertSpectator() {

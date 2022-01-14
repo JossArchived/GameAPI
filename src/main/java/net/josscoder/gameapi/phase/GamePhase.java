@@ -370,7 +370,7 @@ public abstract class GamePhase extends State implements Listener {
           User user = userFactory.get(player);
 
           if (user != null) {
-            user.sendBossBar(title, length);
+            user.sendBossBar(TextFormat.colorize(title), length);
           }
         }
       );
