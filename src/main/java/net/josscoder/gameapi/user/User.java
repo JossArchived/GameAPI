@@ -23,7 +23,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.potion.Effect;
-import cn.nukkit.utils.BlockColor;
 import cn.nukkit.utils.DummyBossBar;
 import cn.nukkit.utils.TextFormat;
 import lombok.Getter;
@@ -248,7 +247,7 @@ public class User {
     );
   }
 
-  public void sendBossBar(String title, float length, BlockColor color) {
+  public void sendBossBar(String title, float length) {
     Player player = getPlayer();
 
     if (player == null) {
@@ -262,7 +261,6 @@ public class User {
             new DummyBossBar.Builder(player)
               .length(length)
               .text(title)
-              .color(color)
               .build();
 
           player.createBossBar(bossbar);

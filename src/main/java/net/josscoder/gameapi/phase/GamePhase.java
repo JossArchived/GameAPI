@@ -362,7 +362,6 @@ public abstract class GamePhase extends State implements Listener {
   protected void broadcastBossbar(
     String title,
     float length,
-    BlockColor color,
     Predicate<? super Player> condition
   ) {
     getPlayers(condition)
@@ -371,7 +370,7 @@ public abstract class GamePhase extends State implements Listener {
           User user = userFactory.get(player);
 
           if (user != null) {
-            user.sendBossBar(title, length, color);
+            user.sendBossBar(title, length);
           }
         }
       );
@@ -381,7 +380,6 @@ public abstract class GamePhase extends State implements Listener {
     broadcastBossbar(
       title,
       length,
-      BlockColor.PURPLE_BLOCK_COLOR,
       player -> getOnlinePlayers().contains(player)
     );
   }
