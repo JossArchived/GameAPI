@@ -17,6 +17,7 @@
 package net.josscoder.gameapi;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.Event;
@@ -25,6 +26,9 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemID;
 import cn.nukkit.level.Level;
 import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.scheduler.Task;
+import cn.nukkit.scheduler.TaskHandler;
+import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +40,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
@@ -107,6 +113,10 @@ public abstract class Game extends PluginBase {
   @Setter
   protected Map<Integer, CustomItem> spectatorItems;
 
+  private Thread mainThread;
+
+  private ExecutorService threadPool;
+
   public abstract String getId();
 
   public abstract String getGameName();
@@ -120,7 +130,17 @@ public abstract class Game extends PluginBase {
   @SneakyThrows
   @Override
   public void onEnable() {
-    super.onEnable();
+    Config config = getConfig();
+
+    if (!config.exists("thread_pool_size")) {
+      config.set("thread_pool_size", 20);
+      config.save();
+    }
+
+    mainThread = Thread.currentThread();
+
+    threadPool =
+      Executors.newFixedThreadPool(config.getInt("thread_pool_size"));
 
     tips = new ArrayList<>();
 
@@ -157,14 +177,13 @@ public abstract class Game extends PluginBase {
       registerCommand(new SoundCommand(), new MyPositionCommand());
     }
 
-    new Thread(
+    scheduleThread(
       () ->
         gameMapManager
           .getMaps()
           .keySet()
           .forEach(mapName -> reset(mapName, false))
-    )
-      .start();
+    );
 
     if (canVoteMap) {
       int mapsSize = gameMapManager.mapsSize();
@@ -315,6 +334,57 @@ public abstract class Game extends PluginBase {
 
   public void schedule(Runnable runnable, int delay) {
     getServer().getScheduler().scheduleDelayedTask(this, runnable, delay);
+  }
+
+  public boolean isMainThread() {
+    return isMainThread(Thread.currentThread());
+  }
+
+  public boolean isMainThread(Thread thread) {
+    return thread == mainThread;
+  }
+
+  public void scheduleOnMainThread(Runnable runnable) {
+    if (isMainThread()) {
+      runnable.run();
+    } else {
+      schedule(i -> runnable.run());
+    }
+  }
+
+  public TaskHandler schedule(Task task) {
+    return Server.getInstance().getScheduler().scheduleTask(task);
+  }
+
+  public TaskHandler schedule(Handler task) {
+    return schedule(
+      new Task() {
+        @Override
+        public void onRun(int i) {
+          task.handle(i);
+        }
+      }
+    );
+  }
+
+  public void scheduleThread(Handler task) {
+    scheduleThread(() -> task.handle(0));
+  }
+
+  public void scheduleThread(Runnable task) {
+    if (isMainThread()) {
+      threadPool.execute(task);
+    } else {
+      task.run();
+    }
+  }
+
+  public void sleep(long milliseconds) {
+    try {
+      Thread.sleep(milliseconds);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   public void reset() {

@@ -25,6 +25,7 @@ import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.scheduler.TaskHandler;
+import cn.nukkit.utils.BlockColor;
 import cn.nukkit.utils.TextFormat;
 import java.time.Duration;
 import java.util.*;
@@ -356,6 +357,33 @@ public abstract class GamePhase extends State implements Listener {
 
   protected void broadcastTip(String message) {
     broadcastTip(message, player -> getOnlinePlayers().contains(player));
+  }
+
+  protected void broadcastBossbar(
+    String title,
+    float length,
+    BlockColor color,
+    Predicate<? super Player> condition
+  ) {
+    getPlayers(condition)
+      .forEach(
+        player -> {
+          User user = userFactory.get(player);
+
+          if (user != null) {
+            user.sendBossBar(title, length, color);
+          }
+        }
+      );
+  }
+
+  protected void broadcastBossbar(String title, float length) {
+    broadcastBossbar(
+      title,
+      length,
+      BlockColor.PURPLE_BLOCK_COLOR,
+      player -> getOnlinePlayers().contains(player)
+    );
   }
 
   protected void broadcastPopup(

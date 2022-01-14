@@ -119,11 +119,10 @@ public class EndGamePhase extends LobbyPhase {
 
     game.schedule(
       () ->
-        new Thread(
+        game.scheduleThread(
           () ->
             game.reset(game.getGameMapManager().getMapWinner().getName(), true)
-        )
-          .start(),
+        ),
       20 * 10
     );
   }

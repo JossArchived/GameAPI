@@ -23,6 +23,8 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.potion.Effect;
+import cn.nukkit.utils.BlockColor;
+import cn.nukkit.utils.DummyBossBar;
 import cn.nukkit.utils.TextFormat;
 import lombok.Getter;
 import net.josscoder.gameapi.Game;
@@ -38,6 +40,8 @@ public class User {
   private final String name;
 
   private final LocalStorage localStorage;
+
+  private DummyBossBar bossbar;
 
   public User(Game game, String name) {
     this.game = game;
@@ -242,5 +246,46 @@ public class User {
     player.teleport(
       game.getGameMapManager().getMapWinner().getSafeSpawn().add(0, 1)
     );
+  }
+
+  public void sendBossBar(String title, float length, BlockColor color) {
+    Player player = getPlayer();
+
+    if (player == null) {
+      return;
+    }
+
+    game.scheduleOnMainThread(
+      () -> {
+        if (bossbar == null) {
+          bossbar =
+            new DummyBossBar.Builder(player)
+              .length(length)
+              .text(title)
+              .color(color)
+              .build();
+
+          player.createBossBar(bossbar);
+        } else {
+          bossbar.setText(title);
+          bossbar.setLength(length);
+        }
+      }
+    );
+  }
+
+  public void removeBossBar() {
+    Player player = getPlayer();
+
+    if (player == null) {
+      return;
+    }
+
+    if (bossbar == null) {
+      return;
+    }
+
+    bossbar.destroy();
+    bossbar = null;
   }
 }
