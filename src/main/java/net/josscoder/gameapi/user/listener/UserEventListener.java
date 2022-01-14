@@ -44,12 +44,7 @@ public class UserEventListener extends GameListener {
     Player player = event.getPlayer();
 
     if (game.isFull()) {
-      player.kick(
-        TextFormat.colorize(
-          "&8Unexpected? Report this &7(" + game.getId() + ")&8: &cSever full!"
-        ),
-        false
-      );
+      game.kick(player, "Server Full");
     }
   }
 

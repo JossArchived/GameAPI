@@ -398,7 +398,13 @@ public abstract class Game extends PluginBase {
 
     if (shutdown) {
       schedule(
-        () -> getServer().forceShutdown("§cThe game has been reset!"),
+        () ->
+          getServer()
+            .forceShutdown(
+              TextFormat.colorize(
+                "&8Unexpected? Report this &7(" + getId() + ")&8: &cGame Reset!"
+              )
+            ),
         20 * 5
       );
     }
@@ -556,6 +562,15 @@ public abstract class Game extends PluginBase {
     } catch (URISyntaxException | IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void kick(Player player, String reason) {
+    player.kick(
+      TextFormat.colorize(
+        "&8Unexpected? Report this &7(" + getId() + ")&8: &c" + reason + "!"
+      ),
+      false
+    );
   }
 
   @Override
