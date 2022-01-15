@@ -47,15 +47,6 @@ public class PreGamePhase extends LobbyPhase {
 
   @Override
   protected void onStart() {
-    WaitingRoomMap waitingRoomMap = game.getWaitingRoomMap();
-
-    if (waitingRoomMap != null && waitingRoomMap.getExitEntity() != null) {
-      game
-        .getCitizenLibrary()
-        .getFactory()
-        .remove(waitingRoomMap.getExitEntity().getEntityId());
-    }
-
     game.setStarted(true);
 
     game.getGameMapManager().getMapWinner().prepare(mapTime);
@@ -133,6 +124,15 @@ public class PreGamePhase extends LobbyPhase {
 
   @Override
   protected void onEnd() {
+    WaitingRoomMap waitingRoomMap = game.getWaitingRoomMap();
+
+    if (waitingRoomMap != null && waitingRoomMap.getExitEntity() != null) {
+      game
+        .getCitizenLibrary()
+        .getFactory()
+        .remove(waitingRoomMap.getExitEntity().getEntityId());
+    }
+
     getNeutralPlayers()
       .forEach(
         player -> {

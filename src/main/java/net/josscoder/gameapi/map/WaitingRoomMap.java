@@ -17,6 +17,7 @@
 package net.josscoder.gameapi.map;
 
 import cn.nukkit.Player;
+import cn.nukkit.entity.data.Skin;
 import cn.nukkit.item.ItemFirework;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
@@ -55,6 +56,8 @@ public class WaitingRoomMap extends Map {
 
   protected String pedestalThreeTag = "&63rd place";
 
+  protected Skin exitEntitySkin = null;
+
   private static final SplittableRandom random = new SplittableRandom();
 
   public WaitingRoomMap(Game game, String name, Vector3 safeSpawn) {
@@ -75,7 +78,9 @@ public class WaitingRoomMap extends Map {
       exitEntity.setPosition(Position.fromObject(exitEntitySpawn, toLevel()));
       exitEntity.setScale(1.3f);
       exitEntity.lookAt(safeSpawn);
-      exitEntity.setSkin(SkinUtils.getRandom());
+      exitEntity.setSkin(
+        exitEntitySkin == null ? SkinUtils.getRandom() : exitEntitySkin
+      );
       exitEntity
         .getTagEditor()
         .putLine(TextFormat.YELLOW + "Back to the game center");
