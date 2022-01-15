@@ -32,6 +32,7 @@ import net.josscoder.gameapi.util.SkinUtils;
 import org.citizen.attributes.EmoteId;
 import org.citizen.attributes.InvokeAttribute;
 import org.citizen.entity.Citizen;
+import org.citizen.factory.Factory;
 
 @Getter
 @Setter
@@ -195,7 +196,17 @@ public class WaitingRoomMap extends Map {
 
     prepare();
 
-    exitEntity.despairFrom(player);
+    game.scheduleThread(
+      () -> {
+        Factory factory = game.getCitizenLibrary().getFactory();
+
+        if (factory.getCitizen(exitEntity.getEntityId()) != null) {
+          factory.remove(exitEntity.getEntityId());
+        }
+
+        exitEntity.despairFrom(player);
+      }
+    );
 
     player.teleport(
       Position.fromObject(pedestalCenterSpawn.add(0, 1), toLevel())
