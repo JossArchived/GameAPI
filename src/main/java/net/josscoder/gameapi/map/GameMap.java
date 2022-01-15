@@ -17,29 +17,25 @@
 package net.josscoder.gameapi.map;
 
 import cn.nukkit.math.Vector3;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import lombok.Getter;
-import lombok.Setter;
 import net.josscoder.gameapi.Game;
 
-@Getter
-@Setter
 public class GameMap extends Map {
 
   public static String SOLO = "solo";
 
   protected int votes = 0;
 
-  protected LinkedHashMap<String, List<Vector3>> spawns;
+  protected java.util.Map<String, List<Vector3>> spawns;
 
+  @Getter
   protected String image = "";
 
   public GameMap(Game game, String name, Vector3 safeSpawn) {
     super(game, name, safeSpawn);
-    spawns = new LinkedHashMap<>();
-    spawns.put(SOLO, new ArrayList<>());
+    spawns = new HashMap<>();
+    spawns.put(SOLO, new LinkedList<>());
   }
 
   public void addVote() {
@@ -71,20 +67,28 @@ public class GameMap extends Map {
   }
 
   public void addSpawn(String team, Vector3 position) {
-    if (spawns.get(team) != null) {
-      spawns.get(team).add(position);
-    }
+    spawns.computeIfAbsent(team, k -> new LinkedList<>());
+
+    spawns.get(team).add(position);
   }
 
   public List<Vector3> getSpawns() {
     return getSpawns(SOLO);
   }
 
-  public List<Vector3> getSpawns(String name) {
-    if (spawns.get(name) == null) {
+  public List<Vector3> getSpawns(String team) {
+    if (spawns.get(team) == null) {
       return new ArrayList<>();
     }
 
-    return spawns.get(name);
+    return spawns.get(team);
+  }
+
+  public void setSpawns(List<Vector3> spawns) {
+    setSpawns(SOLO, spawns);
+  }
+
+  public void setSpawns(String team, List<Vector3> spawns) {
+    spawns.forEach(spawn -> addSpawn(team, spawn));
   }
 }
