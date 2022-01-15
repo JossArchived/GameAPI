@@ -529,7 +529,9 @@ public abstract class Game extends PluginBase {
 
   public void searchNewGameFor(Player player) {}
 
-  public void searchNewGameFor(List<Player> players) {}
+  public void searchNewGameFor(List<Player> players) {
+    players.forEach(this::searchNewGameFor);
+  }
 
   public void sendToTheGameCenter(Player player) {}
 
