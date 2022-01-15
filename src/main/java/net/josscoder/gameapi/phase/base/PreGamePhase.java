@@ -27,6 +27,7 @@ import java.util.Set;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.api.event.game.GameStartEvent;
 import net.josscoder.gameapi.map.GameMap;
+import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.CharUtils;
 import net.josscoder.gameapi.util.MathUtils;
@@ -46,6 +47,15 @@ public class PreGamePhase extends LobbyPhase {
 
   @Override
   protected void onStart() {
+    WaitingRoomMap waitingRoomMap = game.getWaitingRoomMap();
+
+    if (waitingRoomMap != null && waitingRoomMap.getExitEntity() != null) {
+      game
+        .getCitizenLibrary()
+        .getFactory()
+        .remove(waitingRoomMap.getExitEntity().getEntityId());
+    }
+
     game.setStarted(true);
 
     game.getGameMapManager().getMapWinner().prepare(mapTime);
