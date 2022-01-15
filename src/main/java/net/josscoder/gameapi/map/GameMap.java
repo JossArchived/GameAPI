@@ -17,13 +17,12 @@
 package net.josscoder.gameapi.map;
 
 import cn.nukkit.math.Vector3;
-import lombok.Getter;
-import lombok.Setter;
-import net.josscoder.gameapi.Game;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import net.josscoder.gameapi.Game;
 
 @Getter
 @Setter
@@ -39,7 +38,6 @@ public class GameMap extends Map {
 
   public GameMap(Game game, String name, Vector3 safeSpawn) {
     super(game, name, safeSpawn);
-
     spawns = new LinkedHashMap<>();
     spawns.put(SOLO, new ArrayList<>());
   }
@@ -76,5 +74,17 @@ public class GameMap extends Map {
     if (spawns.get(team) != null) {
       spawns.get(team).add(position);
     }
+  }
+
+  public List<Vector3> getSpawns() {
+    return getSpawns(SOLO);
+  }
+
+  public List<Vector3> getSpawns(String name) {
+    if (spawns.get(name) == null) {
+      return new ArrayList<>();
+    }
+
+    return spawns.get(name);
   }
 }
