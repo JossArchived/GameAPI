@@ -328,8 +328,10 @@ public abstract class Game extends PluginBase {
     tips.add(tip);
   }
 
-  public void callEvent(Event event) {
+  public <T extends Event> T callEvent(T event) {
     getServer().getPluginManager().callEvent(event);
+
+    return event;
   }
 
   public void schedule(Runnable runnable, int delay) {
