@@ -25,7 +25,6 @@ import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.scheduler.TaskHandler;
-import cn.nukkit.utils.BlockColor;
 import cn.nukkit.utils.TextFormat;
 import java.time.Duration;
 import java.util.*;
@@ -149,6 +148,34 @@ public abstract class GamePhase extends State implements Listener {
 
   protected List<Player> getNeutralPlayers() {
     return getPlayers(player -> !player.isSpectator());
+  }
+
+  protected List<User> getNeutralUsers() {
+    List<User> users = new ArrayList<>();
+
+    for (Player neutralPlayer : getNeutralPlayers()) {
+      User user = userFactory.get(neutralPlayer);
+
+      if (user != null) {
+        users.add(user);
+      }
+    }
+
+    return users;
+  }
+
+  protected List<User> getSpectatorUsers() {
+    List<User> users = new ArrayList<>();
+
+    for (Player neutralPlayer : getSpectators()) {
+      User user = userFactory.get(neutralPlayer);
+
+      if (user != null) {
+        users.add(user);
+      }
+    }
+
+    return users;
   }
 
   protected int countSpectators() {
