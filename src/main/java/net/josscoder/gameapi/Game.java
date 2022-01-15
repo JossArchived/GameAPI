@@ -117,6 +117,8 @@ public abstract class Game extends PluginBase {
 
   private ExecutorService threadPool;
 
+  private String unexpectedMessage;
+
   public abstract String getId();
 
   public abstract String getGameName();
@@ -192,13 +194,40 @@ public abstract class Game extends PluginBase {
         .info(TextFormat.AQUA.toString() + mapsSize + " map(s) registered");
     }
 
+    settingUpServer();
+
+    getLogger().info(TextFormat.GREEN + "This game has been enabled!");
+  }
+
+  protected void settingUpServer() {
     getServer()
       .getNetwork()
       .setName(
         TextFormat.RESET.toString() + TextFormat.GRAY + "game-" + getId()
       );
 
-    getLogger().info(TextFormat.GREEN + "This game has been enabled!");
+    unexpectedMessage =
+      TextFormat.colorize(
+        "&8Unexpected? Report this &7(" + getId() + ")&8: &c"
+      );
+
+    getServer()
+      .setPropertyString("shutdown-message", unexpectedMessage + "Game Reset!");
+    getServer()
+      .setPropertyString(
+        "whitelist-reason",
+        unexpectedMessage + "Game in Maintenance!"
+      );
+    getServer().setPropertyBoolean("achievements", false);
+    getServer().setPropertyBoolean("announce-player-achievements", false);
+    getServer().setPropertyInt("spawn-protection", 0);
+    getServer().setPropertyBoolean("spawn-animals", false);
+    getServer().setPropertyBoolean("spawn-mobs", false);
+    getServer().setPropertyBoolean("bed-spawnpoints", false);
+    getServer().setPropertyBoolean("save-player-data", false);
+    getServer().setPropertyBoolean("nether", false);
+    getServer().setPropertyBoolean("end", false);
+    getServer().setPropertyBoolean("dimensions", true);
   }
 
   protected void initDefaultItems() {
@@ -405,16 +434,7 @@ public abstract class Game extends PluginBase {
     }
 
     if (shutdown) {
-      schedule(
-        () ->
-          getServer()
-            .forceShutdown(
-              TextFormat.colorize(
-                "&8Unexpected? Report this &7(" + getId() + ")&8: &cGame Reset!"
-              )
-            ),
-        20 * 5
-      );
+      schedule(() -> getServer().forceShutdown(), 20 * 5);
     }
   }
 
@@ -573,12 +593,7 @@ public abstract class Game extends PluginBase {
   }
 
   public void kick(Player player, String reason) {
-    player.kick(
-      TextFormat.colorize(
-        "&8Unexpected? Report this &7(" + getId() + ")&8: &c" + reason + "!"
-      ),
-      false
-    );
+    player.kick(unexpectedMessage + reason + "!", false);
   }
 
   @Override
