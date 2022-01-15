@@ -17,6 +17,7 @@
 package net.josscoder.gameapi.phase.base;
 
 import cn.nukkit.Player;
+import cn.nukkit.scheduler.Task;
 import cn.nukkit.utils.TextFormat;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -79,11 +80,24 @@ public class EndGamePhase extends LobbyPhase {
       );
 
     schedule(
-      () ->
-        waitingRoomMap.spawnFireworks(
-          pedestalPlayers == null ? 0 : pedestalPlayers.size()
-        ),
-      20 * 4
+      new Task() {
+        private int modifiableInterval = 4;
+
+        @Override
+        public void onRun(int i) {
+          modifiableInterval--;
+
+          if (modifiableInterval == 0) {
+            waitingRoomMap.spawnFireworks(
+              pedestalPlayers == null ? 0 : pedestalPlayers.size()
+            );
+
+            modifiableInterval = 4;
+          }
+        }
+      },
+      20 * 4,
+      20
     );
   }
 

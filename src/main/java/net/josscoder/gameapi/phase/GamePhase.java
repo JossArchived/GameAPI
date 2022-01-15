@@ -116,10 +116,18 @@ public abstract class GamePhase extends State implements Listener {
     tasks.add(task);
   }
 
-  protected void schedule(Runnable runnable, int delay, int interval) {
+  protected void schedule(Runnable runnable, int delay, int period) {
     TaskHandler task = getServer()
       .getScheduler()
-      .scheduleDelayedRepeatingTask(game, runnable, delay, interval);
+      .scheduleDelayedRepeatingTask(game, runnable, delay, period);
+
+    tasks.add(task);
+  }
+
+  protected void scheduleRepeating(Runnable runnable, int period) {
+    TaskHandler task = getServer()
+      .getScheduler()
+      .scheduleRepeatingTask(game, runnable, period);
 
     tasks.add(task);
   }

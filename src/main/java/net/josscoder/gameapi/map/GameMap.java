@@ -49,4 +49,12 @@ public class GameMap extends Map {
   public void resetVotes() {
     votes = 0;
   }
+
+  public void addSpawn(Vector3 position) {
+    spawns.add(position);
+  }
+
+  public void addSpawn(int index, Vector3 position) {
+    spawns.add(index, position);
+  }
 }

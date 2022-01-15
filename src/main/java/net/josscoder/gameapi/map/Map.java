@@ -50,6 +50,8 @@ public abstract class Map extends GameListener {
 
   protected Vector3 cornerTwo;
 
+  protected int defaultTime = Level.TIME_DAY;
+
   public Map(Game game, String name, Vector3 safeSpawn) {
     this(game, name, safeSpawn, null, null);
   }
@@ -83,10 +85,10 @@ public abstract class Map extends GameListener {
   }
 
   public void prepare() {
-    prepare(Level.TIME_DAY);
+    prepare(defaultTime);
   }
 
-  public void prepare(int mapTime) {
+  public void prepare(int time) {
     handle();
 
     Level level = game.getServer().getLevelByName(name);
@@ -95,7 +97,7 @@ public abstract class Map extends GameListener {
       return;
     }
 
-    level.setTime(mapTime);
+    level.setTime(time);
     level.stopTime();
     level.setRaining(false);
     level.setThundering(false);
@@ -106,7 +108,7 @@ public abstract class Map extends GameListener {
       return;
     }
 
-    handle();
+    prepare();
 
     player.teleport(Position.fromObject(safeSpawn, toLevel()).add(0, 1));
   }

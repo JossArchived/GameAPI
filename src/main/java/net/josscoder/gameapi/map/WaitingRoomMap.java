@@ -49,6 +49,12 @@ public class WaitingRoomMap extends Map {
 
   private Citizen exitEntity;
 
+  protected String pedestalOneTag = "&e1st place";
+
+  protected String pedestalTwoTag = "&72nd place";
+
+  protected String pedestalThreeTag = "&63rd place";
+
   private static final SplittableRandom random = new SplittableRandom();
 
   public WaitingRoomMap(Game game, String name, Vector3 safeSpawn) {
@@ -81,7 +87,6 @@ public class WaitingRoomMap extends Map {
           }
         }
       );
-      exitEntity.executeEmote(EmoteId.ABDUCTION.getId(), true, 11);
 
       game.getCitizenLibrary().getFactory().add(exitEntity);
     }
@@ -110,8 +115,10 @@ public class WaitingRoomMap extends Map {
       .putLine(
         TextFormat.colorize(
           position == 1
-            ? "&e1st place"
-            : position == 2 ? "&72nd place" : position == 3 ? "&63rd place" : ""
+            ? pedestalOneTag
+            : position == 2
+              ? pedestalTwoTag
+              : position == 3 ? pedestalThreeTag : ""
         )
       )
       .putLine(TextFormat.colorize("&f&l") + pedestalPlayer.getName());
@@ -186,7 +193,9 @@ public class WaitingRoomMap extends Map {
       return;
     }
 
-    handle();
+    prepare();
+
+    exitEntity.despairFrom(player);
 
     player.teleport(
       Position.fromObject(pedestalCenterSpawn.add(0, 1), toLevel())
