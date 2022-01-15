@@ -38,7 +38,8 @@ public class VoteCommand extends GameCommand {
     if (
       !(sender instanceof Player) ||
       game.isStarted() ||
-      game.isMapVoteFinished()
+      game.isMapVoteFinished() ||
+      !game.isCanVoteMap()
     ) {
       return false;
     }
