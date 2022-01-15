@@ -25,6 +25,7 @@ public class GameMap extends Map {
 
   public static String SOLO = "solo";
 
+  @Getter
   protected int votes = 0;
 
   protected java.util.Map<String, List<Vector3>> spawns;
