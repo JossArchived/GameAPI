@@ -260,10 +260,7 @@ public class User {
       () -> {
         if (bossbar == null) {
           bossbar =
-            new DummyBossBar.Builder(player)
-              .length(length)
-              .text(title)
-              .build();
+            new DummyBossBar.Builder(player).length(length).text(title).build();
 
           player.createBossBar(bossbar);
         } else {

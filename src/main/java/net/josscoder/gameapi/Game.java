@@ -192,6 +192,12 @@ public abstract class Game extends PluginBase {
         .info(TextFormat.AQUA.toString() + mapsSize + " map(s) registered");
     }
 
+    getServer()
+      .getNetwork()
+      .setName(
+        TextFormat.RESET.toString() + TextFormat.GRAY + "game-" + getId()
+      );
+
     getLogger().info(TextFormat.GREEN + "This game has been enabled!");
   }
 
