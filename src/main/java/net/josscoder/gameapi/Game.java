@@ -231,6 +231,8 @@ public abstract class Game extends PluginBase {
   }
 
   protected void initDefaultItems() {
+    //LOBBY ITEMS
+
     if (canVoteMap) {
       CustomItem voteMapItem = new CustomItem(
         Item.get(ItemID.PAPER),
@@ -248,6 +250,8 @@ public abstract class Game extends PluginBase {
       .setTransferable(false)
       .setInteractHandler(((user, player) -> sendToTheGameCenter(player)));
     waitingLobbyItems.put(8, exitItem);
+
+    //SPECTATOR ITEMS
 
     CustomItem teleporterItem = new CustomItem(
       Item.get(Item.COMPASS),

@@ -469,11 +469,6 @@ public abstract class GamePhase extends State implements Listener {
         game.getGameMapManager().getMapWinner().teleportToSafeSpawn(player);
       }
 
-      user
-        .getInventory()
-        .setItem(0, game.getWaitingLobbyItems().get(8).build());
-      user.updateInventory();
-
       return;
     }
 
