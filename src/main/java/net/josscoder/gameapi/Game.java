@@ -30,16 +30,22 @@ import cn.nukkit.scheduler.Task;
 import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
+import com.google.gson.JsonParser;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -196,7 +202,66 @@ public abstract class Game extends PluginBase {
 
     settingUpServer();
 
+    checkForUpdates();
+
     getLogger().info(TextFormat.GREEN + "This game has been enabled!");
+  }
+
+  public String getVersion() {
+    return GameAPI.getVersion();
+  }
+
+  public void checkForUpdates() {
+    CompletableFuture.runAsync(
+      () -> {
+        try {
+          URLConnection request = new URL(GameAPI.BRANCH).openConnection();
+          request.connect();
+          InputStreamReader content = new InputStreamReader(
+            (InputStream) request.getContent()
+          );
+          String latest =
+            "git-" +
+            new JsonParser()
+              .parse(content)
+              .getAsJsonObject()
+              .get("sha")
+              .getAsString()
+              .substring(0, 7);
+          content.close();
+
+          boolean isTheHiveVersion = GameAPI.getBranch().equals("thehivemc");
+
+          if (
+            !getVersion().equals(latest) &&
+            !getVersion().equals("git-null") &&
+            isTheHiveVersion
+          ) {
+            getLogger()
+              .info(
+                "§eThere is a new build of GameAPI available! Current: §c" +
+                getVersion() +
+                " §eLatest: §a" +
+                latest
+              );
+            getLogger()
+              .info(
+                "§eYou can download the latest build from §ahttps://github.com/Josscoder/GameAPI/releases"
+              );
+          } else if (!isTheHiveVersion) {
+            getLogger()
+              .warning(
+                "§6You are running a dev build! Do not use in production! Branch: " +
+                GameAPI.getBranch()
+              );
+          }
+
+          getLogger().debug("Update check done");
+        } catch (Exception ignore) {
+          getLogger().debug("Update check failed");
+        }
+      }
+    );
   }
 
   protected void settingUpServer() {
