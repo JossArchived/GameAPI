@@ -48,9 +48,7 @@ public class PreGamePhase extends LobbyPhase {
   @Override
   protected void onStart() {
     game.setStarted(true);
-
     game.getGameMapManager().getMapWinner().prepare(mapTime);
-
     spawnPlayers();
   }
 
