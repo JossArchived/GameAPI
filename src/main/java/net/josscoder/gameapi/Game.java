@@ -219,11 +219,13 @@ public abstract class Game extends PluginBase {
 
     getLogger()
       .info(
-        TextFormat.GREEN +
+        TextFormat.BLUE +
         "Running GameAPI v" +
         versionInfo.getSnapshot() +
         ", by " +
         versionInfo.getAuthor() +
+        ", branch " +
+        versionInfo.getBranchName() +
         ", commit " +
         versionInfo.getCommitId()
       );
