@@ -225,7 +225,7 @@ public abstract class Game extends PluginBase {
   }
 
   public String getVersion() {
-    return GameAPI.getVersion();
+    return GameAPI.VERSION;
   }
 
   private void checkForUpdates() {
