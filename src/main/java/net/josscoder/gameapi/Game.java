@@ -63,12 +63,15 @@ import net.josscoder.gameapi.customitem.listener.TransferableListener;
 import net.josscoder.gameapi.map.GameMap;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.map.manager.GameMapManager;
+import net.josscoder.gameapi.mode.GameMode;
 import net.josscoder.gameapi.phase.GamePhase;
 import net.josscoder.gameapi.phase.PhaseSeries;
 import net.josscoder.gameapi.phase.base.EndGamePhase;
 import net.josscoder.gameapi.phase.base.LobbyCountdownPhase;
 import net.josscoder.gameapi.phase.base.LobbyWaitingPhase;
 import net.josscoder.gameapi.phase.base.PreGamePhase;
+import net.josscoder.gameapi.team.Team;
+import net.josscoder.gameapi.team.Teamable;
 import net.josscoder.gameapi.user.factory.UserFactory;
 import net.josscoder.gameapi.user.listener.UserEventListener;
 import net.josscoder.gameapi.util.ZipUtils;
@@ -85,7 +88,7 @@ public abstract class Game extends PluginBase {
   protected WaitingRoomMap waitingRoomMap;
 
   @Setter
-  protected int defaultGamemode = 0;
+  protected int defaultPlayerGamemode = 0;
 
   @Setter
   protected boolean started = false;
@@ -123,6 +126,11 @@ public abstract class Game extends PluginBase {
   @Setter
   protected Map<Integer, CustomItem> spectatorItems;
 
+  @Setter
+  protected List<Team> teams;
+
+  protected GameMode gameMode = GameMode.SOLO;
+
   private Thread mainThread;
 
   private ExecutorService threadPool;
@@ -159,6 +167,8 @@ public abstract class Game extends PluginBase {
     waitingLobbyItems = new HashMap<>();
 
     spectatorItems = new HashMap<>();
+
+    teams = new ArrayList<>();
 
     userFactory = new UserFactory(this);
 
@@ -209,6 +219,10 @@ public abstract class Game extends PluginBase {
     checkForUpdates();
 
     getLogger().info(TextFormat.GREEN + "This game has been enabled!");
+  }
+
+  public boolean isTeamable() {
+    return this instanceof Teamable;
   }
 
   public String getVersion() {
@@ -327,7 +341,7 @@ public abstract class Game extends PluginBase {
     );
     hubItem
       .setTransferable(false)
-      .setInteractHandler(((user, player) -> sendToTheGameCenter(player)));
+      .setInteractHandler(((user, player) -> sendToHub(player)));
     waitingLobbyItems.put(8, hubItem);
   }
 
@@ -339,14 +353,14 @@ public abstract class Game extends PluginBase {
     teleporterItem.setTransferable(false).addCommands("teleporter");
     spectatorItems.put(0, teleporterItem);
 
-    CustomItem exitItem = new CustomItem(
+    CustomItem leaveGameItem = new CustomItem(
       Item.get(ItemID.DRAGON_BREATH),
-      "&r&cExit &7[Use]"
+      "&r&cLeave Game &7[Use]"
     );
-    exitItem
+    leaveGameItem
       .setTransferable(false)
-      .setInteractHandler(((user, player) -> sendToTheGameCenter(player)));
-    spectatorItems.put(8, exitItem);
+      .setInteractHandler(((user, player) -> sendToHub(player)));
+    spectatorItems.put(8, leaveGameItem);
 
     CustomItem newGameItem = new CustomItem(
       Item.get(Item.HEART_OF_THE_SEA),
@@ -357,7 +371,7 @@ public abstract class Game extends PluginBase {
       .setInteractHandler(
         (user, player) -> {
           player.sendMessage(
-            TextFormat.colorize("&l&b»&r&7 We will find a new game shortly...")
+            TextFormat.colorize("&l&b»&r&7 We'll find a new game shortly...")
           );
           searchNewGameFor(player);
         }
@@ -625,7 +639,7 @@ public abstract class Game extends PluginBase {
     players.forEach(this::searchNewGameFor);
   }
 
-  public void sendToTheGameCenter(Player player) {}
+  public void sendToHub(Player player) {}
 
   public boolean canMoveInPreGame() {
     return canMoveInPreGame;
@@ -692,6 +706,97 @@ public abstract class Game extends PluginBase {
 
   public GameMap getMapWinner() {
     return gameMapManager.getMapWinner();
+  }
+
+  public void addTeam(Team team) {
+    teams.add(team);
+  }
+
+  public boolean isTeamMember(Player from, Player to) {
+    if (!isTeamable()) {
+      return false;
+    }
+
+    for (Team team : teams) {
+      if (team.isMember(from) && team.isMember(to)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public List<Team> getSortedTeams() {
+    return getSortedTeams(true);
+  }
+
+  public List<Team> getSortedTeams(boolean asc) {
+    //Ty @DenzelCode
+
+    return teams
+      .stream()
+      .sorted(
+        Comparator.comparing(
+          Team::countMembers,
+          asc ? Comparator.naturalOrder() : Comparator.reverseOrder()
+        )
+      )
+      .collect(Collectors.toList());
+  }
+
+  public Team getTeamWithoutMembers() {
+    for (Team team : teams) {
+      if (team.countMembers() <= 0) {
+        return team;
+      }
+    }
+
+    return null;
+  }
+
+  public boolean thereIsATeamWithoutMembers() {
+    return getTeamWithoutMembers() != null;
+  }
+
+  public Team getAliveTeam() {
+    for (Team team : teams) {
+      if (
+        getTeamWithoutMembers() != null &&
+        !team.getId().equals(getTeamWithoutMembers().getId())
+      ) {
+        return team;
+      }
+    }
+
+    return null;
+  }
+
+  public Team getTeam(Player player) {
+    for (Team team : teams) {
+      if (team.isMember(player)) {
+        return team;
+      }
+    }
+
+    return null;
+  }
+
+  public void removeIfHasTeam(Player player) {
+    if (!hasTeam(player)) {
+      return;
+    }
+
+    getTeam(player).removeMember(player);
+  }
+
+  public boolean hasTeam(Player player) {
+    return getTeam(player) != null;
+  }
+
+  public GameMode getGameMode() {
+    return (
+      gameMode == GameMode.TEAM && teams.isEmpty() ? GameMode.SOLO : gameMode
+    );
   }
 
   @Override

@@ -54,7 +54,6 @@ public class UserEventListener extends GameListener<Game> {
     Player player = event.getPlayer();
 
     User user = new User(game, player.getName());
-    user.init();
 
     userFactory.add(user);
 
@@ -78,6 +77,7 @@ public class UserEventListener extends GameListener<Game> {
 
     userFactory.remove(player);
 
+    game.removeIfHasTeam(player);
     game.getGameMapManager().removeVoteIfHasVoted(player);
   }
 }

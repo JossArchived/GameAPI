@@ -86,7 +86,7 @@ public abstract class WaitingRoomMap extends Map<Game> {
         new InvokeAttribute(exitEntity) {
           @Override
           public void invoke(@NonNull Player player) {
-            game.sendToTheGameCenter(player);
+            game.sendToHub(player);
           }
         }
       );

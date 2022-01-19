@@ -21,6 +21,10 @@ public abstract class Team implements Cloneable {
     new ArrayList<>()
   );
 
+  public boolean isMember(Player player) {
+    return members.contains(player);
+  }
+
   public String getNameWithColor() {
     return getColor() + id;
   }

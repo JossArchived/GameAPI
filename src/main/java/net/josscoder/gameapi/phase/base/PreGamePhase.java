@@ -19,6 +19,7 @@ package net.josscoder.gameapi.phase.base;
 import cn.nukkit.Player;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.utils.TextFormat;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +29,8 @@ import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.event.GameStartEvent;
 import net.josscoder.gameapi.map.GameMap;
 import net.josscoder.gameapi.map.WaitingRoomMap;
+import net.josscoder.gameapi.mode.GameMode;
+import net.josscoder.gameapi.team.Team;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.CharUtils;
 import net.josscoder.gameapi.util.MathUtils;
@@ -53,22 +56,43 @@ public class PreGamePhase extends LobbyPhase<Game> {
   }
 
   private void spawnPlayers() {
-    List<Vector3> spawns = game.getMapWinner().getSpawns();
-    Set<Integer> spawnsUsed = new HashSet<>();
+    GameMap map = game.getMapWinner();
 
-    getNeutralPlayers()
-      .forEach(player -> spawnPlayer(player, spawns, spawnsUsed));
+    boolean isTeam = game.getGameMode() == GameMode.TEAM;
+
+    if (isTeam) {
+      game
+        .getTeams()
+        .forEach(
+          team ->
+            team
+              .getMembers()
+              .forEach(
+                member -> {
+                  List<Vector3> spawns = map.getSpawns(team.getId());
+                  Set<Integer> spawnsUsed = new HashSet<>();
+
+                  spawnPlayer(member, map, spawns, spawnsUsed);
+                }
+              )
+        );
+    } else {
+      List<Vector3> spawns = map.getSpawns();
+      Set<Integer> spawnsUsed = new HashSet<>();
+
+      getNeutralPlayers()
+        .forEach(player -> spawnPlayer(player, map, spawns, spawnsUsed));
+    }
   }
 
   private void spawnPlayer(
     Player player,
+    GameMap map,
     List<Vector3> spawns,
     Set<Integer> spawnsUsed
   ) {
-    GameMap mapWinner = game.getMapWinner();
-
     if (spawns.isEmpty()) {
-      mapWinner.teleportToSafeSpawn(player);
+      map.teleportToSafeSpawn(player);
     } else {
       int i;
 
@@ -78,7 +102,7 @@ public class PreGamePhase extends LobbyPhase<Game> {
 
       Vector3 spawn = spawns.get(i);
 
-      player.teleport(Position.fromObject(spawn, mapWinner.toLevel()));
+      player.teleport(Position.fromObject(spawn, map.toLevel()));
 
       spawnsUsed.add(i);
     }
@@ -90,7 +114,7 @@ public class PreGamePhase extends LobbyPhase<Game> {
     }
 
     user.clearAllInventory();
-    user.lookAt(mapWinner.getSafeSpawn());
+    user.lookAt(map.getSafeSpawn());
 
     if (!game.canMoveInPreGame()) {
       player.setImmobile(true);
@@ -134,7 +158,7 @@ public class PreGamePhase extends LobbyPhase<Game> {
     getNeutralPlayers()
       .forEach(
         player -> {
-          player.setGamemode(game.getDefaultGamemode());
+          player.setGamemode(game.getDefaultPlayerGamemode());
           player.setImmobile(false);
         }
       );
@@ -149,6 +173,28 @@ public class PreGamePhase extends LobbyPhase<Game> {
 
     if (!instruction.isEmpty()) {
       broadcastMessage("&7&l» &r&f" + instruction);
+    }
+
+    if (game.getGameMode() == GameMode.TEAM) {
+      getNeutralPlayers()
+        .forEach(
+          player -> {
+            Team team = game.getSortedTeams().get(0);
+
+            String color = team.getColor();
+
+            player.sendMessage(
+              TextFormat.BOLD +
+              color +
+              "» " +
+              TextFormat.RESET +
+              "You are on the " +
+              color +
+              team.getId() +
+              " Team!"
+            );
+          }
+        );
     }
 
     game.callEvent(new GameStartEvent());
