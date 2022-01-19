@@ -13,7 +13,7 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public abstract class Team implements Cloneable {
+public class Team implements Cloneable {
 
   protected final String id;
   protected final String color;
