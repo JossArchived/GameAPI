@@ -276,12 +276,7 @@ public abstract class Game extends PluginBase {
 
           getLogger().debug("Update check done");
           getLogger()
-            .info(
-              TextFormat.GRAY.toString() +
-              TextFormat.ITALIC +
-              "Running in the version " +
-              getVersion()
-            );
+            .info(TextFormat.GRAY + "Running in the version " + getVersion());
         } catch (Exception ignore) {
           getLogger().debug("Update check failed");
         }
