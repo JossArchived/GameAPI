@@ -36,7 +36,7 @@ import org.citizen.entity.Citizen;
 
 @Getter
 @Setter
-public abstract class WaitingRoomMap extends Map<Game> {
+public class WaitingRoomMap extends Map<Game> {
 
   protected Vector3 exitEntitySpawn;
 
