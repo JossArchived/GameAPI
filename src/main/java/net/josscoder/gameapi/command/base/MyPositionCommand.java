@@ -14,35 +14,46 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.command;
+package net.josscoder.gameapi.command.base;
 
+import cn.nukkit.Player;
+import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
-import net.josscoder.gameapi.phase.PhaseSeries;
 
-public class FreezePhasesCommand extends PhaseCommand {
+public class MyPositionCommand extends Command {
 
-  public FreezePhasesCommand(PhaseSeries phaseSeries) {
-    super("freezephases", "Freeze game phases", phaseSeries);
+  public MyPositionCommand() {
+    super("mypositon", "Show your position");
   }
 
   @Override
   public boolean execute(CommandSender sender, String label, String[] args) {
-    super.execute(sender, label, args);
-
-    if (!phaseSeries.getFrozen()) {
-      phaseSeries.setFrozen(true);
-      broadcast(
-        TextFormat.RED + sender.getName() + " has frozen the game phases"
-      );
-
-      return true;
+    if (!(sender instanceof Player)) {
+      return false;
     }
 
+    Player player = (Player) sender;
+
+    String levelFolderName = player.getLevel().getFolderName();
+
     sender.sendMessage(
-      TextFormat.RED + "The phases of the game are already frozen!"
+      TextFormat.colorize(
+        "&9" +
+        levelFolderName +
+        " &6X: &b" +
+        player.x +
+        " &6Y: &b" +
+        player.y +
+        " &6Z: &b" +
+        player.z +
+        " &6Yaw: &b" +
+        player.yaw +
+        " &6Pitch: &b" +
+        player.pitch
+      )
     );
 
-    return false;
+    return true;
   }
 }

@@ -14,18 +14,18 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.api.event.user;
+package net.josscoder.gameapi.user.event;
 
 import cn.nukkit.event.HandlerList;
 import lombok.Getter;
 import net.josscoder.gameapi.user.User;
 
-public class UserJoinServerEvent extends UserEvent {
+public class UserQuitServerEvent extends UserEvent {
 
   @Getter
   private static final HandlerList handlers = new HandlerList();
 
-  public UserJoinServerEvent(User user) {
+  public UserQuitServerEvent(User user) {
     super(user);
   }
 }

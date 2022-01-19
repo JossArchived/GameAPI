@@ -14,28 +14,28 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.api.command;
+package net.josscoder.gameapi.command;
 
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import net.josscoder.gameapi.Game;
 
-public abstract class GameCommand extends Command {
+public abstract class GameCommand<T extends Game> extends Command {
 
-  protected final Game game;
+  protected final T game;
 
-  public GameCommand(Game game, String name) {
+  public GameCommand(T game, String name) {
     super(name);
     this.game = game;
   }
 
-  public GameCommand(Game game, String name, String description) {
+  public GameCommand(T game, String name, String description) {
     super(name, description);
     this.game = game;
   }
 
   public GameCommand(
-    Game game,
+    T game,
     String name,
     String description,
     String usageMessage
@@ -45,7 +45,7 @@ public abstract class GameCommand extends Command {
   }
 
   public GameCommand(
-    Game game,
+    T game,
     String name,
     String description,
     String usageMessage,

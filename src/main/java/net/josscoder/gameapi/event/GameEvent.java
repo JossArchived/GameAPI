@@ -14,29 +14,8 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.api.event.user;
+package net.josscoder.gameapi.event;
 
-import cn.nukkit.Player;
-import cn.nukkit.event.HandlerList;
-import cn.nukkit.event.player.PlayerEvent;
-import lombok.Getter;
+import cn.nukkit.event.Event;
 
-public class PlayerRequestToLoseEvent extends PlayerEvent {
-
-  @Getter
-  private static final HandlerList handlers = new HandlerList();
-
-  @Getter
-  private final LoseCause loseCause;
-
-  public enum LoseCause {
-    VOID,
-    MIN_Y,
-    BORDER
-  }
-
-  public PlayerRequestToLoseEvent(Player player, LoseCause loseCause) {
-    this.player = player;
-    this.loseCause = loseCause;
-  }
-}
+public abstract class GameEvent extends Event {}

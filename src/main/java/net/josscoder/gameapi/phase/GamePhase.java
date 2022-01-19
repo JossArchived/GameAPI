@@ -31,19 +31,21 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.event.user.UserJoinServerEvent;
-import net.josscoder.gameapi.api.event.user.UserQuitServerEvent;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.phase.base.EndGamePhase;
 import net.josscoder.gameapi.user.User;
+import net.josscoder.gameapi.user.event.UserJoinServerEvent;
+import net.josscoder.gameapi.user.event.UserQuitServerEvent;
 import net.josscoder.gameapi.user.factory.UserFactory;
 import net.josscoder.gameapi.util.Utils;
 import net.minikloon.fsmgasm.State;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class GamePhase extends State implements Listener {
+public abstract class GamePhase<T extends Game>
+  extends State
+  implements Listener {
 
-  protected final Game game;
+  protected final T game;
 
   protected final Duration duration;
 
@@ -55,11 +57,11 @@ public abstract class GamePhase extends State implements Listener {
 
   protected final Set<Command> commands;
 
-  public GamePhase(Game game) {
+  public GamePhase(T game) {
     this(game, Duration.ZERO);
   }
 
-  public GamePhase(Game game, Duration duration) {
+  public GamePhase(T game, Duration duration) {
     userFactory = game.getUserFactory();
 
     listeners = new HashSet<>();
@@ -466,7 +468,7 @@ public abstract class GamePhase extends State implements Listener {
       if (this instanceof EndGamePhase) {
         waitingRoomMap.teleportToPedestalCenter(player);
       } else {
-        game.getGameMapManager().getMapWinner().teleportToSafeSpawn(player);
+        game.getMapWinner().teleportToSafeSpawn(player);
       }
 
       return;
@@ -489,7 +491,7 @@ public abstract class GamePhase extends State implements Listener {
     broadcastMessage(
       "&a&l» &r&7" +
       player.getName() +
-      " has joined. &8[" +
+      " joined. &8[" +
       neutralPlayers +
       "/" +
       maxPlayers +
@@ -511,7 +513,7 @@ public abstract class GamePhase extends State implements Listener {
     broadcastMessage(
       "&c&l» &r&7" +
       player.getName() +
-      " has left. &8[" +
+      " left. &8[" +
       neutralPlayers +
       "/" +
       maxPlayers +

@@ -18,13 +18,13 @@ package net.josscoder.gameapi.phase.base;
 
 import net.josscoder.gameapi.Game;
 
-public class LobbyWaitingPhase extends LobbyPhase {
+public class LobbyWaitingPhase extends LobbyPhase<Game> {
 
-  private final int neededPlayers;
+  private final int playersNeeded;
 
   public LobbyWaitingPhase(Game game) {
     super(game);
-    this.neededPlayers = game.getMinPlayers();
+    this.playersNeeded = game.getMinPlayers();
   }
 
   @Override
@@ -34,19 +34,19 @@ public class LobbyWaitingPhase extends LobbyPhase {
 
   @Override
   public void onUpdate() {
-    int restMorePlayers = (neededPlayers - countNeutralPlayers());
+    int restMorePlayers = (playersNeeded - countNeutralPlayers());
 
     broadcastActionBar(
       "&f" +
       restMorePlayers +
-      "&e more player" +
+      "&e player" +
       (restMorePlayers == 1 ? "" : "s") +
-      " to start..."
+      " needed to start..."
     );
   }
 
   @Override
   public boolean isReadyToEnd() {
-    return super.isReadyToEnd() && countNeutralPlayers() >= neededPlayers;
+    return super.isReadyToEnd() && countNeutralPlayers() >= playersNeeded;
   }
 }

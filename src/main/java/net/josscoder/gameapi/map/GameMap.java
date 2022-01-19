@@ -21,7 +21,7 @@ import java.util.*;
 import lombok.Getter;
 import net.josscoder.gameapi.Game;
 
-public class GameMap extends Map {
+public abstract class GameMap extends Map<Game> {
 
   public static String SOLO = "solo";
 

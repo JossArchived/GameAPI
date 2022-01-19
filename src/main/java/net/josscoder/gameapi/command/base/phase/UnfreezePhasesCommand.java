@@ -14,27 +14,33 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.command;
+package net.josscoder.gameapi.command.base.phase;
 
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
 import net.josscoder.gameapi.phase.PhaseSeries;
 
-public class SkipPhaseCommand extends PhaseCommand {
+public class UnfreezePhasesCommand extends PhaseCommand {
 
-  public SkipPhaseCommand(PhaseSeries phaseSeries) {
-    super("skipphase", "Skip to the next game phase", phaseSeries);
+  public UnfreezePhasesCommand(PhaseSeries phaseSeries) {
+    super("unfreezephases", "Unfreeze the game phases", phaseSeries);
   }
 
   @Override
   public boolean execute(CommandSender sender, String label, String[] args) {
     super.execute(sender, label, args);
 
-    broadcast(
-      TextFormat.RED + sender.getName() + " has skipped to the next game phase"
-    );
-    phaseSeries.skip();
+    if (phaseSeries.getFrozen()) {
+      phaseSeries.setFrozen(false);
+      broadcast(
+        TextFormat.GREEN + sender.getName() + " unfrozen the game phases"
+      );
 
-    return true;
+      return true;
+    }
+
+    sender.sendMessage(TextFormat.RED + "The game phases are not frozen!");
+
+    return false;
   }
 }

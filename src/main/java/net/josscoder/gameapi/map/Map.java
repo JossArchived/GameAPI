@@ -30,13 +30,13 @@ import cn.nukkit.utils.TextFormat;
 import lombok.Getter;
 import lombok.Setter;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.event.user.PlayerRequestToLoseEvent;
-import net.josscoder.gameapi.api.listener.GameListener;
+import net.josscoder.gameapi.listener.GameListener;
+import net.josscoder.gameapi.user.event.PlayerRequestToLoseEvent;
 import net.josscoder.gameapi.util.Utils;
 
 @Getter
 @Setter
-public abstract class Map extends GameListener {
+public abstract class Map<T extends Game> extends GameListener<Game> {
 
   protected final String name;
 
@@ -52,12 +52,12 @@ public abstract class Map extends GameListener {
 
   protected int defaultTime = Level.TIME_DAY;
 
-  public Map(Game game, String name, Vector3 safeSpawn) {
+  public Map(T game, String name, Vector3 safeSpawn) {
     this(game, name, safeSpawn, null, null);
   }
 
   public Map(
-    Game game,
+    T game,
     String name,
     Vector3 safeSpawn,
     Vector3 cornerOne,

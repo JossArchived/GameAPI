@@ -21,7 +21,7 @@ import lombok.SneakyThrows;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.map.GameMap;
 
-public class LobbyCountdownPhase extends LobbyPhase {
+public class LobbyCountdownPhase extends LobbyPhase<Game> {
 
   public LobbyCountdownPhase(Game game, Duration duration) {
     super(game, duration);
@@ -46,9 +46,9 @@ public class LobbyCountdownPhase extends LobbyPhase {
 
     if (remainingDuration == 3 && game.isCanVoteMap()) {
       game.setMapVoteFinished(true);
-      broadcastMessage("&l&b» &aThe vote is over!");
+      broadcastMessage("&l&b» &aVoting has ended!");
 
-      GameMap mapWinner = game.getGameMapManager().getMapWinner();
+      GameMap mapWinner = game.getMapWinner();
 
       if (mapWinner != null) {
         broadcastMessage(
@@ -66,7 +66,7 @@ public class LobbyCountdownPhase extends LobbyPhase {
     }
 
     broadcastActionBar(
-      "&aThe game starts in &l" +
+      "&aStarting game in in &l" +
       (remainingDuration <= 5 ? "&c" : "&a") +
       remainingDuration
     );

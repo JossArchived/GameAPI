@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.event.game.GameEndEvent;
+import net.josscoder.gameapi.event.GameEndEvent;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.user.User;
 
-public class EndGamePhase extends LobbyPhase {
+public class EndGamePhase extends LobbyPhase<Game> {
 
   private final Map<Player, Integer> pedestalPlayers;
 
@@ -66,7 +66,7 @@ public class EndGamePhase extends LobbyPhase {
           user.convertPlayer();
 
           player.sendTitle(TextFormat.colorize("&l&6»&r&c Game Over &l&6«"));
-          player.sendMessage(TextFormat.colorize("&l&c» Game Over!"));
+          player.sendMessage(TextFormat.colorize("&l&c» Game OVER!"));
           playSound(player, "mob.ghast.fireball");
 
           schedule(
@@ -108,7 +108,7 @@ public class EndGamePhase extends LobbyPhase {
     }
 
     broadcastActionBar(
-      "&eSearching for a new game in &f" +
+      "&eFinding a new game in &f" +
       getRemainingDuration().getSeconds() +
       "&e..."
     );
@@ -127,15 +127,14 @@ public class EndGamePhase extends LobbyPhase {
   protected void onEnd() {
     super.onEnd();
 
-    broadcastActionBar("&bSending you to a game.");
+    broadcastActionBar("&bSearching for new game.");
 
     game.searchNewGameFor(new ArrayList<>(getOnlinePlayers()));
 
     game.schedule(
       () ->
         game.scheduleThread(
-          () ->
-            game.reset(game.getGameMapManager().getMapWinner().getName(), true)
+          () -> game.reset(game.getMapWinner().getName(), true)
         ),
       20 * 10
     );

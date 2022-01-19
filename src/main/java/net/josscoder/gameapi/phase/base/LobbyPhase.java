@@ -33,13 +33,13 @@ import java.time.Duration;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.phase.GamePhase;
 
-public abstract class LobbyPhase extends GamePhase {
+public abstract class LobbyPhase<T extends Game> extends GamePhase<Game> {
 
-  public LobbyPhase(Game game) {
+  public LobbyPhase(T game) {
     super(game);
   }
 
-  public LobbyPhase(Game game, Duration duration) {
+  public LobbyPhase(T game, Duration duration) {
     super(game, duration);
   }
 

@@ -103,7 +103,7 @@ public class Firework {
     CustomItemFirework entity = new CustomItemFirework(
       position.getChunk(),
       nbt,
-      24
+      20
     );
     entity.spawnToAll();
   }

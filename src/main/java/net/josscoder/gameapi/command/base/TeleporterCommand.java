@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.command;
+package net.josscoder.gameapi.command.base;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
@@ -22,10 +22,10 @@ import cn.nukkit.utils.TextFormat;
 import com.denzelcode.form.element.Button;
 import com.denzelcode.form.window.SimpleWindowForm;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.command.GameCommand;
+import net.josscoder.gameapi.command.GameCommand;
 import net.josscoder.gameapi.util.Utils;
 
-public class TeleporterCommand extends GameCommand {
+public class TeleporterCommand extends GameCommand<Game> {
 
   public TeleporterCommand(Game game) {
     super(game, "teleporter", "Display a list of players to teleport to");

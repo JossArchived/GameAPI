@@ -27,7 +27,7 @@ import cn.nukkit.utils.DummyBossBar;
 import cn.nukkit.utils.TextFormat;
 import lombok.Getter;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.event.user.UserConvertSpectatorEvent;
+import net.josscoder.gameapi.user.event.UserConvertSpectatorEvent;
 import net.josscoder.gameapi.user.storage.LocalStorage;
 import net.josscoder.gameapi.util.Utils;
 
@@ -48,8 +48,6 @@ public class User {
 
     localStorage = new LocalStorage();
   }
-
-  public void init() {}
 
   public Player getPlayer() {
     return Server.getInstance().getPlayer(name);
@@ -152,7 +150,6 @@ public class User {
       .forEach(
         (slot, customItem) -> getInventory().setItem(slot, customItem.build())
       );
-    getInventory().setItem(8, game.getWaitingLobbyItems().get(8).build());
 
     updateInventory();
 
@@ -244,9 +241,7 @@ public class User {
       return;
     }
 
-    player.teleport(
-      game.getGameMapManager().getMapWinner().getSafeSpawn().add(0, 1)
-    );
+    player.teleport(game.getMapWinner().getSafeSpawn().add(0, 1));
   }
 
   public void sendBossBar(String title, float length) {

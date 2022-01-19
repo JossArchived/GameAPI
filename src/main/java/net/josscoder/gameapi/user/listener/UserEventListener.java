@@ -22,15 +22,14 @@ import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
-import cn.nukkit.utils.TextFormat;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.event.user.UserJoinServerEvent;
-import net.josscoder.gameapi.api.event.user.UserQuitServerEvent;
-import net.josscoder.gameapi.api.listener.GameListener;
+import net.josscoder.gameapi.listener.GameListener;
 import net.josscoder.gameapi.user.User;
+import net.josscoder.gameapi.user.event.UserJoinServerEvent;
+import net.josscoder.gameapi.user.event.UserQuitServerEvent;
 import net.josscoder.gameapi.user.factory.UserFactory;
 
-public class UserEventListener extends GameListener {
+public class UserEventListener extends GameListener<Game> {
 
   private final UserFactory userFactory;
 

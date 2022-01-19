@@ -14,19 +14,27 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.api.event.user;
+package net.josscoder.gameapi.command.base.phase;
 
-import cn.nukkit.event.player.PlayerEvent;
-import lombok.Getter;
-import net.josscoder.gameapi.user.User;
+import cn.nukkit.command.CommandSender;
+import cn.nukkit.utils.TextFormat;
+import net.josscoder.gameapi.phase.PhaseSeries;
 
-public abstract class UserEvent extends PlayerEvent {
+public class SkipPhaseCommand extends PhaseCommand {
 
-  @Getter
-  private final User user;
+  public SkipPhaseCommand(PhaseSeries phaseSeries) {
+    super("skipphase", "Skip to the next game phase", phaseSeries);
+  }
 
-  public UserEvent(User user) {
-    this.user = user;
-    player = user.getPlayer();
+  @Override
+  public boolean execute(CommandSender sender, String label, String[] args) {
+    super.execute(sender, label, args);
+
+    broadcast(
+      TextFormat.RED + sender.getName() + " has skipped to the next game phase"
+    );
+    phaseSeries.skip();
+
+    return true;
   }
 }

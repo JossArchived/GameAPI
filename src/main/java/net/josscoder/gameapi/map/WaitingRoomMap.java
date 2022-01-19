@@ -36,7 +36,7 @@ import org.citizen.entity.Citizen;
 
 @Getter
 @Setter
-public class WaitingRoomMap extends Map {
+public abstract class WaitingRoomMap extends Map<Game> {
 
   protected Vector3 exitEntitySpawn;
 
@@ -81,9 +81,7 @@ public class WaitingRoomMap extends Map {
       exitEntity.setSkin(
         exitEntitySkin == null ? SkinUtils.getRandom() : exitEntitySkin
       );
-      exitEntity
-        .getTagEditor()
-        .putLine(TextFormat.YELLOW + "Back to the game center");
+      exitEntity.getTagEditor().putLine(TextFormat.YELLOW + "Back to Hub");
       exitEntity.setInvokeAttribute(
         new InvokeAttribute(exitEntity) {
           @Override

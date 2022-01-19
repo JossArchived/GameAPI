@@ -52,11 +52,15 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.josscoder.gameapi.command.*;
+import net.josscoder.gameapi.command.base.*;
+import net.josscoder.gameapi.command.base.phase.FreezePhasesCommand;
+import net.josscoder.gameapi.command.base.phase.SkipPhaseCommand;
+import net.josscoder.gameapi.command.base.phase.UnfreezePhasesCommand;
 import net.josscoder.gameapi.customitem.CustomItem;
 import net.josscoder.gameapi.customitem.factory.CustomItemFactory;
 import net.josscoder.gameapi.customitem.listener.InteractiveListener;
 import net.josscoder.gameapi.customitem.listener.TransferableListener;
+import net.josscoder.gameapi.map.GameMap;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.map.manager.GameMapManager;
 import net.josscoder.gameapi.phase.GamePhase;
@@ -178,7 +182,7 @@ public abstract class Game extends PluginBase {
 
     init();
 
-    initDefaultItems();
+    initItems();
 
     if (developmentMode) {
       getLogger().info(TextFormat.GOLD + "Development mode is enabled!");
@@ -257,6 +261,13 @@ public abstract class Game extends PluginBase {
           }
 
           getLogger().debug("Update check done");
+          getLogger()
+            .info(
+              TextFormat.GRAY.toString() +
+              TextFormat.ITALIC +
+              "Running in the version " +
+              getVersion()
+            );
         } catch (Exception ignore) {
           getLogger().debug("Update check failed");
         }
@@ -295,35 +306,47 @@ public abstract class Game extends PluginBase {
     getServer().setPropertyBoolean("dimensions", true);
   }
 
-  protected void initDefaultItems() {
-    //LOBBY ITEMS
+  protected void initItems() {
+    initWaitingLobbyItems();
+    initSpectatorItems();
+  }
 
+  protected void initWaitingLobbyItems() {
     if (canVoteMap) {
       CustomItem voteMapItem = new CustomItem(
         Item.get(ItemID.PAPER),
-        "&r&bVote Map &7[Use]"
+        "&r&bVote for Map &7[Use]"
       );
       voteMapItem.setTransferable(false).addCommands("vote");
       waitingLobbyItems.put(0, voteMapItem);
     }
 
-    CustomItem exitItem = new CustomItem(
+    CustomItem hubItem = new CustomItem(
       Item.get(ItemID.DRAGON_BREATH),
-      "&r&eBack to the game center &7[Use]"
+      "&r&eBack to Hub &7[Use]"
     );
-    exitItem
+    hubItem
       .setTransferable(false)
       .setInteractHandler(((user, player) -> sendToTheGameCenter(player)));
-    waitingLobbyItems.put(8, exitItem);
+    waitingLobbyItems.put(8, hubItem);
+  }
 
-    //SPECTATOR ITEMS
-
+  protected void initSpectatorItems() {
     CustomItem teleporterItem = new CustomItem(
       Item.get(Item.COMPASS),
       "&r&bTeleporter &7[Use]"
     );
     teleporterItem.setTransferable(false).addCommands("teleporter");
     spectatorItems.put(0, teleporterItem);
+
+    CustomItem exitItem = new CustomItem(
+      Item.get(ItemID.DRAGON_BREATH),
+      "&r&cExit &7[Use]"
+    );
+    exitItem
+      .setTransferable(false)
+      .setInteractHandler(((user, player) -> sendToTheGameCenter(player)));
+    spectatorItems.put(8, exitItem);
 
     CustomItem newGameItem = new CustomItem(
       Item.get(Item.HEART_OF_THE_SEA),
@@ -358,17 +381,17 @@ public abstract class Game extends PluginBase {
       .forEach(this::unregisterCommand);
   }
 
-  protected List<GamePhase> createPreGamePhase() {
+  protected List<GamePhase<Game>> createPreGamePhase() {
     return createPreGamePhase(Duration.ofSeconds(20));
   }
 
-  protected List<GamePhase> createPreGamePhase(
+  protected List<GamePhase<Game>> createPreGamePhase(
     Duration lobbyCountdownDuration
   ) {
     return createPreGamePhase(lobbyCountdownDuration, 10);
   }
 
-  protected List<GamePhase> createPreGamePhase(
+  protected List<GamePhase<Game>> createPreGamePhase(
     Duration lobbyCountdownDuration,
     int preGameCountdown
   ) {
@@ -379,12 +402,12 @@ public abstract class Game extends PluginBase {
     );
   }
 
-  protected List<GamePhase> createPreGamePhase(
+  protected List<GamePhase<Game>> createPreGamePhase(
     Duration lobbyCountdownDuration,
     int preGameCountdown,
     int mapTime
   ) {
-    List<GamePhase> gamePhases = new LinkedList<>();
+    List<GamePhase<Game>> gamePhases = new LinkedList<>();
     gamePhases.add(new LobbyWaitingPhase(this));
     gamePhases.add(new LobbyCountdownPhase(this, lobbyCountdownDuration));
     gamePhases.add(new PreGamePhase(this, preGameCountdown, mapTime));
@@ -667,10 +690,12 @@ public abstract class Game extends PluginBase {
     player.kick(unexpectedMessage + reason + "!", false);
   }
 
+  public GameMap getMapWinner() {
+    return gameMapManager.getMapWinner();
+  }
+
   @Override
   public void onDisable() {
-    super.onDisable();
-
     close();
 
     getLogger().info(TextFormat.RED + "This game has been disabled!");

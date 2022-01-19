@@ -80,7 +80,7 @@ public class CustomItemFirework extends Entity {
           move(motionX, motionY, motionZ);
           updateMovement();
           float f = (float) Math.sqrt(motionX * motionX + motionZ * motionZ);
-          yaw = (float) (FastMath.atan2(motionX, motionZ) * 57.29577951308232D);
+          yaw = (float) (FastMath.atan2(motionY, motionZ) * 57.29577951308232D);
           pitch = (float) (FastMath.atan2(motionY, f) * 57.29577951308232D);
           if (age == 0) {
             getLevel().addLevelSoundEvent(this, 56);

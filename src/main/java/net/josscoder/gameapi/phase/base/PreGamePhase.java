@@ -25,14 +25,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import net.josscoder.gameapi.Game;
-import net.josscoder.gameapi.api.event.game.GameStartEvent;
+import net.josscoder.gameapi.event.GameStartEvent;
 import net.josscoder.gameapi.map.GameMap;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.CharUtils;
 import net.josscoder.gameapi.util.MathUtils;
 
-public class PreGamePhase extends LobbyPhase {
+public class PreGamePhase extends LobbyPhase<Game> {
 
   private final int initialCountdown;
   private int countdown;
@@ -48,12 +48,12 @@ public class PreGamePhase extends LobbyPhase {
   @Override
   protected void onStart() {
     game.setStarted(true);
-    game.getGameMapManager().getMapWinner().prepare(mapTime);
+    game.getMapWinner().prepare(mapTime);
     spawnPlayers();
   }
 
   private void spawnPlayers() {
-    List<Vector3> spawns = game.getGameMapManager().getMapWinner().getSpawns();
+    List<Vector3> spawns = game.getMapWinner().getSpawns();
     Set<Integer> spawnsUsed = new HashSet<>();
 
     getNeutralPlayers()
@@ -65,7 +65,7 @@ public class PreGamePhase extends LobbyPhase {
     List<Vector3> spawns,
     Set<Integer> spawnsUsed
   ) {
-    GameMap mapWinner = game.getGameMapManager().getMapWinner();
+    GameMap mapWinner = game.getMapWinner();
 
     if (spawns.isEmpty()) {
       mapWinner.teleportToSafeSpawn(player);
@@ -103,7 +103,7 @@ public class PreGamePhase extends LobbyPhase {
 
     if (countdown > 0) {
       broadcastActionBar(
-        "&eStart game: &l»&r " +
+        "&eGame Start: &l»&r " +
         CharUtils.timeToChar(countdown, initialCountdown) +
         "&f " +
         countdown

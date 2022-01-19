@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package net.josscoder.gameapi.api.event.game;
+package net.josscoder.gameapi.event;
 
 import cn.nukkit.event.HandlerList;
 import lombok.Getter;
