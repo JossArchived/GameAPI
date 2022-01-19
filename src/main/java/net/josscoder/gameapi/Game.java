@@ -30,29 +30,27 @@ import cn.nukkit.scheduler.Task;
 import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
-import com.google.gson.JsonParser;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.josscoder.gameapi.command.base.*;
+import net.josscoder.gameapi.command.base.MyPositionCommand;
+import net.josscoder.gameapi.command.base.SoundCommand;
+import net.josscoder.gameapi.command.base.TeleporterCommand;
+import net.josscoder.gameapi.command.base.VoteCommand;
 import net.josscoder.gameapi.command.base.phase.FreezePhasesCommand;
 import net.josscoder.gameapi.command.base.phase.SkipPhaseCommand;
 import net.josscoder.gameapi.command.base.phase.UnfreezePhasesCommand;
@@ -79,6 +77,8 @@ import org.citizen.CitizenLibrary;
 
 @Getter
 public abstract class Game extends PluginBase {
+
+  private static final VersionInfo versionInfo = loadVersion();
 
   @Setter
   protected boolean developmentMode = false;
@@ -215,72 +215,41 @@ public abstract class Game extends PluginBase {
 
     settingUpServer();
 
-    checkForUpdates();
-
     getLogger().info(TextFormat.GREEN + "This game has been enabled!");
+
+    getLogger()
+      .info(
+        TextFormat.GREEN +
+        "Running GameAPI v" +
+        versionInfo.getSnapshot() +
+        ", by " +
+        versionInfo.getAuthor() +
+        ", commit " +
+        versionInfo.getCommitId()
+      );
   }
 
   public boolean isTeamable() {
     return this instanceof Teamable;
   }
 
-  public String getVersion() {
-    return GameAPI.VERSION;
-  }
+  private static VersionInfo loadVersion() {
+    InputStream inputStream =
+      Game.class.getClassLoader().getResourceAsStream("git.properties");
+    if (inputStream == null) {
+      return VersionInfo.unknown();
+    }
 
-  private void checkForUpdates() {
-    CompletableFuture.runAsync(
-      () -> {
-        try {
-          URLConnection request = new URL(GameAPI.BRANCH).openConnection();
-          request.connect();
-          InputStreamReader content = new InputStreamReader(
-            (InputStream) request.getContent()
-          );
-          String latest =
-            "git-" +
-            new JsonParser()
-              .parse(content)
-              .getAsJsonObject()
-              .get("sha")
-              .getAsString()
-              .substring(0, 7);
-          content.close();
+    Properties properties = new Properties();
+    try {
+      properties.load(inputStream);
+    } catch (IOException e) {
+      return VersionInfo.unknown();
+    }
 
-          boolean isTheHiveVersion = GameAPI.getBranch().equals("thehivemc");
-
-          if (
-            !getVersion().equals(latest) &&
-            !getVersion().equals("git-null") &&
-            isTheHiveVersion
-          ) {
-            getLogger()
-              .info(
-                "§eThere is a new build of GameAPI available! Current: §c" +
-                getVersion() +
-                " §eLatest: §a" +
-                latest
-              );
-            getLogger()
-              .info(
-                "§eYou can download the latest build from §ahttps://github.com/Josscoder/GameAPI/releases"
-              );
-          } else if (!isTheHiveVersion) {
-            getLogger()
-              .warning(
-                "§6You are running a dev build! Do not use in production! Branch: " +
-                GameAPI.getBranch()
-              );
-          }
-
-          getLogger().debug("Update check done");
-          getLogger()
-            .info(TextFormat.GRAY + "Running in the version " + getVersion());
-        } catch (Exception ignore) {
-          getLogger().debug("Update check failed");
-        }
-      }
-    );
+    String branchName = properties.getProperty("git.branch", "unknown");
+    String commitId = properties.getProperty("git.commit.id.abbrev", "unknown");
+    return new VersionInfo(branchName, commitId);
   }
 
   private void settingUpServer() {
