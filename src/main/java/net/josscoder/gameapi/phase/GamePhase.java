@@ -421,6 +421,31 @@ public abstract class GamePhase<T extends Game>
     );
   }
 
+  protected void broadcastScoreboard(
+    String title,
+    Predicate<? super Player> condition,
+    String... lines
+  ) {
+    getPlayers(condition)
+      .forEach(
+        player -> {
+          User user = userFactory.get(player);
+
+          if (user != null) {
+            user.sendScoreboard(TextFormat.colorize(title), lines);
+          }
+        }
+      );
+  }
+
+  protected void broadcastScoreboard(String title, String... lines) {
+    broadcastScoreboard(
+      title,
+      player -> getOnlinePlayers().contains(player),
+      lines
+    );
+  }
+
   protected void broadcastPopup(
     String message,
     String subTitle,

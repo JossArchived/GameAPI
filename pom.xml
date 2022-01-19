@@ -104,6 +104,23 @@
         <scope>compile</scope>
       </dependency>
 
+      <!-- ScoreboardAPI -->
+      <dependency>
+        <groupId>com.github.Creeperface01</groupId>
+        <artifactId>ScoreboardAPI</artifactId>
+        <version>2e474326d0</version>
+        <scope>compile</scope>
+      </dependency>
+
+      <!-- KotlinLib -->
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>KotlinLib</artifactId>
+        <version>1.0.0</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/lib/KotlinLib.jar</systemPath>
+      </dependency>
+
     </dependencies>
 
 </project>

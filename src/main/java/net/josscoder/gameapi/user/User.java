@@ -25,6 +25,12 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.DummyBossBar;
 import cn.nukkit.utils.TextFormat;
+import gt.creeperface.nukkit.scoreboardapi.ScoreboardAPI;
+import gt.creeperface.nukkit.scoreboardapi.scoreboard.ObjectiveSortOrder;
+import gt.creeperface.nukkit.scoreboardapi.scoreboard.SimpleScoreboard;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import lombok.Getter;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.user.event.UserConvertSpectatorEvent;
@@ -41,6 +47,10 @@ public class User {
   private final LocalStorage localStorage;
 
   private DummyBossBar bossbar;
+
+  private final List<String> lastScoreboardLines = new ArrayList<>();
+
+  private SimpleScoreboard scoreboard;
 
   public User(Game game, String name) {
     this.game = game;
@@ -125,6 +135,7 @@ public class User {
     clearAllInventory();
 
     removeBossBar();
+    removeScoreboard();
   }
 
   public void convertSpectator() {
@@ -242,6 +253,59 @@ public class User {
     }
 
     player.teleport(game.getMapWinner().getSafeSpawn().add(0, 1));
+  }
+
+  public void removeScoreboard() {
+    if (scoreboard == null) {
+      return;
+    }
+
+    scoreboard.resetAllScores();
+  }
+
+  public void sendScoreboard(String title, String... lines) {
+    Player player = getPlayer();
+
+    if (player == null) {
+      return;
+    }
+
+    boolean hasScore = scoreboard != null;
+
+    if (hasScore && lastScoreboardLines.size() != lines.length) {
+      removeScoreboard();
+    }
+
+    if (!hasScore) {
+      scoreboard =
+        ScoreboardAPI
+          .builder()
+          .setSortOrder(ObjectiveSortOrder.DESCENDING)
+          .build();
+    }
+
+    int score = lines.length;
+
+    for (String line : lines) {
+      scoreboard.setScore(score, line, score);
+
+      score--;
+    }
+
+    scoreboard.setDisplayName(title);
+
+    game.scheduleOnMainThread(
+      () -> {
+        if (hasScore) {
+          scoreboard.update();
+        } else {
+          scoreboard.addPlayer(player);
+        }
+      }
+    );
+
+    lastScoreboardLines.clear();
+    lastScoreboardLines.addAll(Arrays.asList(lines));
   }
 
   public void sendBossBar(String title, float length) {

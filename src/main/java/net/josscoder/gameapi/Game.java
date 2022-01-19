@@ -63,7 +63,6 @@ import net.josscoder.gameapi.customitem.listener.TransferableListener;
 import net.josscoder.gameapi.map.GameMap;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.map.manager.GameMapManager;
-import net.josscoder.gameapi.mode.GameMode;
 import net.josscoder.gameapi.phase.GamePhase;
 import net.josscoder.gameapi.phase.PhaseSeries;
 import net.josscoder.gameapi.phase.base.EndGamePhase;
@@ -129,7 +128,7 @@ public abstract class Game extends PluginBase {
   @Setter
   protected List<Team> teams;
 
-  protected GameMode gameMode = GameMode.SOLO;
+  protected GameType gameType = GameType.SOLO;
 
   private Thread mainThread;
 
@@ -788,9 +787,9 @@ public abstract class Game extends PluginBase {
     return getTeam(player) != null;
   }
 
-  public GameMode getGameMode() {
+  public GameType getGameType() {
     return (
-      gameMode == GameMode.TEAM && teams.isEmpty() ? GameMode.SOLO : gameMode
+      gameType == GameType.TEAM && teams.isEmpty() ? GameType.SOLO : gameType
     );
   }
 

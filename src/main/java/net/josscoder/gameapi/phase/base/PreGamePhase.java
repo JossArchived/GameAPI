@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import net.josscoder.gameapi.Game;
+import net.josscoder.gameapi.GameType;
 import net.josscoder.gameapi.event.GameStartEvent;
 import net.josscoder.gameapi.map.GameMap;
 import net.josscoder.gameapi.map.WaitingRoomMap;
-import net.josscoder.gameapi.mode.GameMode;
 import net.josscoder.gameapi.team.Team;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.CharUtils;
@@ -58,7 +58,7 @@ public class PreGamePhase extends LobbyPhase<Game> {
   private void spawnPlayers() {
     GameMap map = game.getMapWinner();
 
-    boolean isTeam = game.getGameMode() == GameMode.TEAM;
+    boolean isTeam = game.getGameType() == GameType.TEAM;
 
     if (isTeam) {
       game
@@ -175,7 +175,7 @@ public class PreGamePhase extends LobbyPhase<Game> {
       broadcastMessage("&7&l» &r&f" + instruction);
     }
 
-    if (game.getGameMode() == GameMode.TEAM) {
+    if (game.getGameType() == GameType.TEAM) {
       getNeutralPlayers()
         .forEach(
           player -> {
