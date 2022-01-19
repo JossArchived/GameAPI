@@ -1,4 +1,4 @@
-# GameAPI [![Build](https://github.com/Josscoder/GameAPI/actions/workflows/build.yml/badge.svg?branch=thehivemc)](https://github.com/Josscoder/GameAPI/actions/workflows/build.yml) [![](https://jitpack.io/v/Josscoder/GameAPI.svg)](https://jitpack.io/#Josscoder/GameAPI)
+# GameAPI [![](https://jitpack.io/v/Josscoder/GameAPI.svg)](https://jitpack.io/#Josscoder/GameAPI)
 
 ## 📙 Description
 
@@ -59,7 +59,7 @@ public class SkyWars extends Game {
     public void init() {
         initGameSettings();
 
-        List<GamePhase> lobbyPhases = createPreGamePhase();
+        List<GamePhase<SkyWars>> lobbyPhases = createPreGamePhase();
 
         phaseSeries.addAll(lobbyPhases);
         phaseSeries.add(new FightPhase(this, Duration.ofMinutes(30)));
@@ -161,10 +161,10 @@ import net.josscoder.gameapi.phase.GamePhase;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.TimeUtils;
 
-public class FightPhase extends GamePhase {
+public class FightPhase extends GamePhase<SkyWars> {
 
-  public FightPhase(Game game, Duration duration) {
-    super(game, duration);
+  public FightPhase(Duration duration) {
+    super(SkyWars.getInstance(), duration);
   }
 
   @Override
@@ -219,10 +219,8 @@ public class FightPhase extends GamePhase {
     if (!(entity instanceof Player)) {
       return;
     }
-
-    Player player = (Player) entity;
-
-    User user = userFactory.get(player);
+    
+    User user = userFactory.get((Player) entity);
 
     if (user == null) {
       return;
@@ -325,11 +323,13 @@ Maven:
   </repository>
 </repositories>
 
+<depencies>
 <dependency>
- <groupId>com.github.Josscoder</groupId>
-   <artifactId>GameAPI</artifactId>
- <version>thehivemc-SNAPSHOT</version>
+  <groupId>com.github.Josscoder</groupId>
+  <artifactId>GameAPI</artifactId>
+  <version>thehivemc-SNAPSHOT</version>
 </dependency>
+</depencies>
 ```
 
 Gradle:
