@@ -1,6 +1,7 @@
 package net.josscoder.gameapi.team;
 
 import cn.nukkit.Player;
+import cn.nukkit.utils.DyeColor;
 import cn.nukkit.utils.TextFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +17,7 @@ public abstract class Team implements Cloneable {
 
   protected final String id;
   protected final String color;
-  protected int slot = 0;
+  protected final DyeColor dyeColor;
   protected List<Player> members = Collections.synchronizedList(
     new ArrayList<>()
   );
@@ -47,10 +48,6 @@ public abstract class Team implements Cloneable {
 
   public int countMembers() {
     return members.size();
-  }
-
-  public boolean hasSlot() {
-    return slot != 0;
   }
 
   @Override
