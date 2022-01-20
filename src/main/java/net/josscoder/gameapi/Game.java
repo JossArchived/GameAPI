@@ -30,20 +30,6 @@ import cn.nukkit.scheduler.Task;
 import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -75,10 +61,22 @@ import net.josscoder.gameapi.util.ZipUtils;
 import net.josscoder.gameapi.util.entity.CustomItemFirework;
 import org.citizen.CitizenLibrary;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+
 @Getter
 public abstract class Game extends PluginBase {
-
-  private static final VersionInfo versionInfo = loadVersion();
 
   @Setter
   protected boolean developmentMode = false;
@@ -216,42 +214,10 @@ public abstract class Game extends PluginBase {
     settingUpServer();
 
     getLogger().info(TextFormat.GREEN + "This game has been enabled!");
-
-    getLogger()
-      .info(
-        TextFormat.BLUE +
-        "Running GameAPI v" +
-        versionInfo.getSnapshot() +
-        ", by " +
-        versionInfo.getAuthor() +
-        ", branch " +
-        versionInfo.getBranchName() +
-        ", commit " +
-        versionInfo.getCommitId()
-      );
   }
 
   public boolean isTeamable() {
     return this instanceof Teamable;
-  }
-
-  private static VersionInfo loadVersion() {
-    InputStream inputStream =
-      Game.class.getClassLoader().getResourceAsStream("git.properties");
-    if (inputStream == null) {
-      return VersionInfo.unknown();
-    }
-
-    Properties properties = new Properties();
-    try {
-      properties.load(inputStream);
-    } catch (IOException e) {
-      return VersionInfo.unknown();
-    }
-
-    String branchName = properties.getProperty("git.branch", "unknown");
-    String commitId = properties.getProperty("git.commit.id.abbrev", "unknown");
-    return new VersionInfo(branchName, commitId);
   }
 
   private void settingUpServer() {
