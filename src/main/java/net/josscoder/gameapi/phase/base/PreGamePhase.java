@@ -29,7 +29,6 @@ import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.GameType;
 import net.josscoder.gameapi.event.GameStartEvent;
 import net.josscoder.gameapi.map.GameMap;
-import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.team.Team;
 import net.josscoder.gameapi.user.User;
 import net.josscoder.gameapi.util.CharUtils;
@@ -58,7 +57,7 @@ public class PreGamePhase extends LobbyPhase<Game> {
   private void spawnPlayers() {
     GameMap map = game.getMapWinner();
 
-    boolean isTeam = game.getGameType() == GameType.TEAM;
+    boolean isTeam = (game.getGameType() == GameType.TEAM && game.isTeamable());
 
     if (isTeam) {
       game
@@ -146,15 +145,6 @@ public class PreGamePhase extends LobbyPhase<Game> {
 
   @Override
   protected void onEnd() {
-    WaitingRoomMap waitingRoomMap = game.getWaitingRoomMap();
-
-    if (waitingRoomMap != null && waitingRoomMap.getExitEntity() != null) {
-      game
-        .getCitizenLibrary()
-        .getFactory()
-        .remove(waitingRoomMap.getExitEntity().getEntityId());
-    }
-
     getNeutralPlayers()
       .forEach(
         player -> {
