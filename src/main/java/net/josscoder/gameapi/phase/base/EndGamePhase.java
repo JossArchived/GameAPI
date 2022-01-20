@@ -72,6 +72,7 @@ public class EndGamePhase extends LobbyPhase<Game> {
           schedule(
             () -> {
               waitingRoomMap.teleportToPedestalCenter(player);
+              game.showGameResume(player);
               inPedestalCenter = true;
             },
             20 * 4

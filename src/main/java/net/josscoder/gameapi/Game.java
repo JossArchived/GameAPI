@@ -70,6 +70,7 @@ import net.josscoder.gameapi.team.Team;
 import net.josscoder.gameapi.team.Teamable;
 import net.josscoder.gameapi.user.factory.UserFactory;
 import net.josscoder.gameapi.user.listener.UserEventListener;
+import net.josscoder.gameapi.util.Utils;
 import net.josscoder.gameapi.util.ZipUtils;
 import net.josscoder.gameapi.util.entity.CustomItemFirework;
 import org.citizen.CitizenLibrary;
@@ -718,6 +719,10 @@ public abstract class Game extends PluginBase {
     return (
       gameType == GameType.TEAM && teams.isEmpty() ? GameType.SOLO : gameType
     );
+  }
+
+  public void showGameResume(Player player) {
+    Utils.playSound(player, "random.pop", 0.5f, 1);
   }
 
   @Override
