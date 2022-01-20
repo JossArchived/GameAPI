@@ -30,6 +30,19 @@ import cn.nukkit.scheduler.Task;
 import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -60,20 +73,6 @@ import net.josscoder.gameapi.user.listener.UserEventListener;
 import net.josscoder.gameapi.util.ZipUtils;
 import net.josscoder.gameapi.util.entity.CustomItemFirework;
 import org.citizen.CitizenLibrary;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 @Getter
 public abstract class Game extends PluginBase {
@@ -675,31 +674,22 @@ public abstract class Game extends PluginBase {
       .collect(Collectors.toList());
   }
 
-  public Team getTeamWithoutMembers() {
-    for (Team team : teams) {
-      if (team.countMembers() <= 0) {
-        return team;
-      }
-    }
-
-    return null;
+  public List<Team> getTeamsWithoutMembers() {
+    return teams
+      .stream()
+      .filter(team -> team.countMembers() <= 0)
+      .collect(Collectors.toList());
   }
 
   public boolean thereIsATeamWithoutMembers() {
-    return getTeamWithoutMembers() != null;
+    return getTeamsWithoutMembers().size() >= 1;
   }
 
-  public Team getAliveTeam() {
-    for (Team team : teams) {
-      if (
-        getTeamWithoutMembers() != null &&
-        !team.getId().equals(getTeamWithoutMembers().getId())
-      ) {
-        return team;
-      }
-    }
-
-    return null;
+  public List<Team> getAliveTeams() {
+    return teams
+      .stream()
+      .filter(team -> team.countAliveMembers() > 0)
+      .collect(Collectors.toList());
   }
 
   public Team getTeam(Player player) {

@@ -6,6 +6,7 @@ import cn.nukkit.utils.TextFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -48,6 +49,17 @@ public class Team implements Cloneable {
 
   public int countMembers() {
     return members.size();
+  }
+
+  public List<Player> getAliveMembers() {
+    return members
+      .stream()
+      .filter(player -> !player.isSpectator())
+      .collect(Collectors.toList());
+  }
+
+  public int countAliveMembers() {
+    return getAliveMembers().size();
   }
 
   @Override

@@ -109,28 +109,34 @@ public abstract class GamePhase<T extends Game>
     Arrays.stream(commands).forEach(this::register);
   }
 
-  protected void schedule(Runnable runnable, int delay) {
+  protected TaskHandler schedule(Runnable runnable, int delay) {
     TaskHandler task = getServer()
       .getScheduler()
       .scheduleDelayedTask(game, runnable, delay);
 
     tasks.add(task);
+
+    return task;
   }
 
-  protected void schedule(Runnable runnable, int delay, int period) {
+  protected TaskHandler schedule(Runnable runnable, int delay, int period) {
     TaskHandler task = getServer()
       .getScheduler()
       .scheduleDelayedRepeatingTask(game, runnable, delay, period);
 
     tasks.add(task);
+
+    return task;
   }
 
-  protected void scheduleRepeating(Runnable runnable, int period) {
+  protected TaskHandler scheduleRepeating(Runnable runnable, int period) {
     TaskHandler task = getServer()
       .getScheduler()
       .scheduleRepeatingTask(game, runnable, period);
 
     tasks.add(task);
+
+    return task;
   }
 
   protected Collection<Player> getOnlinePlayers() {
