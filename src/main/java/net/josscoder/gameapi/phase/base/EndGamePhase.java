@@ -64,6 +64,8 @@ public class EndGamePhase extends LobbyPhase<Game> {
           }
 
           user.convertPlayer();
+          user.removeScoreboard();
+          user.removeBossBar();
 
           player.sendTitle(TextFormat.colorize("&l&6»&r&c Game Over &l&6«"));
           player.sendMessage(TextFormat.colorize("&l&c» Game OVER!"));
@@ -72,6 +74,8 @@ public class EndGamePhase extends LobbyPhase<Game> {
           schedule(
             () -> {
               waitingRoomMap.teleportToPedestalCenter(player);
+              user.removeScoreboard();
+              user.removeBossBar();
               game.showGameResume(player);
               inPedestalCenter = true;
             },
