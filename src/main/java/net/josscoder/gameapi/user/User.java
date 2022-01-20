@@ -28,9 +28,6 @@ import cn.nukkit.utils.TextFormat;
 import gt.creeperface.nukkit.scoreboardapi.ScoreboardAPI;
 import gt.creeperface.nukkit.scoreboardapi.scoreboard.ObjectiveSortOrder;
 import gt.creeperface.nukkit.scoreboardapi.scoreboard.SimpleScoreboard;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import lombok.Getter;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.user.event.UserConvertSpectatorEvent;
@@ -47,8 +44,6 @@ public class User {
   private final LocalStorage localStorage;
 
   private DummyBossBar bossbar;
-
-  private final List<String> lastScoreboardLines = new ArrayList<>();
 
   private SimpleScoreboard scoreboard;
 
@@ -272,7 +267,7 @@ public class User {
 
     boolean hasScore = scoreboard != null;
 
-    if (hasScore && lastScoreboardLines.size() != lines.length) {
+    if (hasScore) {
       removeScoreboard();
     }
 
@@ -303,9 +298,6 @@ public class User {
         }
       }
     );
-
-    lastScoreboardLines.clear();
-    lastScoreboardLines.addAll(Arrays.asList(lines));
   }
 
   public void sendBossBar(String title, float length) {
