@@ -255,6 +255,7 @@ public class User {
       return;
     }
 
+    scoreboard.clearCache();
     scoreboard.resetAllScores();
   }
 
