@@ -32,6 +32,7 @@ import lombok.Setter;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.util.Firework;
 import net.josscoder.gameapi.util.SkinUtils;
+import org.citizen.attributes.EmoteType;
 import org.citizen.attributes.InvokeAttribute;
 import org.citizen.entity.Citizen;
 
@@ -74,6 +75,8 @@ public class WaitingRoomMap extends Map<Game> {
     Vector3 exitEntitySpawn
   ) {
     super(game, name, safeSpawn);
+    this.exitEntitySpawn = exitEntitySpawn;
+
     generateExitEntity();
   }
 
@@ -134,6 +137,11 @@ public class WaitingRoomMap extends Map<Game> {
         )
       )
       .putLine(TextFormat.colorize("&f&l") + pedestalPlayer.getName());
+    citizen.executeEmote(
+      EmoteType.values()[random.nextInt(EmoteType.values().length)].getId(),
+      true,
+      5
+    );
 
     return citizen;
   }
@@ -209,5 +217,7 @@ public class WaitingRoomMap extends Map<Game> {
     player.teleport(
       Position.fromObject(pedestalCenterSpawn.add(0, 1), toLevel())
     );
+
+    game.schedule(() -> game.showGameResume(player), 20 * 2);
   }
 }

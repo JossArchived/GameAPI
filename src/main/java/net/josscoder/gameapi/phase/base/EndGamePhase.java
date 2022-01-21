@@ -23,12 +23,10 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.SplittableRandom;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.event.GameEndEvent;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.user.User;
-import org.citizen.attributes.EmoteType;
 
 public class EndGamePhase extends LobbyPhase<Game> {
 
@@ -75,7 +73,6 @@ public class EndGamePhase extends LobbyPhase<Game> {
           schedule(
             () -> {
               waitingRoomMap.teleportToPedestalCenter(player);
-              schedule(() -> game.showGameResume(player), 20 * 3);
               inPedestalCenter = true;
             },
             20 * 4
@@ -95,18 +92,6 @@ public class EndGamePhase extends LobbyPhase<Game> {
             waitingRoomMap.spawnFireworks(
               pedestalPlayers == null ? 0 : pedestalPlayers.size()
             );
-
-            SplittableRandom random = new SplittableRandom();
-
-            waitingRoomMap
-              .getEntities()
-              .forEach(
-                citizen ->
-                  citizen.executeEmote(
-                    EmoteType
-                      .values()[random.nextInt(EmoteType.values().length)].getId()
-                  )
-              );
 
             modifiableInterval = 5;
           }
