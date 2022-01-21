@@ -46,6 +46,7 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import net.josscoder.gameapi.citizen.CustomController;
 import net.josscoder.gameapi.command.base.MyPositionCommand;
 import net.josscoder.gameapi.command.base.SoundCommand;
 import net.josscoder.gameapi.command.base.TeleporterCommand;
@@ -171,7 +172,8 @@ public abstract class Game extends PluginBase {
 
     gameMapManager = new GameMapManager(this);
 
-    citizenLibrary = new CitizenLibrary(this);
+    citizenLibrary =
+      new CitizenLibrary(this, new CustomController(citizenLibrary));
 
     registerListener(
       new UserEventListener(this),
