@@ -101,7 +101,7 @@ public class WaitingRoomMap extends Map<Game> {
       }
     );
 
-    game.getCitizenLibrary().getFactory().add(exitEntity);
+    game.getCitizenLibrary().getCitizenFactory().add(exitEntity);
   }
 
   private Citizen generatePedestalEntity(
@@ -153,7 +153,7 @@ public class WaitingRoomMap extends Map<Game> {
       }
 
       Citizen citizen = generatePedestalEntity(pedestalPlayer, set.getValue());
-      game.getCitizenLibrary().getFactory().add(citizen);
+      game.getCitizenLibrary().getCitizenFactory().add(citizen);
       entities.add(citizen);
     }
   }
