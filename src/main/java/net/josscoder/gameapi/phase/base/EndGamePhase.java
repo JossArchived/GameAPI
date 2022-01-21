@@ -28,7 +28,7 @@ import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.event.GameEndEvent;
 import net.josscoder.gameapi.map.WaitingRoomMap;
 import net.josscoder.gameapi.user.User;
-import org.citizen.attributes.EmoteId;
+import org.citizen.attributes.EmoteType;
 
 public class EndGamePhase extends LobbyPhase<Game> {
 
@@ -103,8 +103,8 @@ public class EndGamePhase extends LobbyPhase<Game> {
               .forEach(
                 citizen ->
                   citizen.executeEmote(
-                    EmoteId
-                      .values()[random.nextInt(EmoteId.values().length)].getId()
+                    EmoteType
+                      .values()[random.nextInt(EmoteType.values().length)].getId()
                   )
               );
 
