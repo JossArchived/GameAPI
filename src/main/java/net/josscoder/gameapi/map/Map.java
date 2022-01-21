@@ -141,7 +141,7 @@ public abstract class Map<T extends Game> extends GameListener<Game> {
   }
 
   public boolean isThisLevel(Level level) {
-    return level.getName().equals(toLevel().getName());
+    return (toLevel() != null && level.getName().equals(toLevel().getName()));
   }
 
   private void broadcastAlert(Player player, String message) {
