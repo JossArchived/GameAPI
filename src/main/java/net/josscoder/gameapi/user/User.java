@@ -255,8 +255,8 @@ public class User {
       return;
     }
 
-    scoreboard.clearCache();
     scoreboard.resetAllScores();
+    scoreboard.update();
   }
 
   public void sendScoreboard(String title, String... lines) {
