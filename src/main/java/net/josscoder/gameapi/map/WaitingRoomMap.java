@@ -23,6 +23,8 @@ import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.DyeColor;
 import cn.nukkit.utils.TextFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SplittableRandom;
 import lombok.Getter;
 import lombok.NonNull;
@@ -30,7 +32,6 @@ import lombok.Setter;
 import net.josscoder.gameapi.Game;
 import net.josscoder.gameapi.util.Firework;
 import net.josscoder.gameapi.util.SkinUtils;
-import org.citizen.attributes.EmoteId;
 import org.citizen.attributes.InvokeAttribute;
 import org.citizen.entity.Citizen;
 
@@ -57,6 +58,8 @@ public class WaitingRoomMap extends Map<Game> {
   protected String pedestalThreeTag = "&63rd place";
 
   protected Skin exitEntitySkin = null;
+
+  protected List<Citizen> entities = new ArrayList<>();
 
   private static final SplittableRandom random = new SplittableRandom();
 
@@ -144,15 +147,8 @@ public class WaitingRoomMap extends Map<Game> {
       }
 
       Citizen citizen = generatePedestalEntity(pedestalPlayer, set.getValue());
-      game.schedule(
-        () ->
-          citizen.executeEmote(
-            EmoteId.values()[random.nextInt(EmoteId.values().length)].getId()
-          ),
-        20 * 4
-      );
-
       game.getCitizenLibrary().getFactory().add(citizen);
+      entities.add(citizen);
     }
   }
 

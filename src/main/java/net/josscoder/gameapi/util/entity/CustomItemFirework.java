@@ -38,7 +38,8 @@ public class CustomItemFirework extends Entity {
     this.lifetime = lifetime;
   }
 
-  public void initEntity() {
+  @Override
+  protected void initEntity() {
     ThreadLocalRandom rand = ThreadLocalRandom.current();
 
     if (lifetime == 0) {
@@ -55,10 +56,12 @@ public class CustomItemFirework extends Entity {
     }
   }
 
+  @Override
   public int getNetworkId() {
     return NETWORK_ID;
   }
 
+  @Override
   public boolean onUpdate(int currentTick) {
     if (closed) {
       return false;
@@ -112,6 +115,7 @@ public class CustomItemFirework extends Entity {
     }
   }
 
+  @Override
   public boolean attack(EntityDamageEvent source) {
     return (
       (
@@ -124,15 +128,17 @@ public class CustomItemFirework extends Entity {
     );
   }
 
-  public void setFirework(Item item) {
-    firework = item;
+  public void setFirework(Item firework) {
+    this.firework = firework;
     setDataProperty(new NBTEntityData(16, firework));
   }
 
+  @Override
   public float getWidth() {
     return 0.25F;
   }
 
+  @Override
   public float getHeight() {
     return 0.25F;
   }
