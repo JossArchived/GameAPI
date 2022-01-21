@@ -104,11 +104,15 @@ public abstract class Map<T extends Game> extends GameListener<Game> {
   }
 
   public void teleportToSafeSpawn(Player player) {
-    if (safeSpawn == null || toLevel() == null) {
+    if (safeSpawn == null) {
       return;
     }
 
     prepare();
+
+    if (toLevel() == null) {
+      return;
+    }
 
     player.teleport(Position.fromObject(safeSpawn, toLevel()).add(0, 1));
   }
@@ -137,7 +141,7 @@ public abstract class Map<T extends Game> extends GameListener<Game> {
   }
 
   public boolean isThisLevel(Level level) {
-    return level == toLevel();
+    return level.getName().equals(toLevel().getName());
   }
 
   private void broadcastAlert(Player player, String message) {

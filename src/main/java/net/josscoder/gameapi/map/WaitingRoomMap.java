@@ -194,11 +194,15 @@ public class WaitingRoomMap extends Map<Game> {
   }
 
   public void teleportToPedestalCenter(Player player) {
-    if (pedestalCenterSpawn == null || toLevel() == null) {
+    if (pedestalCenterSpawn == null) {
       return;
     }
 
     prepare();
+
+    if (toLevel() == null) {
+      return;
+    }
 
     player.teleport(
       Position.fromObject(pedestalCenterSpawn.add(0, 1), toLevel())
