@@ -56,11 +56,9 @@ public class Firework {
   ) {
     Level level = position.getLevel();
 
-    if (!Server.getInstance().isLevelLoaded(level.getFolderName())) {
+    if (!Server.getInstance().isLevelLoaded(level.getName())) {
       return;
     }
-
-    ItemFirework item = new ItemFirework();
 
     CompoundTag tag = new CompoundTag();
 
@@ -78,31 +76,30 @@ public class Firework {
         .putByte("Flight", 1)
     );
 
+    ItemFirework item = new ItemFirework();
     item.setNamedTag(tag);
-
-    CompoundTag nbt = new CompoundTag()
-      .putList(
-        new ListTag<DoubleTag>("Pos")
-          .add(new DoubleTag("", position.x + 0.5))
-          .add(new DoubleTag("", position.y + 0.5))
-          .add(new DoubleTag("", position.z + 0.5))
-      )
-      .putList(
-        new ListTag<>("Motion")
-          .add(new DoubleTag("", 0))
-          .add(new DoubleTag("", 0))
-          .add(new DoubleTag("", 0))
-      )
-      .putList(
-        new ListTag<FloatTag>("Rotation")
-          .add(new FloatTag("", 0))
-          .add(new FloatTag("", 0))
-      )
-      .putCompound("FireworkItem", NBTIO.putItemHelper(item));
 
     CustomItemFirework entity = new CustomItemFirework(
       position.getChunk(),
-      nbt,
+      new CompoundTag()
+        .putList(
+          new ListTag<DoubleTag>("Pos")
+            .add(new DoubleTag("", position.x + 0.5))
+            .add(new DoubleTag("", position.y + 0.5))
+            .add(new DoubleTag("", position.z + 0.5))
+        )
+        .putList(
+          new ListTag<>("Motion")
+            .add(new DoubleTag("", 0))
+            .add(new DoubleTag("", 0))
+            .add(new DoubleTag("", 0))
+        )
+        .putList(
+          new ListTag<FloatTag>("Rotation")
+            .add(new FloatTag("", 0))
+            .add(new FloatTag("", 0))
+        )
+        .putCompound("FireworkItem", NBTIO.putItemHelper(item)),
       20
     );
     entity.spawnToAll();

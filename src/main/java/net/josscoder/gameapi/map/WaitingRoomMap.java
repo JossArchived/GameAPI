@@ -74,28 +74,34 @@ public class WaitingRoomMap extends Map<Game> {
     Vector3 exitEntitySpawn
   ) {
     super(game, name, safeSpawn);
-    if (exitEntitySpawn != null) {
-      handle();
+    generateExitEntity();
+  }
 
-      exitEntity = new Citizen();
-      exitEntity.setPosition(Position.fromObject(exitEntitySpawn, toLevel()));
-      exitEntity.setScale(1.3f);
-      exitEntity.lookAt(safeSpawn);
-      exitEntity.setSkin(
-        exitEntitySkin == null ? SkinUtils.getRandom() : exitEntitySkin
-      );
-      exitEntity.getTagEditor().putLine(TextFormat.YELLOW + "Back to Hub");
-      exitEntity.setInvokeAttribute(
-        new InvokeAttribute(exitEntity) {
-          @Override
-          public void invoke(@NonNull Player player) {
-            game.sendToHub(player);
-          }
-        }
-      );
-
-      game.getCitizenLibrary().getFactory().add(exitEntity);
+  private void generateExitEntity() {
+    if (exitEntitySpawn == null) {
+      return;
     }
+
+    prepare();
+
+    exitEntity = new Citizen();
+    exitEntity.setPosition(Position.fromObject(exitEntitySpawn, toLevel()));
+    exitEntity.setScale(1.3f);
+    exitEntity.lookAt(safeSpawn);
+    exitEntity.setSkin(
+      exitEntitySkin == null ? SkinUtils.getRandom() : exitEntitySkin
+    );
+    exitEntity.getTagEditor().putLine(TextFormat.YELLOW + "Back to Hub");
+    exitEntity.setInvokeAttribute(
+      new InvokeAttribute(exitEntity) {
+        @Override
+        public void invoke(@NonNull Player player) {
+          game.sendToHub(player);
+        }
+      }
+    );
+
+    game.getCitizenLibrary().getFactory().add(exitEntity);
   }
 
   private Citizen generatePedestalEntity(

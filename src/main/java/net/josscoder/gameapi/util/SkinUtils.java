@@ -28,11 +28,12 @@ public class SkinUtils {
 
   public static Skin getRandom() {
     Skin skin = new Skin();
-    skin.setSkinId("Custom_Slim");
 
     int i = MathUtils.nextInt(1, 2);
-
     skin.setSkinData(Base64.getDecoder().decode(i == 1 ? SKIN_1 : SKIN_2));
+    skin.setSkinId("Custom_Slim");
+    skin.setPremium(true);
+    skin.setTrusted(true);
 
     return skin;
   }

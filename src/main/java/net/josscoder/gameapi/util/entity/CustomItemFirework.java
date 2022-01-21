@@ -39,9 +39,25 @@ public class CustomItemFirework extends Entity {
   }
 
   @Override
-  protected void initEntity() {
-    ThreadLocalRandom rand = ThreadLocalRandom.current();
+  public int getNetworkId() {
+    return NETWORK_ID;
+  }
 
+  @Override
+  public float getWidth() {
+    return 0.25F;
+  }
+
+  @Override
+  public float getHeight() {
+    return 0.25F;
+  }
+
+  @Override
+  protected void initEntity() {
+    super.initEntity();
+
+    ThreadLocalRandom rand = ThreadLocalRandom.current();
     if (lifetime == 0) {
       lifetime = 20 + rand.nextInt(6) + rand.nextInt(7);
     }
@@ -54,11 +70,6 @@ public class CustomItemFirework extends Entity {
       firework = NBTIO.getItemHelper(namedTag.getCompound("FireworkItem"));
       setDataProperty(new NBTEntityData(16, firework));
     }
-  }
-
-  @Override
-  public int getNetworkId() {
-    return NETWORK_ID;
   }
 
   @Override
@@ -131,15 +142,5 @@ public class CustomItemFirework extends Entity {
   public void setFirework(Item firework) {
     this.firework = firework;
     setDataProperty(new NBTEntityData(16, firework));
-  }
-
-  @Override
-  public float getWidth() {
-    return 0.25F;
-  }
-
-  @Override
-  public float getHeight() {
-    return 0.25F;
   }
 }

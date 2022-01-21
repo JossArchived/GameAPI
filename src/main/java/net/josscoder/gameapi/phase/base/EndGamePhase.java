@@ -34,6 +34,8 @@ public class EndGamePhase extends LobbyPhase<Game> {
 
   private final Map<Player, Integer> pedestalPlayers;
 
+  private final WaitingRoomMap waitingRoomMap;
+
   private boolean inPedestalCenter = false;
 
   public EndGamePhase(
@@ -43,18 +45,17 @@ public class EndGamePhase extends LobbyPhase<Game> {
   ) {
     super(game, duration);
     this.pedestalPlayers = pedestalPlayers;
-  }
-
-  @Override
-  protected void onStart() {
-    game.callEvent(new GameEndEvent());
-
-    WaitingRoomMap waitingRoomMap = game.getWaitingRoomMap();
+    waitingRoomMap = game.getWaitingRoomMap();
     waitingRoomMap.prepare();
 
     waitingRoomMap.generatePedestalEntities(
       pedestalPlayers == null ? new HashMap<>() : pedestalPlayers
     );
+  }
+
+  @Override
+  protected void onStart() {
+    game.callEvent(new GameEndEvent());
 
     getOnlinePlayers()
       .forEach(
@@ -74,7 +75,7 @@ public class EndGamePhase extends LobbyPhase<Game> {
           schedule(
             () -> {
               waitingRoomMap.teleportToPedestalCenter(player);
-              game.showGameResume(player);
+              schedule(() -> game.showGameResume(player), 20 * 3);
               inPedestalCenter = true;
             },
             20 * 4
@@ -84,7 +85,7 @@ public class EndGamePhase extends LobbyPhase<Game> {
 
     schedule(
       new Task() {
-        private int modifiableInterval = 4;
+        private int modifiableInterval = 5;
 
         @Override
         public void onRun(int i) {
@@ -100,19 +101,18 @@ public class EndGamePhase extends LobbyPhase<Game> {
             waitingRoomMap
               .getEntities()
               .forEach(
-                citizen -> {
+                citizen ->
                   citizen.executeEmote(
                     EmoteId
                       .values()[random.nextInt(EmoteId.values().length)].getId()
-                  );
-                }
+                  )
               );
 
-            modifiableInterval = 4;
+            modifiableInterval = 5;
           }
         }
       },
-      20 * 4,
+      20 * 3,
       20
     );
   }
