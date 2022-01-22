@@ -43,7 +43,9 @@ public class Firework {
       random.nextBoolean(),
       ItemFirework.FireworkExplosion.ExplosionType.values()[random.nextInt(
           ItemFirework.FireworkExplosion.ExplosionType.values().length
-        )]
+        )],
+      1,
+      20
     );
   }
 
@@ -53,6 +55,18 @@ public class Firework {
     boolean flicker,
     boolean trail,
     ItemFirework.FireworkExplosion.ExplosionType explosionType
+  ) {
+    spawn(position, color, flicker, trail, explosionType, 1, 20);
+  }
+
+  public static void spawn(
+    Position position,
+    DyeColor color,
+    boolean flicker,
+    boolean trail,
+    ItemFirework.FireworkExplosion.ExplosionType explosionType,
+    int flight,
+    int lifetime
   ) {
     Level level = position.getLevel();
 
@@ -73,7 +87,7 @@ public class Firework {
       "Fireworks",
       new CompoundTag("Fireworks")
         .putList(new ListTag<CompoundTag>("Explosions").add(explosion))
-        .putByte("Flight", 1)
+        .putByte("Flight", flight)
     );
 
     ItemFirework item = new ItemFirework();
@@ -100,7 +114,7 @@ public class Firework {
             .add(new FloatTag("", 0))
         )
         .putCompound("FireworkItem", NBTIO.putItemHelper(item)),
-      20
+      lifetime
     );
     entity.spawnToAll();
   }

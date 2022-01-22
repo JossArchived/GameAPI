@@ -174,8 +174,8 @@ public class WaitingRoomMap extends Map<Game> {
     Firework.spawn(
       position,
       DyeColor.YELLOW,
-      true,
-      true,
+      false,
+      false,
       ItemFirework.FireworkExplosion.ExplosionType.SMALL_BALL
     );
 
