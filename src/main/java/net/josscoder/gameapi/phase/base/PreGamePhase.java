@@ -133,7 +133,7 @@ public class PreGamePhase extends LobbyPhase<Game> {
       );
 
       if (countdown <= 3) {
-        broadcastSound("note.harp", 2, 2);
+        broadcastSound("random.toast", 1.5f, 0.5f);
       }
     }
   }
